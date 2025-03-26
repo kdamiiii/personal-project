@@ -5,6 +5,6 @@ type ImageType = {
 
 export const ResponsiveImage = ({src, alt}: ImageType) => {
     return (
-        <img className={`w-[100%]`} src={src} alt={alt}/>
+        <img className={`h-[100%]`} src={src} alt={alt}/>
     )
 }
