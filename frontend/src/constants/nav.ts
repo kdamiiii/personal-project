@@ -1,7 +1,11 @@
+import { IconType } from "react-icons"
+import { FaRegUser } from "react-icons/fa";
+
 export type NavButtonType = {
     name: string
     link: string
-    icon?: string
+    icon?: IconType
+    options?: string
 }
 
 
@@ -25,5 +29,11 @@ export const navButtons: NavButtonType[] = [
     {
         name:'gallery',
         link:'/gallery'
+    },
+    {
+        name:'login',
+        link:'/login',
+        icon: FaRegUser,
+        options:'ml-auto'
     }
 ]
