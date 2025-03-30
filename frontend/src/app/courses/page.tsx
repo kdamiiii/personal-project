@@ -5,7 +5,7 @@ import { COURSES } from "@/constants/courses";
 
 export default function Home() {
   return (
-    <div className="flex w-screen justify-center">
+    <div className="flex justify-center w-full">
       <CoursesContainer courses={COURSES} />
     </div>
   );

@@ -27,13 +27,11 @@ export const CoursesContainer: React.FC<{ courses: CourseType[] }> = ({
   console.log(courses);
 
   return (
-    <div className="flex flex-row w-[90vw] py-5">
-      <Card className="w-full px-20 py-10 gap-3.5">
-        <div className="flex justify-items-start w-full gap-15 font-normal">
-          {courses.map((course) => (
-            <Course key={course.name} {...course} />
-          ))}
-        </div>
+    <div className="w-[90vw] justify-center">
+      <Card className="w-full flex-row px-20 py-10 gap-15 justify-center flex-wrap font-normal">
+        {courses.map((course) => (
+          <Course key={course.name} {...course} />
+        ))}
       </Card>
     </div>
   );
@@ -50,7 +48,7 @@ const Course: React.FC<CourseType> = ({
   };
 
   return (
-    <div className="flex flex-col w-[20em] h-full">
+    <div className="flex flex-col w-[20em] h-[38em]">
       <CourseBadge name={category} />
       <img src={picture} />
       <CardTitle
