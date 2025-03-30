@@ -1,35 +1,43 @@
-import { CenterContainter, FlexContainer } from "@/components/containers";
-import { ResponsiveImage } from "@/components/images";
-import { NavBar } from "@/components/navbar/navbar";
-import Image from "next/image";
+"use client";
+
+import { Button } from "@/components/buttons";
 
 export default function Home() {
+  const handleClick = () => {};
+
   return (
     <div className="">
       <main className="">
-          {/* <NavBar /> */}
-          <div
+        {/* <NavBar /> */}
+        <div
           className="relative w-full"
           style={{
-            height: '93vh',
+            height: "93vh",
             background: `linear-gradient(to right, white 0%, rgba(255, 255, 255, 0) 70%), url(./student.jpg)`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'start',
+            backgroundSize: "cover",
+            backgroundPosition: "start",
           }}
         >
-          {/* Optional: Add content on top of the background */}
-          <div className="ml-10 absolute inset-0 flex items-start justify-center flex-col text-blue-950 font-bold text-7xl">
-            <p>Be your <span className="text-amber-400">BEST,</span></p>
-            <p>Be at <span>BSBT College!</span></p>
+          <div className="ml-25 w-[45%] absolute gap-5 inset-0 flex items-start justify-center flex-col text-blue-950 font-bold text-8xl">
+            <p>
+              Be your <span className="text-amber-400">BEST,</span>
+              <br />
+              Be at <span>BSBT College!</span>
+            </p>
+            <div className="text-4xl font-normal text-gray-700">
+              <p>
+                Unlock your potential with expert-led courses designed to ignite
+                curiosity and fuel your future!
+              </p>
+            </div>
+            <Button
+              handleOnClickAction={handleClick}
+              className="mt-5 w-[15em] h-[4em] text-[0.2em]"
+            >
+              View our Courses
+            </Button>
           </div>
         </div>
-          
-          {/* <CenterContainter height="100vh" customClasses="overflow-hidden align-start"> */}
-            {/* <FlexContainer customClasses={'flex justify-end align-start h-[93vh]'}>
-              <ResponsiveImage alt="logo" src="student.jpg"/>
-            </FlexContainer> */}
-            {/* <FlexContainer>Panel 2</FlexContainer> */}
-          {/* </CenterContainter> */}
       </main>
     </div>
   );
