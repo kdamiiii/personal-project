@@ -1,14 +1,13 @@
 import { NavBar } from "@/components/navbar/navbar";
 
-export default function RootLayout({
+export default function HomeLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <main>
-      <NavBar />
-      {children}
+      <NavBar /> {children}
     </main>
   );
 }
