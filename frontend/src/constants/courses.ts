@@ -119,6 +119,104 @@ export const COURSES: CourseType[] = [
       "Combines hospitality skills in hotel management, restaurant service, and guest relations.",
     picture: "/photos/BA.jpg",
   },
+  {
+    name: "Auto Troubleshooting w/ Driving",
+    category: "MODULAR",
+    description:
+      "Teaches vehicle troubleshooting techniques along with hands-on driving skills.",
+    picture: "/photos/Educator.jpg",
+  },
+  {
+    name: "Automotive Electricity",
+    category: "MODULAR",
+    description:
+      "Focuses on vehicle electrical systems, wiring, and troubleshooting electrical issues.",
+    picture: "/photos/Educator.jpg",
+  },
+  {
+    name: "Practical Driving",
+    category: "MODULAR",
+    description:
+      "Provides hands-on driving instruction and road safety awareness.",
+    picture: "/photos/Educator.jpg",
+  },
+  {
+    name: "Baking & Pastry Production",
+    category: "MODULAR",
+    description:
+      "Covers techniques in baking breads, pastries, and dessert preparation.",
+    picture: "/photos/Educator.jpg",
+  },
+  {
+    name: "International Cuisine",
+    category: "MODULAR",
+    description:
+      "Explores global culinary techniques and international food preparation.",
+    picture: "/photos/Educator.jpg",
+  },
+  {
+    name: "Culinary Arts",
+    category: "MODULAR",
+    description:
+      "Provides training in food preparation, cooking methods, and kitchen management.",
+    picture: "/photos/Educator.jpg",
+  },
+  {
+    name: "Food and Beverage Services",
+    category: "MODULAR",
+    description:
+      "Teaches skills in restaurant service, food handling, and customer relations.",
+    picture: "/photos/Educator.jpg",
+  },
+  {
+    name: "Housekeeping Services",
+    category: "MODULAR",
+    description:
+      "Covers cleaning, sanitation, and maintenance procedures in hospitality settings.",
+    picture: "/photos/Educator.jpg",
+  },
+  {
+    name: "Bartending Services",
+    category: "MODULAR",
+    description:
+      "Provides knowledge in mixing drinks, bar operations, and responsible alcohol service.",
+    picture: "/photos/Educator.jpg",
+  },
+  {
+    name: "Computer Applications",
+    category: "MODULAR",
+    description:
+      "Covers basic to advanced computer skills, including office applications and software use.",
+    picture: "/photos/Educator.jpg",
+  },
+  {
+    name: "Jetwriting (Modern Shorthand)",
+    category: "MODULAR",
+    description:
+      "Teaches shorthand writing techniques for efficient note-taking and transcription.",
+    picture: "/photos/Educator.jpg",
+  },
+  {
+    name: "Practical Bookkeeping & Accounting",
+    category: "MODULAR",
+    description:
+      "Covers basic accounting principles, bookkeeping procedures, and financial record-keeping.",
+    picture: "/photos/Educator.jpg",
+  },
+  {
+    name: "Hair Dressing & Beauty Care",
+    category: "MODULAR",
+    description:
+      "Trains individuals in hairstyling, makeup application, and beauty care techniques.",
+    picture: "/photos/Educator.jpg",
+  },
+  {
+    name: "Auto CAD (new)",
+    category: "MODULAR",
+    description:
+      "Introduces computer-aided design (CAD) software for technical drawing and drafting.",
+    picture: "/photos/Educator.jpg",
+  },
 ];
 
 type CategoryColorType = {
