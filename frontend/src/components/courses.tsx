@@ -3,6 +3,8 @@
 import { CATEGORY_COLOR } from "@/constants/courses";
 import { Button } from "./buttons";
 import { Card, CardTitle } from "./cards";
+import { CheckBox } from "./forms";
+import { ChangeEvent, useEffect, useState } from "react";
 
 export type CourseType = {
   name: string;
@@ -19,17 +21,43 @@ export type CourseCategoryType = {
 
 type BadgeType = {
   name: string;
+  fullRound?: boolean;
+  width?: string;
 };
 
 export const CoursesContainer: React.FC<{ courses: CourseType[] }> = ({
   courses,
 }) => {
-  console.log(courses);
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const [selectedCourses, setSelectedCourses] = useState(courses);
+
+  useEffect(() => {
+    console.log(selectedOptions);
+    if (selectedOptions.length == 0) setSelectedCourses(courses);
+    else {
+      setSelectedCourses(
+        courses.filter((c) => selectedOptions.includes(c.category))
+      );
+    }
+  }, [selectedOptions]);
+
+  const onToggle = (isChecked: boolean, value: string) => {
+    if (isChecked) setSelectedOptions((s) => [...s, value]);
+    else setSelectedOptions((s) => s.filter((option) => option != value));
+  };
 
   return (
-    <div className="w-[90vw] justify-center">
+    <div className="flex flex-row gap-5 w-[100vw] px-5 justify-center">
+      <Card className="w-[15em] h-fit gap-2 p-5">
+        <h2>Filters</h2>
+        {Object.entries(CATEGORY_COLOR).map((e) => (
+          <CheckBox key={e[0]} value={e[0]} onToggle={onToggle}>
+            <CourseBadge width="w-full" fullRound name={e[0]} />
+          </CheckBox>
+        ))}
+      </Card>
       <Card className="w-full flex-row px-20 py-10 gap-15 justify-center flex-wrap font-normal">
-        {courses.map((course) => (
+        {selectedCourses.map((course) => (
           <Course key={course.name} {...course} />
         ))}
       </Card>
@@ -64,10 +92,16 @@ const Course: React.FC<CourseType> = ({
   );
 };
 
-const CourseBadge: React.FC<BadgeType> = ({ name }) => {
+export const CourseBadge: React.FC<BadgeType> = ({
+  name,
+  fullRound = false,
+  width = "w-fit",
+}) => {
   return (
     <div
-      className={`flex justify-center items-center w-fit p-3 font-bold rounded-t-lg text-white ${CATEGORY_COLOR[name]}`}
+      className={`flex justify-center items-center ${width} p-3 font-bold rounded-t-lg text-white ${
+        fullRound && "rounded-b-lg"
+      } ${CATEGORY_COLOR[name]}`}
     >
       {name}
     </div>
