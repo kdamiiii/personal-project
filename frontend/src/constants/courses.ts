@@ -224,7 +224,7 @@ type CategoryColorType = {
 };
 
 export const CATEGORY_COLOR: CategoryColorType = {
-  CHED: "bg-blue-950",
-  TESDA: "bg-amber-400",
-  MODULAR: "bg-green-600",
+  CHED: "bg-[#003665]",
+  TESDA: "bg-[#ffd239]",
+  MODULAR: "bg-[#3cb54c]",
 };
