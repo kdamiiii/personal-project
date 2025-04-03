@@ -7,7 +7,7 @@ export default function EnrollmentLayout({
     <main
       className="flex justify-center items-center w-screen h-screen"
       style={{
-        backgroundImage: "url(./photos/bg.svg)",
+        backgroundImage: "url(../photos/bg.svg)",
         backgroundSize: "cover",
       }}
     >

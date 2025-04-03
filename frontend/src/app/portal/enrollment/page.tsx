@@ -5,14 +5,15 @@ import { Card } from "@/components/cards";
 import { FormInput } from "@/components/forms";
 import { Step, Stepper } from "@/components/stepper";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const steps: Step[] = [
   {
-    name: "Fill in the details",
+    name: "Student Information",
     complete: false,
   },
   {
-    name: "Select Course",
+    name: "Course",
     complete: false,
   },
   {
@@ -22,15 +23,23 @@ const steps: Step[] = [
 ];
 
 export default function EnrollmentPage() {
+  const [stepsState, setStepsState] = useState(steps);
+  const [selected, setSelected] = useState(0);
   const router = useRouter();
 
-  const goToEnrollmentPage = () => {
-    router.push("/enrollment");
+  const handleNext = () => {
+    const updatedStates = stepsState;
+    updatedStates[selected].complete = true;
+    setStepsState(updatedStates);
+    setSelected((curr) => curr + 1);
   };
 
   return (
-    <Card className="flex-row w-[50%] h-[40em] p-0 bg-white">
-      <Stepper steps={steps} />
+    <Card className="flex flex-col w-[80%] h-[50em] items-center p-0 bg-white">
+      <Stepper selected={selected} steps={stepsState} />
+      <Button handleOnClickAction={handleNext} className="w-[10em]">
+        Next
+      </Button>
     </Card>
   );
 }
