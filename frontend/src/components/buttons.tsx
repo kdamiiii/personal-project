@@ -2,14 +2,14 @@
 
 export type ButtonProps = {
   children: React.ReactNode;
-  handleOnClickAction: () => void;
+  handleOnClickAction?: () => void;
   className?: string;
   color?: string;
 };
 
 export const Button: React.FC<ButtonProps> = ({
   children,
-  handleOnClickAction,
+  handleOnClickAction = () => {},
   className,
   color = "bg-blue-900",
 }) => {

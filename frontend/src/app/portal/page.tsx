@@ -1,8 +1,18 @@
+"use client";
+
 import { Button } from "@/components/buttons";
 import { Card } from "@/components/cards";
 import { FormInput } from "@/components/forms";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+
+  const goToEnrollmentPage = () => {
+    router.push("/enrollment");
+  };
+
   return (
     <Card className="flex-row w-[50%] h-[40em] p-0">
       <div className="flex flex-col gap-10 p-10 w-[40%] justify-center items-center bg-white">
@@ -12,9 +22,15 @@ export default function Home() {
           <FormInput type="password" name="Password" />
           <div className="flex flex-col mt-4 self-center gap-1 items-center w-[90%]">
             <Button className="w-full">Login</Button>
-            <Button className="w-full" color="bg-gray-400">
-              Register
-            </Button>
+            <Link className="w-full" href={"/portal/enrollment"}>
+              <Button
+                handleOnClickAction={goToEnrollmentPage}
+                className="w-full"
+                color="bg-gray-400"
+              >
+                Register
+              </Button>
+            </Link>
           </div>
         </form>
       </div>
