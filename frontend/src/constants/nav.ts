@@ -11,7 +11,7 @@ export type NavButtonType = {
 export const NAV_BUTTONS: NavButtonType[] = [
   {
     name: "home",
-    link: "/",
+    link: "/home",
   },
   {
     name: "courses",

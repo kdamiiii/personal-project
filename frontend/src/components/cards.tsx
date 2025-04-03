@@ -9,10 +9,10 @@ type CardType = {
   className?: string;
 };
 
-export const Card: React.FC<CardType> = ({ children, className = "" }) => {
+export const Card: React.FC<CardType> = ({ children, className = "p-2" }) => {
   return (
     <div
-      className={`flex flex-col p-2 shadow-[_-1px_6px_7px_1px_rgba(0,0,0,0.18)] ${className}`}
+      className={`flex flex-col shadow-[_-1px_6px_7px_1px_rgba(0,0,0,0.18)] ${className}`}
     >
       {children}
     </div>

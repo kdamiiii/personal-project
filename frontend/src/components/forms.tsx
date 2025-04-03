@@ -18,9 +18,13 @@ export const FormInput: React.FC<FormInputType> = ({
   row = true,
 }) => {
   return (
-    <div className={`flex flex-${row ? "row" : "col"} gap-2`}>
-      {name && <p>{name}</p>}
-      <input type={type} placeholder={placeHolder ?? ""} />
+    <div className={`flex flex-${row ? "row items-center" : "col "}  gap-2`}>
+      {name && <p className="w-[30%]">{name}</p>}
+      <input
+        className="border-1 border-gray-400 rounded-full p-1 px-3 w-[70%]"
+        type={type}
+        placeholder={placeHolder ?? ""}
+      />
     </div>
   );
 };
