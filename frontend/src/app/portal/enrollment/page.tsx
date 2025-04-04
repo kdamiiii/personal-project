@@ -27,19 +27,40 @@ export default function EnrollmentPage() {
   const [selected, setSelected] = useState(0);
   const router = useRouter();
 
+  const handleBack = () => {
+    if (selected > -1) {
+      const updatedStates = stepsState;
+      updatedStates[selected].complete = false;
+      setStepsState(updatedStates);
+    }
+    setSelected((curr) => (selected > -1 ? curr - 1 : curr));
+  };
+
   const handleNext = () => {
-    const updatedStates = stepsState;
-    updatedStates[selected].complete = true;
-    setStepsState(updatedStates);
+    if (selected < stepsState.length) {
+      const updatedStates = stepsState;
+      updatedStates[selected].complete = true;
+      setStepsState(updatedStates);
+    }
     setSelected((curr) => curr + 1);
   };
 
   return (
-    <Card className="flex flex-col w-[80%] h-[50em] items-center p-0 bg-white">
+    <Card className="flex flex-col w-[80%] h-[50em] items-center p-10 gap-6 bg-white">
       <Stepper selected={selected} steps={stepsState} />
-      <Button handleOnClickAction={handleNext} className="w-[10em]">
-        Next
-      </Button>
+      <form className="flex flex-wrap w-full gap-5 justify-center">
+        <FormInput name="First Name" />
+        <FormInput name="Last Name" />
+        <FormInput name="Middle Name" />
+      </form>
+      <div className="flex gap-2 mt-auto">
+        <Button handleOnClickAction={handleBack} className="w-[10em]">
+          Back
+        </Button>
+        <Button handleOnClickAction={handleNext} className="w-[10em]">
+          Next
+        </Button>
+      </div>
     </Card>
   );
 }
