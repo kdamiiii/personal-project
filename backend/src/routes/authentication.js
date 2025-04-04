@@ -9,27 +9,29 @@ router.get("/info", verifyToken, (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  const { username, password } = req.body;
-  const user = await Credential.findOne({
-    where: { username, password },
-  });
+  try {
+    const { username, password } = req.body;
+    const user = await Credential.findOne({
+      where: { username, password },
+    });
 
-  if (!user) {
-    return res.send(401).json({ message: "Invalid Credentials" });
+    if (!user) {
+      return res.send(401).json({ message: "Invalid Credentials" });
+    }
+
+    const token = generateWebToken(user.dataValues.username);
+
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "Strict",
+      maxAge: 3600000,
+    });
+
+    res.json({ message: "Login successful" });
+  } catch (e) {
+    res.status(400).json({ error: e.message });
   }
-
-  console.log(user.dataValues.username);
-
-  const token = generateWebToken(user.dataValues.username);
-
-  res.cookie("token", token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "Strict",
-    maxAge: 3600000, // 1 hour
-  });
-
-  res.json({ message: "Login successful" });
 });
 
 export default router;

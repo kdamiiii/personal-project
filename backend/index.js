@@ -4,12 +4,18 @@ import { sequelize } from "./src/models/index.js";
 import { default as authRouter } from "./src/routes/authentication.js";
 import "dotenv/config";
 import { credentialRouter } from "./src/routes/credentials.js";
+import cors from "cors";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
 
+let corsOptions = {
+  origin: "http://localhost:3000",
+};
+
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors(corsOptions));
 
 app.use("/authentication", authRouter);
 app.use("/credential", credentialRouter);

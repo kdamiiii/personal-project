@@ -15,7 +15,7 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
   return (
     <button
-      onClick={(e) => {
+      onClick={() => {
         handleOnClickAction();
       }}
       className={`rounded-full text-white p-3 border-none hover:bg-blue-800 ${color} ${className}`}
