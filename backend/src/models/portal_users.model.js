@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
-import { sequelize } from "./index.js";
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default (sequelize) => {
   return sequelize.define("Portal_User", {
     id: {

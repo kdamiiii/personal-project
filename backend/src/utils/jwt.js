@@ -1,11 +1,13 @@
 import jwt from "jsonwebtoken";
 
 export const generateWebToken = (username) => {
-  return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: "1800s" });
+  return jwt.sign({ username }, process.env.TOKEN_SECRET, {
+    expiresIn: "1800s",
+  });
 };
 
 export const verifyToken = (req, res, next) => {
-  const token = req.cookies.token; // Get token from cookies
+  const token = req.cookies.token;
 
   if (!token) {
     return res.status(401).json({ message: "Unauthorized: No token provided" });
@@ -16,6 +18,7 @@ export const verifyToken = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (error) {
+    console.log("Error:", error);
     return res.status(403).json({ message: "Forbidden: Invalid token" });
   }
 };
