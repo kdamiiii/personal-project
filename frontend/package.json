@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tanstack/react-form": "^1.3.0",
     "@tanstack/react-query": "^5.71.5",
     "cors": "^2.8.5",
     "next": "15.2.3",

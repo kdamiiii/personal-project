@@ -1,23 +1,64 @@
+/* eslint-disable react/no-children-prop */
 "use client";
 
 import { Button } from "@/components/buttons";
 import { Card } from "@/components/cards";
-import { FormInput } from "@/components/forms";
+import { TestForm } from "@/components/forms";
+import { Spinner } from "@/components/spinner";
+import { RequestError } from "@/constants/generalTypes";
+import { useForm } from "@tanstack/react-form";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const api: string =
   process.env.NEXT_PUBLIC_AUTHENTICATION_API || "localhost:8001";
 
 export default function Home() {
   const router = useRouter();
+  const [requestError, setRequestError] = useState<string | null>(null);
 
-  const loginAttempt = async () => {
-    const data = await fetch(api + "/login", {
-      method: "POST",
-    });
-    console.log(data);
-  };
+  const form = useForm({
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+    onSubmit: async ({ value }) => {
+      try {
+        const res = await fetch(api + "/login", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            username: value.username,
+            password: value.password,
+          }),
+        });
+
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new RequestError(
+            errorData.status,
+            errorData.message || "Something went wrong"
+          );
+        }
+
+        const data = await res.json();
+        console.log(data);
+      } catch (e) {
+        if (e instanceof RequestError) {
+          if (e.message) {
+            setRequestError(e.message);
+          }
+          return;
+        }
+
+        setRequestError("Something went wrong, please try again.");
+      }
+    },
+  });
 
   const goToEnrollmentPage = () => {
     router.push("/enrollment");
@@ -28,15 +69,47 @@ export default function Home() {
       <div className="flex flex-col gap-10 p-10 w-[40%] justify-center items-center bg-white">
         <h2 className="text-[#003665] text-4xl">Welcome Back!</h2>
         <form
-          onSubmit={(e) => e.preventDefault()}
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            form.handleSubmit();
+          }}
           className="flex flex-col gap-5"
         >
-          <FormInput name="Student ID" />
-          <FormInput type="password" name="Password" />
+          <TestForm
+            form={form}
+            row
+            name="username"
+            validators={{
+              onChange: ({ value }) => {
+                return !value ? "User name is required" : undefined;
+              },
+            }}
+          />
+          <TestForm
+            form={form}
+            row
+            type="password"
+            name="password"
+            validators={{
+              onChange: ({ value }) => {
+                return !value ? "User name is required" : undefined;
+              },
+            }}
+          />
           <div className="flex flex-col mt-4 self-center gap-1 items-center w-[90%]">
-            <Button handleOnClickAction={loginAttempt} className="w-full">
-              Login
-            </Button>
+            <form.Subscribe
+              selector={(state) => [state.canSubmit, state.isSubmitting]}
+              children={([canSubmit, isSubmitting]) => (
+                <Button disabled={!canSubmit} type="submit" className="w-full">
+                  {isSubmitting ? <Spinner /> : "Login"}
+                </Button>
+                // <button type="submit" disabled={!canSubmit}>
+                //   {isSubmitting ? '...' : 'Submit'}
+                // </button>
+              )}
+            />
+
             <Link className="w-full" href={"/portal/enrollment"}>
               <Button
                 handleOnClickAction={goToEnrollmentPage}
@@ -46,6 +119,9 @@ export default function Home() {
                 Register
               </Button>
             </Link>
+            <p className="w-full h-3 text-sm text-center font-normal text-red-500">
+              <i>{requestError}</i>
+            </p>
           </div>
         </form>
       </div>
