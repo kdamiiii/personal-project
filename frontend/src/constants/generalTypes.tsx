@@ -11,3 +11,6 @@ export class RequestError extends Error {
 
   status?: number;
 }
+
+export const apiHostname: string =
+  process.env.NEXT_PUBLIC_CREDENTIALS_API || "localhost:8001";
