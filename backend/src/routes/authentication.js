@@ -16,7 +16,9 @@ router.post("/login", async (req, res) => {
     });
 
     if (!user) {
-      return res.send(401).json({ message: "Invalid Credentials" });
+      return res
+        .status(404)
+        .send({ message: "Incorrect username or password" });
     }
 
     const token = generateWebToken(user.dataValues.username);
