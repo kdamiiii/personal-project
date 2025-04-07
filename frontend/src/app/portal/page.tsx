@@ -24,6 +24,7 @@ export default function Home() {
       password: "",
     },
     onSubmit: async ({ value }) => {
+      setRequestError(null);
       try {
         const res = await fetch(api + "/login", {
           method: "POST",
@@ -45,8 +46,8 @@ export default function Home() {
           );
         }
 
-        const data = await res.json();
-        console.log(data);
+        // const data = await res.json();
+        router.push("/portal/dashboard");
       } catch (e) {
         if (e instanceof RequestError) {
           if (e.message) {

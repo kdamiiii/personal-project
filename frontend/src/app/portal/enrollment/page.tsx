@@ -4,7 +4,6 @@ import { Button } from "@/components/buttons";
 import { Card } from "@/components/cards";
 import { FormInput } from "@/components/forms";
 import { Step, Stepper } from "@/components/stepper";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const steps: Step[] = [
@@ -25,8 +24,6 @@ const steps: Step[] = [
 export default function EnrollmentPage() {
   const [stepsState, setStepsState] = useState(steps);
   const [selected, setSelected] = useState(0);
-  const router = useRouter();
-
   const handleBack = () => {
     if (selected > -1) {
       const updatedStates = stepsState;
