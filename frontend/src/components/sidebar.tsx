@@ -2,7 +2,9 @@ import { SIDEBAR_PERMISSIONS } from "@/constants/roles";
 import { fetchCurrentUserData } from "@/utils/fetchUserData";
 import { getCurrentUrl } from "@/utils/textUtils";
 import { headers } from "next/headers";
-import { NextResponse } from "next/server";
+import Link from "next/link";
+import { IoNotificationsSharp } from "react-icons/io5";
+import { Button } from "./buttons";
 
 export const SideBar: React.FC = async () => {
   const headersList = headers();
@@ -12,13 +14,14 @@ export const SideBar: React.FC = async () => {
   const fullUrl = (await headersList).get("referer") || "";
   const selected = getCurrentUrl(fullUrl);
   return (
-    <div className="flex flex-col w-[15%] h-screen items-center bg-white py-5">
+    <div className="flex flex-col w-[15%] h-screen text-white items-center py-5">
       <div className="flex justify-center items-center bg-blue-600 h-[5em] w-[5em] rounded-full text-white">
-        K
+        {userData.name.split(" ")[0][0] + userData.name.split(" ")[1][0]}
       </div>
       <p>{userData.username}</p>
       {SIDEBAR_PERMISSIONS.map((btn) => (
         <SidebarButton
+          link={btn.link}
           icon={btn.icon}
           selected={selected}
           key={btn.name}
@@ -32,22 +35,34 @@ export const SideBar: React.FC = async () => {
 type SidebarButtonProps = {
   icon: React.ReactNode;
   name: string;
+  link: string;
   selected: string;
 };
 
 const SidebarButton: React.FC<SidebarButtonProps> = ({
   icon,
   name,
+  link,
   selected,
 }) => {
   return (
-    <div
-      className={`w-full border-b-gray-500 px-5 py-3 flex gap-2 items-center hover:bg-blue-400 transition-colors duration-400 hover:cursor-pointer 
-        hover:text-white
-        ${selected === name.toLowerCase() && "bg-blue-500 text-white"}`}
+    <Link
+      href={link}
+      className={`w-full border-b-gray-500 px-5 py-3 flex gap-2 items-center hover:bg-blue-100 transition-colors duration-400 hover:cursor-pointer 
+        hover:text-[#003665]
+        ${selected === name.toLowerCase() && "bg-white text-[#003665]"}`}
     >
       {icon}
       {name}
+    </Link>
+  );
+};
+
+export const PortalNavbar: React.FC = () => {
+  return (
+    <div className="flex justify-end items-center h-[5vh] bg-white border-1 text-[#003665] border-b-gray-600">
+      <IoNotificationsSharp size={30} />
+      <Button>Logout</Button>
     </div>
   );
 };
