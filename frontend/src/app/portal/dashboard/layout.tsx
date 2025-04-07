@@ -1,4 +1,6 @@
-export default function EnrollmentLayout({
+import { SideBar } from "@/components/sidebar";
+
+export default async function EnrollmentLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -11,6 +13,7 @@ export default function EnrollmentLayout({
         backgroundSize: "cover",
       }}
     >
+      <SideBar />
       {children}
     </main>
   );

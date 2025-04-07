@@ -32,7 +32,6 @@ export const CoursesContainer: React.FC<{ courses: CourseType[] }> = ({
   const [selectedCourses, setSelectedCourses] = useState(courses);
 
   useEffect(() => {
-    console.log(selectedOptions);
     if (selectedOptions.length == 0) setSelectedCourses(courses);
     else {
       setSelectedCourses(

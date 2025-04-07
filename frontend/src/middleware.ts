@@ -1,22 +1,20 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import jwt from "jsonwebtoken";
 import * as jose from "jose";
-
-const SECRET = new TextEncoder().encode(process.env.NEXT_PUBLIC_JWT_SECRET);
+import { getDecodedCookies, SECRET } from "./utils/jwt";
 
 export type TokenData = {
   username: string;
 };
 
-export function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   const token = req.cookies.get("token")?.value;
   if (!token) {
     return NextResponse.redirect(new URL("/portal/", req.url));
   }
 
   try {
-    const decoded = jose.jwtVerify(token, SECRET);
+    const decoded = await getDecodedCookies(token);
     const response = NextResponse.next();
     response.cookies.set("tokenData", JSON.stringify(decoded));
 

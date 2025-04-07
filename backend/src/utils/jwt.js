@@ -18,7 +18,6 @@ export const verifyToken = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (error) {
-    console.log("Error:", error);
     return res.status(403).json({ message: "Forbidden: Invalid token" });
   }
 };
