@@ -15,9 +15,13 @@ const sequelize = new Sequelize(
 
 import UserModel from "./portal_users.model.js";
 import CredentialModel from "./credentials.model.js";
+import RoleModel from "./roles.model.js";
+import UserRoleModel from "./user_roles.model.js";
 
 const User = UserModel(sequelize);
 const Credential = CredentialModel(sequelize);
+const Role = RoleModel(sequelize);
+const UserRole = UserRoleModel(sequelize);
 
 User.hasOne(Credential, { foreignKey: "userId", onDelete: "CASCADE" });
 Credential.belongsTo(User, { foreignKey: "userId" });
@@ -31,4 +35,4 @@ Credential.belongsTo(User, { foreignKey: "userId" });
   }
 })();
 
-export { sequelize, User, Credential };
+export { sequelize, User, Credential, Role, UserRole };
