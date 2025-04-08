@@ -24,8 +24,11 @@ const Role = RoleModel(sequelize);
 const UserRole = UserRoleModel(sequelize);
 
 User.hasOne(Credential, { foreignKey: "userId", onDelete: "CASCADE" });
+User.hasOne(UserRole, { foreignKey: "userId" });
+UserRole.belongsTo(User, { foreignKey: "userId" });
 Credential.belongsTo(User, { foreignKey: "userId" });
-
+UserRole.belongsTo(Role, { foreignKey: "role" });
+Role.hasMany(UserRole, { foreignKey: "role" });
 (async () => {
   try {
     await sequelize.authenticate();

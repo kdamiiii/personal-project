@@ -25,3 +25,33 @@ userRouter.post("/:userId/role", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+userRouter.get("/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = await User.findOne({
+      include: [
+        {
+          model: Credential,
+          attributes: ["username"],
+          where: {
+            username: userId,
+          },
+        },
+        {
+          model: UserRole,
+          attributes: ["role"],
+          include: [{ model: Role, attributes: ["role"] }],
+        },
+      ],
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});

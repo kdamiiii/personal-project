@@ -11,8 +11,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const api: string =
-  process.env.NEXT_PUBLIC_AUTHENTICATION_API || "localhost:8001";
+const api: string = process.env.NEXT_PUBLIC_HOST || "http://localhost:8001";
 
 export default function Home() {
   const router = useRouter();
@@ -26,7 +25,7 @@ export default function Home() {
     onSubmit: async ({ value }) => {
       setRequestError(null);
       try {
-        const res = await fetch(api + "/login", {
+        const res = await fetch(api + "/authentication/login", {
           method: "POST",
           headers: {
             "content-type": "application/json",
@@ -105,9 +104,6 @@ export default function Home() {
                 <Button disabled={!canSubmit} type="submit" className="w-full">
                   {isSubmitting ? <Spinner /> : "Login"}
                 </Button>
-                // <button type="submit" disabled={!canSubmit}>
-                //   {isSubmitting ? '...' : 'Submit'}
-                // </button>
               )}
             />
 

@@ -1,4 +1,7 @@
-export default function EnrollmentLayout({
+import { Card } from "@/components/cards";
+import { PortalNavbar, SideBar } from "@/components/sidebar";
+
+export default async function EnrollmentLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -11,7 +14,11 @@ export default function EnrollmentLayout({
         backgroundSize: "cover",
       }}
     >
-      {children}
+      <SideBar />
+      <div className="w-[85%]">
+        <PortalNavbar />
+        <Card className="bg-gray-500 w-full h-[95vh]">{children}</Card>
+      </div>
     </main>
   );
 }

@@ -4,7 +4,7 @@ import { CATEGORY_COLOR } from "@/constants/courses";
 import { Button } from "./buttons";
 import { Card, CardTitle } from "./cards";
 import { CheckBox } from "./forms";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 export type CourseType = {
   name: string;
@@ -32,7 +32,6 @@ export const CoursesContainer: React.FC<{ courses: CourseType[] }> = ({
   const [selectedCourses, setSelectedCourses] = useState(courses);
 
   useEffect(() => {
-    console.log(selectedOptions);
     if (selectedOptions.length == 0) setSelectedCourses(courses);
     else {
       setSelectedCourses(

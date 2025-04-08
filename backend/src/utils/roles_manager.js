@@ -29,7 +29,6 @@ export const assignRole = async (username, role) => {
         userId: user.id,
         role: roleData.id,
       });
-      console.log(userRole);
       return userRole;
     } else {
       throw new Error("Incorrect Username or Role");

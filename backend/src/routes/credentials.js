@@ -15,14 +15,11 @@ credentialRouter.post("/generate", async (req, res) => {
 
 credentialRouter.get("/users/:userId", async (req, res) => {
   try {
-    console.log("JACK REACHER");
     const { userId } = req.params;
 
-    console.log(userId);
-
     const user = await User.findOne({
-      where: { id: userId }, // Find user by name
-      include: [{ model: Credential }], // Include related posts
+      where: { id: userId },
+      include: [{ model: Credential }],
     });
 
     if (!user) {

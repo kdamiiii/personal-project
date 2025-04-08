@@ -14,7 +14,7 @@ export default function PortalLayout({
       <main
         className="flex justify-center items-center w-screen h-screen"
         style={{
-          backgroundImage: "url(./photos/bg.svg)",
+          backgroundImage: "url(http://localhost:3000/photos/bg.svg)",
           backgroundSize: "cover",
         }}
       >
