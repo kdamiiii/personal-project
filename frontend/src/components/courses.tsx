@@ -5,12 +5,14 @@ import { Button } from "./buttons";
 import { Card, CardTitle } from "./cards";
 import { CheckBox } from "./forms";
 import { useEffect, useState } from "react";
+import { CourseTypeEnum } from "@/utils/fetchCourseData";
+import Image from "next/image";
 
 export type CourseType = {
   name: string;
   description?: string;
   majors?: string[];
-  picture?: string;
+  picture: string;
   category: string;
 };
 
@@ -77,7 +79,7 @@ const Course: React.FC<CourseType> = ({
   return (
     <div className="flex flex-col w-[20em] h-[38em]">
       <CourseBadge name={category} />
-      <img src={picture} />
+      <Image src={picture} alt="picture" />
       <CardTitle
         title={name}
         description={description}
@@ -104,5 +106,22 @@ export const CourseBadge: React.FC<BadgeType> = ({
     >
       {name}
     </div>
+  );
+};
+
+type CourseCardProps = {
+  courseName: string;
+  courseType: CourseTypeEnum;
+};
+
+export const CourseCard: React.FC<CourseCardProps> = ({
+  courseName,
+  courseType,
+}) => {
+  return (
+    <Card className="flex flex-col w-[20em] p-5 gap-2">
+      <p className="text-3xl">{courseName}</p>
+      <p className="font-normal">{courseType}</p>
+    </Card>
   );
 };

@@ -16,6 +16,7 @@ type UserRole = {
 };
 
 export type UserDataPayload = {
+  id: string;
   name: string;
   email: string;
   Credential: Credential;
@@ -23,6 +24,7 @@ export type UserDataPayload = {
 };
 
 export type UserData = {
+  id: string;
   name: string;
   email: string;
   role: string;
@@ -31,6 +33,7 @@ export type UserData = {
 
 export const modifyUserdata = (userDataPayload: UserDataPayload) => {
   return {
+    id: userDataPayload.id,
     name: userDataPayload.name,
     email: userDataPayload.email,
     username: userDataPayload.Credential.username,
@@ -58,8 +61,8 @@ export const fetchCurrentUserData: () => Promise<UserData> = async () => {
   const token = (await cookieStore).get("token")!.value || "";
   const cookieData = (await getDecodedCookies(token)).payload as {
     username: string;
+    id: string;
   };
-
   const res = await fetch(
     `
       ${apiHostname}/users/${cookieData.username}`,

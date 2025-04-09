@@ -4,20 +4,24 @@ import UserModel from "./portal_users.model.js";
 
 export default (sequelize) => {
   const User = UserModel(sequelize);
-  return sequelize.define("Credentials", {
+  return sequelize.define("Courses", {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
     },
-    username: {
+    course_name: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
     },
-
-    password: {
-      type: DataTypes.STRING,
+    course_type: {
+      type: DataTypes.ENUM(
+        "SHORT_COURSE",
+        "SENIOR_HIGHSCHOOL",
+        "BACCALAUREATE",
+        "DIPLOMA"
+      ),
       allowNull: false,
     },
     userId: {
@@ -27,8 +31,6 @@ export default (sequelize) => {
         model: User,
         key: "id",
       },
-      onUpdate: "CASCADE",
-      onDelete: "CASCADE",
     },
   });
 };

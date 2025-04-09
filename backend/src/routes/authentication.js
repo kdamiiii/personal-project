@@ -1,6 +1,6 @@
 import express from "express";
 import { generateWebToken, verifyToken } from "../utils/jwt.js";
-import { Credential } from "../models/index.js";
+import { Credential, User } from "../models/index.js";
 
 const router = express.Router();
 
@@ -13,6 +13,7 @@ router.post("/login", async (req, res) => {
     const { username, password } = req.body;
     const user = await Credential.findOne({
       where: { username, password },
+      include: [{ model: User }],
     });
 
     if (!user) {
@@ -21,7 +22,12 @@ router.post("/login", async (req, res) => {
         .send({ message: "Incorrect username or password" });
     }
 
-    const token = generateWebToken(user.dataValues.username);
+    console.log(user.dataValues);
+
+    const token = generateWebToken(
+      user.dataValues.username,
+      user.dataValues.Portal_User.dataValues.id
+    );
 
     res.cookie("token", token, {
       httpOnly: true,
@@ -32,6 +38,7 @@ router.post("/login", async (req, res) => {
 
     res.json({ message: "Login successful" });
   } catch (e) {
+    console.log(e.message);
     res.status(400).json({ error: e.message });
   }
 });

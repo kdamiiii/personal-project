@@ -5,10 +5,8 @@ export default async function Dashboard() {
   const userData = await fetchCurrentUserData();
 
   return (
-    <div className="flex w-screen">
-      <Card className="flex flex-col w-[80%] h-[50em] items-center p-10 gap-6 bg-white">
-        Welcome back, {userData.name}!
-      </Card>
-    </div>
+    <Card className="flex flex-col w-[80%] h-[50em] items-center p-10 gap-6 bg-white">
+      Welcome back, {userData.name}!
+    </Card>
   );
 }

@@ -7,10 +7,11 @@ export const userRouter = express.Router();
 /* THIS ROUTE SHOULD BE REMOVED ONCE ALL ROLES HAVE BEEN FILLED */
 userRouter.post("/roles", async (req, res) => {
   try {
-    const { username, role } = req.body;
+    const { role } = req.body;
     const user = await Role.create({ role });
     res.status(201).json(user);
   } catch (error) {
+    console.log(error.message);
     res.status(500).json({ error: error.message });
   }
 });
@@ -47,11 +48,12 @@ userRouter.get("/:userId", async (req, res) => {
     });
 
     if (!user) {
-      return res.status(404).json({ error: "User not found" });
+      throw new Error("User not found");
     }
 
     res.status(200).json(user);
   } catch (error) {
+    console.log(error.message);
     res.status(500).json({ error: error.message });
   }
 });

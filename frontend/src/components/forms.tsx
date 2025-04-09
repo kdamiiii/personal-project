@@ -1,3 +1,4 @@
+/* eslint-disable react/no-children-prop */
 import { capitalizeFirstLetter } from "@/utils/textUtils";
 import { AnyFieldApi } from "@tanstack/react-form";
 
@@ -79,7 +80,6 @@ export const TestForm: React.FC<TestFormType> = ({
       <form.Field
         name={name}
         validators={{ ...validators, onChangeAsyncDebounce: 500 }}
-        // eslint-disable-next-line react/no-children-prop,
         children={(field: AnyFieldApi) => {
           const err =
             field.state.meta.isTouched && field.state.meta.errors.length;
@@ -101,7 +101,7 @@ export const TestForm: React.FC<TestFormType> = ({
                 value={field.state.value}
                 onBlur={field.handleBlur}
                 onChange={(e) => field.handleChange(e.target.value)}
-                className={`border-1 ${
+                className={`border-1 font-normal ${
                   err
                     ? "border-red-500 focus:border-red-500 focus:outline focus:outline-red-500"
                     : "border-gray-400 focus:border-[#003665] focus:outline-none"
@@ -119,5 +119,46 @@ export const TestForm: React.FC<TestFormType> = ({
         }}
       />
     </div>
+  );
+};
+
+type DropDownFormType = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  form: any;
+  values: string[];
+  name: string;
+  row?: boolean;
+  validators: {
+    onChange: (value: OnChangeProps) => string | undefined;
+    onChangeAsync?: (value: OnChangeProps) => string | undefined;
+  };
+};
+export const DropDown = ({ form, values, name }: DropDownFormType) => {
+  console.log(values);
+  return (
+    <form.Field
+      name={name}
+      children={(field: AnyFieldApi) => {
+        return (
+          <div className="flex gap-2 items-center">
+            <label className="font-bold block mb-1 text-sm w-[27%]">
+              Category
+            </label>
+            <select
+              value={field.state.value}
+              onChange={(e) => field.handleChange(e.target.value)}
+              className="w-[70%] font-normal p-1 px-3 rounded-full border-1 border-gray-400"
+            >
+              <option value="">Select a category</option>
+              {values.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
+          </div>
+        );
+      }}
+    />
   );
 };

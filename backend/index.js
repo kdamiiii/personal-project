@@ -6,6 +6,7 @@ import "dotenv/config";
 import { credentialRouter } from "./src/routes/credentials.js";
 import cors from "cors";
 import { userRouter } from "./src/routes/user.js";
+import courseRouter from "./src/routes/courses.js";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -22,6 +23,7 @@ app.use(cors(corsOptions));
 app.use("/authentication", authRouter);
 app.use("/credential", credentialRouter);
 app.use("/users", userRouter);
+app.use("/courses", courseRouter);
 
 (async () => {
   try {

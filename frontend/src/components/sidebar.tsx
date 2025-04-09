@@ -5,6 +5,7 @@ import { headers } from "next/headers";
 import Link from "next/link";
 import { IoNotificationsSharp } from "react-icons/io5";
 import { Button } from "./buttons";
+import { Card } from "./cards";
 
 export const SideBar: React.FC = async () => {
   const headersList = headers();
@@ -60,9 +61,9 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
 
 export const PortalNavbar: React.FC = () => {
   return (
-    <div className="flex justify-end items-center h-[5vh] bg-white border-1 text-[#003665] border-b-gray-600">
+    <Card className="flex flex-end justify-end items-center h-[5vh] bg-white border-b-1 text-[#003665] border-b-gray-600">
       <IoNotificationsSharp size={30} />
       <Button>Logout</Button>
-    </div>
+    </Card>
   );
 };
