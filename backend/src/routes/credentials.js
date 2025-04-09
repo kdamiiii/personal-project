@@ -9,6 +9,7 @@ credentialRouter.post("/generate", async (req, res) => {
     const user = await Credential.create({ username, password, userId });
     res.status(201).json(user);
   } catch (error) {
+    console.log(error.message);
     res.status(500).json({ error: error.message });
   }
 });
@@ -28,6 +29,7 @@ credentialRouter.get("/users/:userId", async (req, res) => {
 
     res.json(user);
   } catch (error) {
+    console.log(error.message);
     res.status(500).json({ error: error.message });
   }
 });

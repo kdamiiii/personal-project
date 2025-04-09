@@ -17,11 +17,13 @@ import UserModel from "./portal_users.model.js";
 import CredentialModel from "./credentials.model.js";
 import RoleModel from "./roles.model.js";
 import UserRoleModel from "./user_roles.model.js";
+import CourseModel from "./courses.model.js";
 
 const User = UserModel(sequelize);
 const Credential = CredentialModel(sequelize);
 const Role = RoleModel(sequelize);
 const UserRole = UserRoleModel(sequelize);
+const Course = CourseModel(sequelize);
 
 User.hasOne(Credential, { foreignKey: "userId", onDelete: "CASCADE" });
 User.hasOne(UserRole, { foreignKey: "userId" });
@@ -29,6 +31,9 @@ UserRole.belongsTo(User, { foreignKey: "userId" });
 Credential.belongsTo(User, { foreignKey: "userId" });
 UserRole.belongsTo(Role, { foreignKey: "role" });
 Role.hasMany(UserRole, { foreignKey: "role" });
+Course.hasOne(User, { foreignKey: "id" });
+User.hasMany(Course, { foreignKey: "userId" });
+
 (async () => {
   try {
     await sequelize.authenticate();
@@ -38,4 +43,4 @@ Role.hasMany(UserRole, { foreignKey: "role" });
   }
 })();
 
-export { sequelize, User, Credential, Role, UserRole };
+export { sequelize, User, Credential, Role, UserRole, Course };

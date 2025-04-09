@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 
-export const generateWebToken = (username) => {
-  return jwt.sign({ username }, process.env.TOKEN_SECRET, {
+export const generateWebToken = (username, id) => {
+  return jwt.sign({ username, id }, process.env.TOKEN_SECRET, {
     expiresIn: "1800s",
   });
 };
@@ -18,6 +18,7 @@ export const verifyToken = (req, res, next) => {
     req.user = decoded;
     next();
   } catch (error) {
+    console.log(error.message);
     return res.status(403).json({ message: "Forbidden: Invalid token" });
   }
 };
