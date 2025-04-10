@@ -17,7 +17,9 @@ export default async function EnrollmentLayout({
       <SideBar />
       <div className="w-[85%]">
         <PortalNavbar />
-        <Card className="bg-white w-full h-[95vh] p-5">{children}</Card>
+        <Card className="bg-[url('http://192.168.254.180:3000/photos/Wave.svg')] w-full h-[95vh] bg-cover p-5">
+          {children}
+        </Card>
       </div>
     </main>
   );

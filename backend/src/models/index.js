@@ -31,8 +31,8 @@ UserRole.belongsTo(User, { foreignKey: "userId" });
 Credential.belongsTo(User, { foreignKey: "userId" });
 UserRole.belongsTo(Role, { foreignKey: "role" });
 Role.hasMany(UserRole, { foreignKey: "role" });
-Course.hasOne(User, { foreignKey: "id" });
-User.hasMany(Course, { foreignKey: "userId" });
+Course.belongsTo(User, { foreignKey: "userId" });
+User.hasMany(Course, { foreignKey: "id" });
 
 (async () => {
   try {

@@ -15,6 +15,12 @@ export default (sequelize) => {
       allowNull: false,
       unique: true,
     },
+    course_description: {
+      type: DataTypes.STRING,
+    },
+    course_code: {
+      type: DataTypes.STRING,
+    },
     course_type: {
       type: DataTypes.ENUM(
         "SHORT_COURSE",

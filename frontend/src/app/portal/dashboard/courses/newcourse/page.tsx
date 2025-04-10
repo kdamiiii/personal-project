@@ -13,6 +13,8 @@ export default function Courses() {
     defaultValues: {
       courseName: "",
       courseType: CourseTypeEnum.BACCALAUREATE,
+      courseCode: "",
+      courseDescription: "",
     },
     onSubmit: async ({ value }) => {
       try {
@@ -25,6 +27,8 @@ export default function Courses() {
           body: JSON.stringify({
             course_name: value.courseName,
             course_type: getEnumKeyFromValue(CourseTypeEnum, value.courseType),
+            course_code: value.courseCode,
+            course_description: value.courseDescription,
           }),
         });
 
@@ -63,6 +67,16 @@ export default function Courses() {
               },
             }}
           />
+          <TestForm
+            form={form}
+            row
+            name="courseCode"
+            validators={{
+              onChange: ({ value }) => {
+                return !value ? "Course name is required" : undefined;
+              },
+            }}
+          />
           <DropDown
             form={form}
             values={getEnumValues(CourseTypeEnum)}
@@ -70,6 +84,15 @@ export default function Courses() {
             validators={{
               onChange: ({ value }) => {
                 return !value ? "User name is required" : undefined;
+              },
+            }}
+          />
+          <TestForm
+            form={form}
+            name="courseDescription"
+            validators={{
+              onChange: ({ value }) => {
+                return !value ? "Course name is required" : undefined;
               },
             }}
           />
