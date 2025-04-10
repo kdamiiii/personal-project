@@ -1,5 +1,6 @@
 "use client";
 
+import { CourseSubjects } from "@/components/courses";
 import { Spinner } from "@/components/spinner";
 import { useFetchCourse } from "@/utils/fetchCourseData";
 import { use } from "react";
@@ -19,9 +20,14 @@ export default function CoursePage({ params }: Props) {
         <Spinner />
       ) : (
         <div className="flex flex-col gap-5">
-          <h2 className="text-4xl">{data?.course_name}</h2>
-          <h2 className="text-2xl font-normal">{data?.course_type}</h2>
-          <h2>Created by: {data?.userId}</h2>
+          <h2 className="text-4xl">{data?.courseName}</h2>
+          <h2 className="text-2xl font-normal">{data?.courseCode}</h2>
+          <h2 className="text-2xl font-normal">{data?.courseType}</h2>
+          <h2 className="text-2xl font-normal">{data?.courseDescription}</h2>
+          <h2>
+            Created by: {`${data?.user.firstName} ${data?.user.lastName}`}
+          </h2>
+          <CourseSubjects />
         </div>
       )}
     </>

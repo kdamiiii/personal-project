@@ -17,7 +17,7 @@ export const SideBar: React.FC = async () => {
   return (
     <div className="flex flex-col w-[15%] h-screen text-white items-center py-5">
       <div className="flex justify-center items-center bg-blue-600 h-[5em] w-[5em] rounded-full text-white">
-        {userData.name.split(" ")[0][0] + userData.name.split(" ")[1][0]}
+        {userData.firstName[0] + userData.lastName[0]}
       </div>
       <p>{userData.username}</p>
       {SIDEBAR_PERMISSIONS.map((btn) => (

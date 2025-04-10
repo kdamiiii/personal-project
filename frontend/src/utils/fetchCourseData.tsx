@@ -1,5 +1,6 @@
 import { apiHostname } from "@/constants/generalTypes";
 import { useQuery } from "@tanstack/react-query";
+import { UserData, UserDataPayload } from "./fetchUserData";
 
 export enum CourseTypeEnum {
   SHORT_COURSE = "SHORT COURSE",
@@ -12,7 +13,9 @@ export type CourseType = {
   id: string;
   course_name: string;
   course_type: CourseTypeEnum;
-  userId: string;
+  course_description: string;
+  course_code: string;
+  Portal_User: Omit<UserDataPayload, "User_Role" | "Credential">;
 };
 
 export const fetchCoursesData = async (): Promise<Array<CourseType>> => {
@@ -32,7 +35,7 @@ export const fetchCoursesData = async (): Promise<Array<CourseType>> => {
 
 export const fetchCourseData = async (
   courseId: string
-): Promise<CourseType> => {
+): Promise<ModifiedCourseType> => {
   const res = await fetch(
     `
     ${apiHostname}/courses/${courseId}`,
@@ -44,7 +47,8 @@ export const fetchCourseData = async (
     throw new Error("Not Found");
   }
   const data = await res.json();
-  return data;
+
+  return modifyCourseData(data);
 };
 
 export const useFetchCourses = () => {
@@ -61,4 +65,32 @@ export const useFetchCourse = (courseId: string) => {
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 5,
   });
+};
+
+type ModifiedCourseType = {
+  courseName: string;
+  courseDescription: string;
+  courseCode: string;
+  courseType: CourseTypeEnum;
+  user: Omit<UserData, "role" | "username" | "email">;
+};
+
+const modifyCourseData = ({
+  course_name,
+  course_type,
+  course_description,
+  course_code,
+  Portal_User,
+}: CourseType) => {
+  return {
+    courseName: course_name,
+    courseType: course_type,
+    courseDescription: course_description,
+    courseCode: course_code,
+    user: {
+      firstName: Portal_User.first_name,
+      lastName: Portal_User.last_name,
+      id: Portal_User.id,
+    },
+  } as ModifiedCourseType;
 };

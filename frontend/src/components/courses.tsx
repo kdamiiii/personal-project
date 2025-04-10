@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { CourseTypeEnum } from "@/utils/fetchCourseData";
 import Image from "next/image";
 import Link from "next/link";
+import { Table } from "./containers";
 
 export type CourseType = {
   name: string;
@@ -131,5 +132,19 @@ export const CourseCard: React.FC<CourseCardProps> = ({
         <p className="font-normal">{courseType}</p>
       </Card>
     </Link>
+  );
+};
+
+type CourseSubjectstype = {
+  subjectName?: string;
+};
+
+export const CourseSubjects: React.FC<CourseSubjectstype> = ({
+  subjectName,
+}) => {
+  return (
+    <div>
+      <Table />
+    </div>
   );
 };

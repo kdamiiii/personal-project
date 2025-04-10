@@ -17,15 +17,17 @@ type UserRole = {
 
 export type UserDataPayload = {
   id: string;
-  name: string;
   email: string;
   Credential: Credential;
+  first_name: string;
+  last_name: string;
   User_Role: UserRole;
 };
 
 export type UserData = {
   id: string;
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   role: string;
   username: string;
@@ -34,7 +36,8 @@ export type UserData = {
 export const modifyUserdata = (userDataPayload: UserDataPayload) => {
   return {
     id: userDataPayload.id,
-    name: userDataPayload.name,
+    firstName: userDataPayload.first_name,
+    lastName: userDataPayload.last_name,
     email: userDataPayload.email,
     username: userDataPayload.Credential.username,
     role: userDataPayload.User_Role.Role.role,

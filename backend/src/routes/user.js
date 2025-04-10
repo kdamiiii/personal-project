@@ -3,8 +3,30 @@ import { Credential, User, Role, UserRole } from "../models/index.js";
 import { assignRole } from "../utils/roles_manager.js";
 
 export const userRouter = express.Router();
-
+const DEFAULT_PASSWORD = "password12345";
 /* THIS ROUTE SHOULD BE REMOVED ONCE ALL ROLES HAVE BEEN FILLED */
+userRouter.post("/", async (req, res) => {
+  try {
+    const { first_name, last_name, email } = req.body;
+    const user = await User.create({
+      first_name,
+      last_name,
+      email,
+    });
+    const credential = await Credential.create({
+      username: `${first_name}.${last_name}`,
+      password: DEFAULT_PASSWORD,
+      userId: user.id,
+    });
+
+    console.log(credential);
+    res.status(201).json(user);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 userRouter.post("/roles", async (req, res) => {
   try {
     const { role } = req.body;
@@ -20,6 +42,7 @@ userRouter.post("/:userId/role", async (req, res) => {
   try {
     const { role } = req.body;
     const { userId } = req.params;
+    console.log(role, userId);
     const userRole = await assignRole(userId, role);
     res.status(201).json(userRole);
   } catch (error) {

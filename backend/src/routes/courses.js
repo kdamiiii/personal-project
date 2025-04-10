@@ -10,7 +10,7 @@ courseRouter.get("/", async (req, res) => {
       include: [
         {
           model: User,
-          attributes: ["name"],
+          attributes: ["first_name", "last_name"],
         },
       ],
     });
@@ -29,13 +29,15 @@ courseRouter.get("/:courseId", async (req, res) => {
       include: [
         {
           model: User,
-          attributes: ["name"],
         },
       ],
       where: {
         id: courseId,
       },
+      logging: console.log,
     });
+
+    console.log(courses);
 
     res.status(200).json(courses);
   } catch (error) {
@@ -47,10 +49,13 @@ courseRouter.get("/:courseId", async (req, res) => {
 courseRouter.post("/", verifyToken, async (req, res) => {
   try {
     const user = req.user;
-    const { course_name, course_type } = req.body;
+    const { course_name, course_type, course_code, course_description } =
+      req.body;
     const course = Course.create({
       course_name,
       course_type,
+      course_code,
+      course_description,
       userId: user.id,
     });
 
