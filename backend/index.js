@@ -7,6 +7,7 @@ import { credentialRouter } from "./src/routes/credentials.js";
 import cors from "cors";
 import { userRouter } from "./src/routes/user.js";
 import courseRouter from "./src/routes/courses.js";
+import { loggerMiddleware } from "./src/middlewares/logger.js";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -19,6 +20,7 @@ let corsOptions = {
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors(corsOptions));
+app.use(loggerMiddleware);
 
 app.use("/authentication", authRouter);
 app.use("/credential", credentialRouter);

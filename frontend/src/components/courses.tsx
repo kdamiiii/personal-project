@@ -7,6 +7,7 @@ import { CheckBox } from "./forms";
 import { useEffect, useState } from "react";
 import { CourseTypeEnum } from "@/utils/fetchCourseData";
 import Image from "next/image";
+import Link from "next/link";
 
 export type CourseType = {
   name: string;
@@ -112,16 +113,23 @@ export const CourseBadge: React.FC<BadgeType> = ({
 type CourseCardProps = {
   courseName: string;
   courseType: CourseTypeEnum;
+  id: string;
 };
 
 export const CourseCard: React.FC<CourseCardProps> = ({
   courseName,
   courseType,
+  id,
 }) => {
   return (
-    <Card className="flex flex-col w-[20em] p-5 gap-2">
-      <p className="text-3xl">{courseName}</p>
-      <p className="font-normal">{courseType}</p>
-    </Card>
+    <Link
+      className="w-[24%] flex h-[10em] bg-[#003665] text-white hover:bg-[#6680af] transition-all"
+      href={`/portal/dashboard/courses/${id}`}
+    >
+      <Card className="flex-col  p-5 gap-2 w-full">
+        <p className="text-3xl">{courseName}</p>
+        <p className="font-normal">{courseType}</p>
+      </Card>
+    </Link>
   );
 };

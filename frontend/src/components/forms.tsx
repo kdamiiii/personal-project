@@ -134,7 +134,6 @@ type DropDownFormType = {
   };
 };
 export const DropDown = ({ form, values, name }: DropDownFormType) => {
-  console.log(values);
   return (
     <form.Field
       name={name}

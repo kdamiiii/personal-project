@@ -22,6 +22,28 @@ courseRouter.get("/", async (req, res) => {
   }
 });
 
+courseRouter.get("/:courseId", async (req, res) => {
+  try {
+    const { courseId } = req.params;
+    const courses = await Course.findOne({
+      include: [
+        {
+          model: User,
+          attributes: ["name"],
+        },
+      ],
+      where: {
+        id: courseId,
+      },
+    });
+
+    res.status(200).json(courses);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 courseRouter.post("/", verifyToken, async (req, res) => {
   try {
     const user = req.user;

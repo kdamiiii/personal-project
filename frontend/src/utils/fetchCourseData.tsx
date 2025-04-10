@@ -30,9 +30,35 @@ export const fetchCoursesData = async (): Promise<Array<CourseType>> => {
   return data;
 };
 
+export const fetchCourseData = async (
+  courseId: string
+): Promise<CourseType> => {
+  const res = await fetch(
+    `
+    ${apiHostname}/courses/${courseId}`,
+    {
+      method: "GET",
+    }
+  );
+  if (res.status >= 400) {
+    throw new Error("Not Found");
+  }
+  const data = await res.json();
+  return data;
+};
+
 export const useFetchCourses = () => {
   return useQuery({
     queryKey: ["courses"],
     queryFn: fetchCoursesData,
+  });
+};
+
+export const useFetchCourse = (courseId: string) => {
+  return useQuery({
+    queryKey: ["courses", courseId],
+    queryFn: () => fetchCourseData(courseId),
+    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 5,
   });
 };
