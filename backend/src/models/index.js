@@ -18,12 +18,14 @@ import CredentialModel from "./credentials.model.js";
 import RoleModel from "./roles.model.js";
 import UserRoleModel from "./user_roles.model.js";
 import CourseModel from "./courses.model.js";
+import SubjectModel from "./subjects.model.js";
 
 const User = UserModel(sequelize);
 const Credential = CredentialModel(sequelize);
 const Role = RoleModel(sequelize);
 const UserRole = UserRoleModel(sequelize);
 const Course = CourseModel(sequelize);
+const Subject = SubjectModel(sequelize);
 
 User.hasOne(Credential, { foreignKey: "userId", onDelete: "CASCADE" });
 User.hasOne(UserRole, { foreignKey: "userId" });
@@ -43,4 +45,4 @@ User.hasMany(Course, { foreignKey: "id" });
   }
 })();
 
-export { sequelize, User, Credential, Role, UserRole, Course };
+export { sequelize, User, Credential, Role, UserRole, Course, Subject };
