@@ -1,6 +1,7 @@
 import { Card } from "@/components/cards";
 import { SideBar } from "@/components/sidebar";
 import { fetchCurrentUserData } from "@/utils/fetchUserData";
+import "../../globals.css";
 
 export default async function EnrollmentLayout({
   children,

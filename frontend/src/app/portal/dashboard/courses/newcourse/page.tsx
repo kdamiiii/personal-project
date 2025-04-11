@@ -7,8 +7,11 @@ import { apiHostname, RequestError } from "@/constants/generalTypes";
 import { CourseTypeEnum } from "@/utils/fetchCourseData";
 import { getEnumKeyFromValue, getEnumValues } from "@/utils/textUtils";
 import { useForm } from "@tanstack/react-form";
+import { useRouter } from "next/navigation";
 
 export default function Courses() {
+  const router = useRouter();
+
   const form = useForm({
     defaultValues: {
       courseName: "",
@@ -39,6 +42,7 @@ export default function Courses() {
             errorData.message || "Something went wrong"
           );
         }
+        router.push("/portal/dashboard/courses");
       } catch (e) {
         console.log(e);
       }
@@ -61,6 +65,8 @@ export default function Courses() {
             form={form}
             row
             name="courseName"
+            label="Course Name"
+            placeHolder="Enter Course Name"
             validators={{
               onChange: ({ value }) => {
                 return !value ? "Course name is required" : undefined;
@@ -71,6 +77,8 @@ export default function Courses() {
             form={form}
             row
             name="courseCode"
+            label="Course Code"
+            placeHolder="Enter Course Code"
             validators={{
               onChange: ({ value }) => {
                 return !value ? "Course name is required" : undefined;
@@ -81,6 +89,7 @@ export default function Courses() {
             form={form}
             values={getEnumValues(CourseTypeEnum)}
             name="courseType"
+            label="Course Type"
             validators={{
               onChange: ({ value }) => {
                 return !value ? "User name is required" : undefined;
@@ -90,6 +99,9 @@ export default function Courses() {
           <TestForm
             form={form}
             name="courseDescription"
+            label="Course Description"
+            placeHolder="Enter Course Description"
+            textarea
             validators={{
               onChange: ({ value }) => {
                 return !value ? "Course name is required" : undefined;
