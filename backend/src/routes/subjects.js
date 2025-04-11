@@ -18,7 +18,7 @@ subjectsRouter.post("/", async (req, res) => {
       subject_name,
       subject_description,
       units,
-      prerequisite,
+      prerequisite: prerequisite || null,
     });
 
     console.log(subject);
@@ -33,8 +33,23 @@ subjectsRouter.post("/", async (req, res) => {
 subjectsRouter.get("/", async (req, res) => {
   try {
     const subjects = await Subject.findAll();
+    res.status(200).json(subjects);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+});
 
-    res.status(200).json({ subjects });
+subjectsRouter.get("/:subjectId", async (req, res) => {
+  try {
+    const { subjectId } = req.params;
+    const subject = await Subject.findByPk(subjectId);
+
+    if (!subject) {
+      return res.status(404).json({ message: "Subject not found" });
+    }
+
+    res.status(200).json(subject);
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: error.message });

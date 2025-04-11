@@ -27,21 +27,25 @@ export const FlexContainer = ({ children, customClasses }: ContainerType) => {
 export const Table = () => {
   return (
     <table className="w-full">
-      <tr className="border-1">
-        <th className=" p-2 border-1">Heading 1</th>
-        <th>Heading 2</th>
-        <th>Heading 3</th>
-      </tr>
-      <tr>
-        <td>Sample 1</td>
-        <td>Sample 1</td>
-        <td>Sample 1</td>
-      </tr>
-      <tr>
-        <td>Sample 1</td>
-        <td>Sample 1</td>
-        <td>Sample 1</td>
-      </tr>
+      <thead>
+        <tr className="border-1">
+          <th className=" p-2 border-1">Heading 1</th>
+          <th>Heading 2</th>
+          <th>Heading 3</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Sample 1</td>
+          <td>Sample 1</td>
+          <td>Sample 1</td>
+        </tr>
+        <tr>
+          <td>Sample 1</td>
+          <td>Sample 1</td>
+          <td>Sample 1</td>
+        </tr>
+      </tbody>
     </table>
   );
 };

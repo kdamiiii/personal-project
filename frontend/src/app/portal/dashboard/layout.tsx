@@ -1,5 +1,5 @@
 import { Card } from "@/components/cards";
-import { PortalNavbar, SideBar } from "@/components/sidebar";
+import { SideBar } from "@/components/sidebar";
 
 export default async function EnrollmentLayout({
   children,
@@ -16,8 +16,7 @@ export default async function EnrollmentLayout({
     >
       <SideBar />
       <div className="w-[85%]">
-        <PortalNavbar />
-        <Card className="bg-[url('http://192.168.254.180:3000/photos/Wave.svg')] w-full h-[95vh] bg-cover p-5">
+        <Card className="bg-[url('http://192.168.254.180:3000/photos/Wave.svg')] w-full h-screen bg-cover p-5">
           {children}
         </Card>
       </div>

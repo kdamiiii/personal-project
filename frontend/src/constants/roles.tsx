@@ -1,5 +1,10 @@
 import { FaCalendarDay, FaHome } from "react-icons/fa";
-import { FaBook } from "react-icons/fa6";
+import {
+  FaBell,
+  FaBook,
+  FaBookOpenReader,
+  FaCodeBranch,
+} from "react-icons/fa6";
 
 type Permissions = {
   name: string;
@@ -19,7 +24,19 @@ export const SIDEBAR_PERMISSIONS: Permissions[] = [
     name: "Courses",
     roles: ["ALL"],
     link: "/portal/dashboard/courses",
+    icon: <FaCodeBranch />,
+  },
+  {
+    name: "Subjects",
+    roles: ["ALL"],
+    link: "/portal/dashboard/subjects",
     icon: <FaBook />,
+  },
+  {
+    name: "Classes",
+    roles: ["ALL"],
+    link: "/portal/dashboard/classes",
+    icon: <FaBookOpenReader />,
   },
   {
     name: "Calendar",
@@ -31,6 +48,6 @@ export const SIDEBAR_PERMISSIONS: Permissions[] = [
     name: "Notifications",
     roles: ["ALL"],
     link: "/portal/notifications",
-    icon: <FaHome />,
+    icon: <FaBell />,
   },
 ];

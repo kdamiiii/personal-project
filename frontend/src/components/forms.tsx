@@ -1,5 +1,4 @@
 /* eslint-disable react/no-children-prop */
-import { capitalizeFirstLetter } from "@/utils/textUtils";
 import { AnyFieldApi } from "@tanstack/react-form";
 
 type FormInputType = {
@@ -60,8 +59,9 @@ type TestFormType = {
   name: string;
   row?: boolean;
   type?: string;
-  placeholder?: string;
-  validators: {
+  label?: string;
+  placeHolder?: string;
+  validators?: {
     onChange: (value: OnChangeProps) => string | undefined;
     onChangeAsync?: (value: OnChangeProps) => string | undefined;
   };
@@ -72,7 +72,8 @@ export const TestForm: React.FC<TestFormType> = ({
   name,
   validators,
   row = false,
-  placeholder,
+  placeHolder,
+  label = name,
   type = "text",
 }) => {
   return (
@@ -92,7 +93,7 @@ export const TestForm: React.FC<TestFormType> = ({
             >
               {name && (
                 <label htmlFor={field.name} className="w-[27%]">
-                  {capitalizeFirstLetter(name)}
+                  {label}
                 </label>
               )}
               <input
@@ -107,7 +108,7 @@ export const TestForm: React.FC<TestFormType> = ({
                     : "border-gray-400 focus:border-[#003665] focus:outline-none"
                 } rounded-full p-1 px-3 w-[70%]`}
                 type={type}
-                placeholder={placeholder ?? ""}
+                placeholder={placeHolder ?? ""}
               />
               <div className="w-[27%]"></div>
 
