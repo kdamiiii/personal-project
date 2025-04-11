@@ -42,7 +42,7 @@ export const CoursesContainer: React.FC<{ courses: CourseType[] }> = ({
         courses.filter((c) => selectedOptions.includes(c.category))
       );
     }
-  }, [selectedOptions]);
+  }, [selectedOptions, courses]);
 
   const onToggle = (isChecked: boolean, value: string) => {
     if (isChecked) setSelectedOptions((s) => [...s, value]);
@@ -126,7 +126,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({
 }) => {
   return (
     <Link
-      className="w-[24%] flex h-[10em] bg-[#003665] text-white hover:bg-[#6680af] transition-all"
+      className="w-[24%] flex h-[10em] bg-gradient-to-r from-[#003665] to-[#1774bf] text-white  hover:to-[#1774bf] hover:from-[#1774bf] transition-all duration-500 ease-in-out"
       href={`/portal/dashboard/${link}/${id}`}
     >
       <Card className="flex-col  p-5 gap-2 w-full">

@@ -6,6 +6,7 @@ type FormInputType = {
   placeHolder?: string;
   type?: string;
   row?: boolean;
+  textarea?: boolean;
 };
 
 type CheckBoxType = {
@@ -61,6 +62,7 @@ type TestFormType = {
   type?: string;
   label?: string;
   placeHolder?: string;
+  textarea?: boolean;
   validators?: {
     onChange: (value: OnChangeProps) => string | undefined;
     onChangeAsync?: (value: OnChangeProps) => string | undefined;
@@ -74,6 +76,7 @@ export const TestForm: React.FC<TestFormType> = ({
   row = false,
   placeHolder,
   label = name,
+  textarea = false,
   type = "text",
 }) => {
   return (
@@ -88,32 +91,58 @@ export const TestForm: React.FC<TestFormType> = ({
           return (
             <div
               className={`flex flex-${
-                row ? "row items-center" : "col "
+                row && !textarea ? "row items-center" : "col "
               }  gap-2 flex-wrap`}
             >
               {name && (
-                <label htmlFor={field.name} className="w-[27%]">
+                <label
+                  htmlFor={field.name}
+                  className={`${textarea ? "w-full" : "w-[27%]"}`}
+                >
                   {label}
                 </label>
               )}
-              <input
-                id={field.name}
-                name={field.name}
-                value={field.state.value}
-                onBlur={field.handleBlur}
-                onChange={(e) => field.handleChange(e.target.value)}
-                className={`border-1 font-normal ${
-                  err
-                    ? "border-red-500 focus:border-red-500 focus:outline focus:outline-red-500"
-                    : "border-gray-400 focus:border-[#003665] focus:outline-none"
-                } rounded-full p-1 px-3 w-[70%]`}
-                type={type}
-                placeholder={placeHolder ?? ""}
-              />
-              <div className="w-[27%]"></div>
 
-              <p className="w-[70%] h-3 text-sm text-center font-normal text-red-500">
-                <i>{err ? field.name + " is required" : ""}</i>
+              {textarea ? (
+                <textarea
+                  id={field.name}
+                  name={field.name}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  className={`border-1 font-normal ${
+                    err
+                      ? "border-red-500 focus:border-red-500 focus:outline focus:outline-red-500"
+                      : "border-gray-400 focus:border-[#003665] focus:outline-none"
+                  } p-1 px-3 h-[10em] rounded-2xl w-[100%] text-left align-top`}
+                  placeholder={placeHolder ?? ""}
+                />
+              ) : (
+                <>
+                  <input
+                    id={field.name}
+                    name={field.name}
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    className={`border-1 font-normal ${
+                      err
+                        ? "border-red-500 focus:border-red-500 focus:outline focus:outline-red-500"
+                        : "border-gray-400 focus:border-[#003665] focus:outline-none"
+                    } p-1 px-3 rounded-full w-[70%]`}
+                    type={type}
+                    placeholder={placeHolder ?? ""}
+                  />
+                  <div className="w-[27%]"></div>
+                </>
+              )}
+
+              <p
+                className={`${
+                  textarea ? "w-full" : "w-[70%]"
+                } h-3 text-sm text-center font-normal text-red-500`}
+              >
+                <i>{err ? label + " is required" : ""}</i>
               </p>
             </div>
           );
@@ -129,21 +158,25 @@ type DropDownFormType = {
   values: string[];
   name: string;
   row?: boolean;
+  label?: string;
   validators: {
     onChange: (value: OnChangeProps) => string | undefined;
     onChangeAsync?: (value: OnChangeProps) => string | undefined;
   };
 };
-export const DropDown = ({ form, values, name }: DropDownFormType) => {
+export const DropDown = ({
+  form,
+  values,
+  name,
+  label = "Category",
+}: DropDownFormType) => {
   return (
     <form.Field
       name={name}
       children={(field: AnyFieldApi) => {
         return (
           <div className="flex gap-2 items-center">
-            <label className="font-bold block mb-1 text-sm w-[27%]">
-              Category
-            </label>
+            <label className="font-bold block mb-1 w-[27%]">{label}</label>
             <select
               value={field.state.value}
               onChange={(e) => field.handleChange(e.target.value)}

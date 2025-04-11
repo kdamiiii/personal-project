@@ -26,7 +26,7 @@ export default function Courses() {
           </Button>
         </Link>
       </div>
-      <div className="flex flex-wrap gap-[1%] space-y-[1%] justify-between pt-5">
+      <div className="flex flex-wrap gap-[1%] space-y-[1%] justify-start pt-5">
         {!!data && !isLoading && !isFetching ? (
           data.length < 1 ? (
             "No courses available at the moment"

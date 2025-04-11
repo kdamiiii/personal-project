@@ -12,13 +12,15 @@ import { getSelectedTab } from "@/utils/textUtils";
 
 export const SideBar: React.FC<{ userData: UserData }> = ({ userData }) => {
   const pathname = usePathname();
-  console.log(pathname);
+
   return (
-    <div className="flex flex-col w-[15%] h-screen text-white items-center py-5">
-      <div className="flex justify-center items-center bg-blue-600 h-[5em] w-[5em] rounded-full text-white">
-        {userData.firstName[0] + userData.lastName[0]}
+    <div className="flex flex-col w-[15%] h-screen text-white items-center pb-5">
+      <div className="flex flex-col justify-center items-center  w-full bg-[#DDA853] py-5">
+        <div className="flex justify-center items-center bg-blue-600 h-[5em] w-[5em] rounded-full text-white">
+          {userData.firstName[0] + userData.lastName[0]}
+        </div>
+        <p className="text-[#183B4E]">{userData.username}</p>
       </div>
-      <p>{userData.username}</p>
       {SIDEBAR_PERMISSIONS.map((btn) => (
         <SidebarButton
           link={btn.link}
