@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import * as jose from "jose";
-import { getDecodedCookies, SECRET } from "./utils/jwt";
+import { getDecodedCookies } from "./utils/jwt";
 
 export type TokenData = {
   username: string;
@@ -19,7 +18,7 @@ export async function middleware(req: NextRequest) {
     response.cookies.set("tokenData", JSON.stringify(decoded));
 
     return NextResponse.next();
-  } catch (e) {
+  } catch {
     return NextResponse.redirect(new URL("/portal/", req.url));
   }
 }

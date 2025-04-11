@@ -1,20 +1,18 @@
+"use client";
+
 import { SIDEBAR_PERMISSIONS } from "@/constants/roles";
-import { fetchCurrentUserData } from "@/utils/fetchUserData";
-import { getCurrentUrl } from "@/utils/textUtils";
-import { headers } from "next/headers";
 import Link from "next/link";
 import { IoNotificationsSharp } from "react-icons/io5";
 import { Button } from "./buttons";
 import { Card } from "./cards";
 import { FaArrowRightFromBracket } from "react-icons/fa6";
+import { UserData } from "@/utils/fetchUserData";
+import { usePathname } from "next/navigation";
+import { getSelectedTab } from "@/utils/textUtils";
 
-export const SideBar: React.FC = async () => {
-  const headersList = headers();
-  const userData = await fetchCurrentUserData();
-  if (!userData) return <></>;
-
-  const fullUrl = (await headersList).get("referer") || "";
-  const selected = getCurrentUrl(fullUrl);
+export const SideBar: React.FC<{ userData: UserData }> = ({ userData }) => {
+  const pathname = usePathname();
+  console.log(pathname);
   return (
     <div className="flex flex-col w-[15%] h-screen text-white items-center py-5">
       <div className="flex justify-center items-center bg-blue-600 h-[5em] w-[5em] rounded-full text-white">
@@ -25,14 +23,14 @@ export const SideBar: React.FC = async () => {
         <SidebarButton
           link={btn.link}
           icon={btn.icon}
-          selected={selected}
+          selected={getSelectedTab(pathname, btn.link)}
           key={btn.name}
           name={btn.name}
         />
       ))}
       <SidebarButton
         className="mt-auto"
-        selected=""
+        selected={false}
         link="/portal"
         icon={<FaArrowRightFromBracket />}
         name="Logout"
@@ -45,7 +43,7 @@ type SidebarButtonProps = {
   icon: React.ReactNode;
   name: string;
   link: string;
-  selected: string;
+  selected: boolean;
   className?: string;
 };
 
@@ -61,9 +59,7 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
       href={link}
       className={`w-full border-b-gray-500 px-5 py-3 flex gap-2 items-center hover:bg-blue-100 transition-colors duration-400 hover:cursor-pointer 
         hover:text-[#003665]
-        ${
-          selected === name.toLowerCase() && "bg-white text-[#003665]"
-        } ${className}`}
+        ${selected && "bg-white text-[#003665]"} ${className}`}
     >
       {icon}
       {name}

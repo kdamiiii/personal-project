@@ -19,3 +19,12 @@ export const getEnumKeyFromValue = (
 ) => {
   return Object.entries(enumObj).find(([, val]) => val === value)?.[0];
 };
+
+export const getSelectedTab = (url: string, link: string) => {
+  const splitUrl = url.split("/");
+  if (splitUrl.length > 4) {
+    splitUrl.pop();
+    return splitUrl.join("/") === link;
+  }
+  return url === link;
+};
