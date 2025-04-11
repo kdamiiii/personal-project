@@ -35,6 +35,7 @@ export default function Courses() {
                 <CourseCard
                   key={d.id}
                   id={d.id}
+                  link="subjects"
                   courseName={d.subject_name}
                   courseType={d.subject_description}
                 />

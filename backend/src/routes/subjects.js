@@ -40,4 +40,20 @@ subjectsRouter.get("/", async (req, res) => {
   }
 });
 
+subjectsRouter.get("/:subjectId", async (req, res) => {
+  try {
+    const { subjectId } = req.params;
+    const subject = await Subject.findByPk(subjectId);
+
+    if (!subject) {
+      return res.status(404).json({ message: "Subject not found" });
+    }
+
+    res.status(200).json(subject);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+});
+
 export default subjectsRouter;

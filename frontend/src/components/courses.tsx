@@ -114,18 +114,20 @@ export const CourseBadge: React.FC<BadgeType> = ({
 type CourseCardProps = {
   courseName: string;
   courseType: CourseTypeEnum | string;
+  link: string;
   id: string;
 };
 
 export const CourseCard: React.FC<CourseCardProps> = ({
   courseName,
   courseType,
+  link,
   id,
 }) => {
   return (
     <Link
       className="w-[24%] flex h-[10em] bg-[#003665] text-white hover:bg-[#6680af] transition-all"
-      href={`/portal/dashboard/courses/${id}`}
+      href={`/portal/dashboard/${link}/${id}`}
     >
       <Card className="flex-col  p-5 gap-2 w-full">
         <p className="text-3xl">{courseName}</p>
@@ -139,9 +141,7 @@ type CourseSubjectstype = {
   subjectName?: string;
 };
 
-export const CourseSubjects: React.FC<CourseSubjectstype> = ({
-  subjectName,
-}) => {
+export const CourseSubjects: React.FC<CourseSubjectstype> = () => {
   return (
     <div>
       <Table />
