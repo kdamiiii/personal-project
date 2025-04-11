@@ -6,6 +6,7 @@ import Link from "next/link";
 import { IoNotificationsSharp } from "react-icons/io5";
 import { Button } from "./buttons";
 import { Card } from "./cards";
+import { FaArrowRightFromBracket } from "react-icons/fa6";
 
 export const SideBar: React.FC = async () => {
   const headersList = headers();
@@ -29,6 +30,13 @@ export const SideBar: React.FC = async () => {
           name={btn.name}
         />
       ))}
+      <SidebarButton
+        className="mt-auto"
+        selected=""
+        link="/portal"
+        icon={<FaArrowRightFromBracket />}
+        name="Logout"
+      />
     </div>
   );
 };
@@ -38,6 +46,7 @@ type SidebarButtonProps = {
   name: string;
   link: string;
   selected: string;
+  className?: string;
 };
 
 const SidebarButton: React.FC<SidebarButtonProps> = ({
@@ -45,13 +54,16 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
   name,
   link,
   selected,
+  className = "",
 }) => {
   return (
     <Link
       href={link}
       className={`w-full border-b-gray-500 px-5 py-3 flex gap-2 items-center hover:bg-blue-100 transition-colors duration-400 hover:cursor-pointer 
         hover:text-[#003665]
-        ${selected === name.toLowerCase() && "bg-white text-[#003665]"}`}
+        ${
+          selected === name.toLowerCase() && "bg-white text-[#003665]"
+        } ${className}`}
     >
       {icon}
       {name}

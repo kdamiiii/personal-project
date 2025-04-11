@@ -113,7 +113,7 @@ export const CourseBadge: React.FC<BadgeType> = ({
 
 type CourseCardProps = {
   courseName: string;
-  courseType: CourseTypeEnum;
+  courseType: CourseTypeEnum | string;
   id: string;
 };
 
