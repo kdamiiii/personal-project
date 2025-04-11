@@ -41,13 +41,13 @@ export const SIDEBAR_PERMISSIONS: Permissions[] = [
   {
     name: "Calendar",
     roles: ["ALL"],
-    link: "/portal/calendar",
+    link: "/portal/dashboard/calendar",
     icon: <FaCalendarDay />,
   },
   {
     name: "Notifications",
     roles: ["ALL"],
-    link: "/portal/notifications",
+    link: "/portal/dashboard/notifications",
     icon: <FaBell />,
   },
 ];

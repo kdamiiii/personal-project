@@ -46,7 +46,9 @@ export default function Courses() {
           <p>No Data Available</p>
         )
       ) : (
-        <Spinner />
+        <div className="flex justify-center w-full pt-5">
+          <Spinner />
+        </div>
       )}
     </div>
   );
