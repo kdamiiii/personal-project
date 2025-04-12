@@ -1,5 +1,5 @@
 import express from "express";
-import { Course, User } from "../models/index.js";
+import { Course, CourseSubject, User, Subject } from "../models/index.js";
 import { verifyToken } from "../utils/jwt.js";
 
 const courseRouter = express.Router();
@@ -51,7 +51,7 @@ courseRouter.post("/", verifyToken, async (req, res) => {
     const user = req.user;
     const { course_name, course_type, course_code, course_description } =
       req.body;
-    const course = Course.create({
+    const course = await Course.create({
       course_name,
       course_type,
       course_code,
@@ -62,6 +62,63 @@ courseRouter.post("/", verifyToken, async (req, res) => {
     console.log(user);
 
     res.status(200).json(course);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+courseRouter.get("/:courseId/subjects", async (req, res) => {
+  try {
+    const { courseId } = req.params;
+    const courseSubject = await Course.findOne({
+      where: { id: courseId },
+      include: {
+        model: Subject,
+        attributes: ["id", "subject_name", "subject_description"], // Include only the fields you need
+        through: { attributes: [] }, // Exclude CourseSubject fields
+        as: "CourseSubjects", // Use the alias defined in the model
+      },
+    });
+
+    console.log(courseSubject);
+
+    res.status(200).json(courseSubject);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+courseRouter.post("/:courseId/subjects", async (req, res) => {
+  try {
+    const { courseId } = req.params;
+    const { subjectId } = req.body;
+    const courseSubject = await CourseSubject.create({
+      courseId,
+      subjectId,
+    });
+
+    console.log(courseSubject);
+
+    res.status(200).json(courseSubject);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+courseRouter.delete("/:courseId/subjects/:subjectId", async (req, res) => {
+  try {
+    const { courseId, subjectId } = req.params;
+    await CourseSubject.destroy({
+      where: {
+        courseId,
+        subjectId,
+      },
+    });
+
+    res.status(200).json({ message: "Course subject deleted successfully" });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ error: error.message });
