@@ -19,6 +19,7 @@ import RoleModel from "./roles.model.js";
 import UserRoleModel from "./user_roles.model.js";
 import CourseModel from "./courses.model.js";
 import SubjectModel from "./subjects.model.js";
+import CourseSubjectModel from "./course_subject.model.js";
 
 const User = UserModel(sequelize);
 const Credential = CredentialModel(sequelize);
@@ -26,6 +27,7 @@ const Role = RoleModel(sequelize);
 const UserRole = UserRoleModel(sequelize);
 const Course = CourseModel(sequelize);
 const Subject = SubjectModel(sequelize);
+const CourseSubject = CourseSubjectModel(sequelize);
 
 User.hasOne(Credential, { foreignKey: "userId", onDelete: "CASCADE" });
 User.hasOne(UserRole, { foreignKey: "userId" });
@@ -36,6 +38,17 @@ Role.hasMany(UserRole, { foreignKey: "role" });
 Course.belongsTo(User, { foreignKey: "userId" });
 User.hasMany(Course, { foreignKey: "id" });
 
+Course.belongsToMany(Subject, {
+  through: CourseSubject,
+  foreignKey: "courseId",
+  as: "CourseSubjects",
+});
+Subject.belongsToMany(Course, {
+  through: CourseSubject,
+  foreignKey: "subjectId",
+  as: "SubjectCourses",
+});
+
 (async () => {
   try {
     await sequelize.authenticate();
@@ -45,4 +58,13 @@ User.hasMany(Course, { foreignKey: "id" });
   }
 })();
 
-export { sequelize, User, Credential, Role, UserRole, Course, Subject };
+export {
+  sequelize,
+  User,
+  Credential,
+  Role,
+  UserRole,
+  Course,
+  Subject,
+  CourseSubject,
+};
