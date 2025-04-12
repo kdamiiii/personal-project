@@ -1,7 +1,7 @@
 import { apiHostname } from "@/constants/generalTypes";
 import { useQuery } from "@tanstack/react-query";
 
-type SubjectsPayload = {
+export type SubjectsPayload = {
   id: string;
   subject_code: string;
   subject_name: string;
@@ -10,7 +10,7 @@ type SubjectsPayload = {
   prereqisite: string;
 };
 
-type ModifiedSubjectType = {
+export type ModifiedSubjectType = {
   id: string;
   subjectCode: string;
   subjectName: string;
@@ -70,7 +70,9 @@ export const useFetchSubject = (subjectId: string) => {
   });
 };
 
-const modifySubjectData = (data: SubjectsPayload): ModifiedSubjectType => {
+export const modifySubjectData = (
+  data: SubjectsPayload
+): ModifiedSubjectType => {
   return {
     id: data.id,
     subjectCode: data.subject_code,

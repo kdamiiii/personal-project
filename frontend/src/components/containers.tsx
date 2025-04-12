@@ -24,28 +24,39 @@ export const FlexContainer = ({ children, customClasses }: ContainerType) => {
   return <div className={`w-[100%] ${customClasses ?? ""}`}>{children}</div>;
 };
 
-export const Table = () => {
+type TableType = {
+  children: React.ReactNode;
+  headers: string[];
+  customClasses?: string;
+};
+
+export const Table: React.FC<TableType> = ({ headers, children }) => {
   return (
     <table className="w-full">
       <thead>
-        <tr className="border-1">
-          <th className=" p-2 border-1">Heading 1</th>
-          <th>Heading 2</th>
-          <th>Heading 3</th>
+        <tr className="bg-gray-200 text-gray-600 text-sm font-semibold uppercase tracking-wider">
+          {headers.map((header, index) => (
+            <th key={index} className="px-4 py-2 text-left">
+              {header}
+            </th>
+          ))}
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td>Sample 1</td>
-          <td>Sample 1</td>
-          <td>Sample 1</td>
-        </tr>
-        <tr>
-          <td>Sample 1</td>
-          <td>Sample 1</td>
-          <td>Sample 1</td>
-        </tr>
-      </tbody>
+      <tbody>{children}</tbody>
     </table>
+  );
+};
+
+export const TableRow: React.FC<{
+  tableData: string[];
+}> = ({ tableData }) => {
+  return (
+    <tr className="text-gray-700 text-sm font-normal hover:bg-gray-100">
+      {tableData.map((data, index) => (
+        <td key={index} className="px-4 py-2 whitespace-nowrap">
+          {data}
+        </td>
+      ))}
+    </tr>
   );
 };

@@ -3,12 +3,17 @@
 import { CATEGORY_COLOR } from "@/constants/courses";
 import { Button } from "./buttons";
 import { Card, CardTitle } from "./cards";
-import { CheckBox } from "./forms";
+import { CheckBox, DropDown } from "./forms";
 import { useEffect, useState } from "react";
 import { CourseTypeEnum } from "@/utils/fetchCourseData";
 import Image from "next/image";
 import Link from "next/link";
-import { Table } from "./containers";
+import { Table, TableRow } from "./containers";
+import { ModifiedSubjectType, useFetchSubjects } from "@/utils/fetchSubjects";
+import { Spinner } from "./spinner";
+import { FaPlus } from "react-icons/fa6";
+import { useForm } from "@tanstack/react-form";
+import { apiHostname, RequestError } from "@/constants/generalTypes";
 
 export type CourseType = {
   name: string;
@@ -138,13 +143,118 @@ export const CourseCard: React.FC<CourseCardProps> = ({
 };
 
 type CourseSubjectstype = {
-  subjectName?: string;
+  subjects: ModifiedSubjectType[] | undefined;
 };
 
-export const CourseSubjects: React.FC<CourseSubjectstype> = () => {
+export const CourseSubjects: React.FC<CourseSubjectstype> = ({ subjects }) => {
+  if (!subjects)
+    return (
+      <p>
+        <Spinner />
+      </p>
+    );
+  if (subjects.length == 0) return <p>No subjects available</p>;
+
   return (
     <div>
-      <Table />
+      <Table headers={Object.keys(subjects[0]).filter((s) => s != "id")}>
+        {subjects.map((subject) => (
+          <TableRow
+            key={subject.id}
+            tableData={[
+              subject.subjectCode,
+              subject.subjectName,
+              subject.subjectDescription,
+              subject.units.toString(),
+              subject.prerequisite,
+            ]}
+          />
+        ))}
+      </Table>
     </div>
+  );
+};
+
+export const CourseSubjectAdder: React.FC<{
+  size: string;
+  courseId: string;
+}> = ({ size, courseId }) => {
+  const [isActive, setIsActive] = useState(false);
+
+  if (!isActive) {
+    return (
+      <Button
+        className={`w-[${size}] h-[${size}]`}
+        color="bg-[#3cb54c]"
+        handleOnClickAction={() => setIsActive(true)}
+      >
+        <FaPlus />
+      </Button>
+    );
+  }
+
+  return <SubjectSelector courseId={courseId} />;
+};
+
+const SubjectSelector: React.FC<{ courseId: string }> = ({ courseId }) => {
+  const { data } = useFetchSubjects();
+  const form = useForm({
+    defaultValues: {
+      subjectName: "",
+    },
+    onSubmit: async ({ value }) => {
+      const subjectId = data?.find(
+        (s) => s.subject_name == value.subjectName
+      )?.id;
+      try {
+        const res = await fetch(`${apiHostname}/courses/${courseId}/subjects`, {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            subjectId,
+          }),
+        });
+
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new RequestError(
+            errorData.status,
+            errorData.message || "Something went wrong"
+          );
+        }
+
+        window.location.reload();
+      } catch (e) {
+        console.log(e);
+      }
+    },
+  });
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        form.handleSubmit();
+      }}
+      className="flex flex-col w-[30%]"
+    >
+      {!!data && (
+        <div className="flex gap-2">
+          <DropDown
+            form={form}
+            values={data?.map((s) => s.subject_name)}
+            name="subjectName"
+            className="max-w-1/2"
+          />
+          <Button type="submit" color="bg-[#3cb54c]">
+            <FaPlus />
+          </Button>
+        </div>
+      )}
+    </form>
   );
 };
