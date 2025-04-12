@@ -9,6 +9,7 @@ import { userRouter } from "./src/routes/user.js";
 import courseRouter from "./src/routes/courses.js";
 import { loggerMiddleware } from "./src/middlewares/logger.js";
 import subjectsRouter from "./src/routes/subjects.js";
+import classesRouter from "./src/routes/classes.js";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -28,6 +29,7 @@ app.use("/credential", credentialRouter);
 app.use("/users", userRouter);
 app.use("/courses", courseRouter);
 app.use("/subjects", subjectsRouter);
+app.use("/classes", classesRouter);
 
 (async () => {
   try {

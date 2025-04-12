@@ -80,3 +80,26 @@ userRouter.get("/:userId", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+userRouter.get("/", async (req, res) => {
+  try {
+    const users = await User.findAll({
+      include: [
+        {
+          model: Credential,
+          attributes: ["username"],
+        },
+        {
+          model: UserRole,
+          attributes: ["role"],
+          include: [{ model: Role, attributes: ["role"] }],
+        },
+      ],
+    });
+
+    res.status(200).json(users);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
