@@ -165,6 +165,7 @@ type DropDownFormType = {
   };
   className?: string;
   width?: string;
+  placeHolder?: string;
 };
 export const DropDown = ({
   form,
@@ -172,11 +173,13 @@ export const DropDown = ({
   name,
   label,
   className = "",
+  placeHolder = "",
 }: DropDownFormType) => {
   return (
     <form.Field
       name={name}
       children={(field: AnyFieldApi) => {
+        console.log(field.state.value);
         return (
           <div className={`flex gap-2 items-center ${className}`}>
             {label && (
@@ -189,6 +192,7 @@ export const DropDown = ({
                 label ? "w-[70%]" : "w-full"
               } font-normal p-1 px-3 rounded-full border-1 border-gray-400`}
             >
+              <option disabled>{placeHolder}</option>
               {values.map((category) => (
                 <option key={category} value={category}>
                   {category}

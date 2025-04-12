@@ -200,9 +200,9 @@ const SubjectSelector: React.FC<{ courseId: string }> = ({ courseId }) => {
   const { data } = useFetchSubjects();
   const form = useForm({
     defaultValues: {
-      subjectName: "",
+      subjectName: "Select a subject",
     },
-    onSubmit: async ({ value }) => {
+    onSubmit: async ({ value }: { value: { subjectName: string } }) => {
       const subjectId = data?.find(
         (s) => s.subject_name == value.subjectName
       )?.id;
@@ -233,6 +233,10 @@ const SubjectSelector: React.FC<{ courseId: string }> = ({ courseId }) => {
     },
   });
 
+  useEffect(() => {
+    console.log(form.state.values);
+  }, [form]);
+
   return (
     <form
       onSubmit={(e) => {
@@ -249,8 +253,13 @@ const SubjectSelector: React.FC<{ courseId: string }> = ({ courseId }) => {
             values={data?.map((s) => s.subject_name)}
             name="subjectName"
             className="max-w-1/2"
+            placeHolder="Select a subject"
           />
-          <Button type="submit" color="bg-[#3cb54c]">
+          <Button
+            type="submit"
+            color="bg-[#3cb54c]"
+            disabled={form.state.isSubmitting}
+          >
             <FaPlus />
           </Button>
         </div>
