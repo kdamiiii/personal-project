@@ -30,6 +30,18 @@ courseRouter.get("/:courseId", async (req, res) => {
         {
           model: User,
         },
+        {
+          model: Subject,
+          attributes: [
+            "id",
+            "subject_name",
+            "subject_code",
+            "units",
+            "prerequisite",
+            "subject_description",
+          ], // Include only the fields you need
+          as: "CourseSubjects", // Use the alias defined in the model
+        },
       ],
       where: {
         id: courseId,
@@ -94,6 +106,9 @@ courseRouter.post("/:courseId/subjects", async (req, res) => {
   try {
     const { courseId } = req.params;
     const { subjectId } = req.body;
+
+    console.log(courseId, subjectId);
+
     const courseSubject = await CourseSubject.create({
       courseId,
       subjectId,

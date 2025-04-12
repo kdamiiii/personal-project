@@ -1,6 +1,11 @@
 import { apiHostname } from "@/constants/generalTypes";
 import { useQuery } from "@tanstack/react-query";
 import { UserData, UserDataPayload } from "./fetchUserData";
+import {
+  ModifiedSubjectType,
+  modifySubjectData,
+  SubjectsPayload,
+} from "./fetchSubjects";
 
 export enum CourseTypeEnum {
   SHORT_COURSE = "SHORT COURSE",
@@ -16,6 +21,7 @@ export type CourseType = {
   course_description: string;
   course_code: string;
   Portal_User: Omit<UserDataPayload, "User_Role" | "Credential">;
+  CourseSubjects: SubjectsPayload[];
 };
 
 export const fetchCoursesData = async (): Promise<Array<CourseType>> => {
@@ -47,7 +53,7 @@ export const fetchCourseData = async (
     throw new Error("Not Found");
   }
   const data = await res.json();
-
+  console.log("fresh", data);
   return modifyCourseData(data);
 };
 
@@ -73,6 +79,7 @@ type ModifiedCourseType = {
   courseCode: string;
   courseType: CourseTypeEnum;
   user: Omit<UserData, "role" | "username" | "email">;
+  subjects: ModifiedSubjectType[];
 };
 
 const modifyCourseData = ({
@@ -81,6 +88,7 @@ const modifyCourseData = ({
   course_description,
   course_code,
   Portal_User,
+  CourseSubjects,
 }: CourseType) => {
   return {
     courseName: course_name,
@@ -92,5 +100,6 @@ const modifyCourseData = ({
       lastName: Portal_User.last_name,
       id: Portal_User.id,
     },
+    subjects: CourseSubjects.map((s) => modifySubjectData(s)),
   } as ModifiedCourseType;
 };

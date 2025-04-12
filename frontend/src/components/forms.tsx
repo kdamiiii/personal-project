@@ -159,30 +159,40 @@ type DropDownFormType = {
   name: string;
   row?: boolean;
   label?: string;
-  validators: {
+  validators?: {
     onChange: (value: OnChangeProps) => string | undefined;
     onChangeAsync?: (value: OnChangeProps) => string | undefined;
   };
+  className?: string;
+  width?: string;
+  placeHolder?: string;
 };
 export const DropDown = ({
   form,
   values,
   name,
-  label = "Category",
+  label,
+  className = "",
+  placeHolder = "",
 }: DropDownFormType) => {
   return (
     <form.Field
       name={name}
       children={(field: AnyFieldApi) => {
+        console.log(field.state.value);
         return (
-          <div className="flex gap-2 items-center">
-            <label className="font-bold block mb-1 w-[27%]">{label}</label>
+          <div className={`flex gap-2 items-center ${className}`}>
+            {label && (
+              <label className="font-bold block mb-1 w-[27%]">{label}</label>
+            )}
             <select
               value={field.state.value}
               onChange={(e) => field.handleChange(e.target.value)}
-              className="w-[70%] font-normal p-1 px-3 rounded-full border-1 border-gray-400"
+              className={`${
+                label ? "w-[70%]" : "w-full"
+              } font-normal p-1 px-3 rounded-full border-1 border-gray-400`}
             >
-              <option value="">Select a category</option>
+              <option disabled>{placeHolder}</option>
               {values.map((category) => (
                 <option key={category} value={category}>
                   {category}
