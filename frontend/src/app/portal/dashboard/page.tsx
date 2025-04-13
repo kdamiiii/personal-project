@@ -1,4 +1,4 @@
-import { fetchCurrentUserData } from "@/utils/fetchUserData";
+import { fetchCurrentUserData } from "@/utils/fetchCurrentUser";
 
 export default async function Dashboard() {
   const userData = await fetchCurrentUserData();

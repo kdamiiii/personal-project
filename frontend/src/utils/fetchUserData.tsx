@@ -1,6 +1,5 @@
 import { apiHostname } from "@/constants/generalTypes";
-import { cookies } from "next/headers";
-import { getDecodedCookies } from "./jwt";
+import { useQuery } from "@tanstack/react-query";
 
 type Credential = {
   username: string;
@@ -59,25 +58,23 @@ export const fetchUserData = async (username: string) => {
   return modifyUserdata(data);
 };
 
-export const fetchCurrentUserData: () => Promise<UserData> = async () => {
-  const cookieStore = cookies();
-  const token = (await cookieStore).get("token")!.value || "";
-  const cookieData = (await getDecodedCookies(token)).payload as {
-    username: string;
-    id: string;
-  };
+export const useFetchUsers = () => {
+  return useQuery({
+    queryKey: ["users"],
+    queryFn: fetchUsersData,
+    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 5,
+  });
+};
+
+export const fetchUsersData = async (): Promise<UserData[]> => {
   const res = await fetch(
     `
-      ${apiHostname}/users/${cookieData.username}`,
+    ${apiHostname}/users/`,
     {
       method: "GET",
     }
   );
-  if (res.status >= 400) {
-    throw new Error("something went wrong");
-  }
   const data = await res.json();
-  if (!data) {
-  }
-  return modifyUserdata(data);
+  return data.map((user: UserDataPayload) => modifyUserdata(user));
 };

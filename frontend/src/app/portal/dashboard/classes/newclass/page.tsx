@@ -1,29 +1,41 @@
 "use client";
 
 import { Button } from "@/components/buttons";
-import { TestForm, DropDown } from "@/components/forms";
+import { Card } from "@/components/cards";
+import { TestForm, DropDown, CheckBoxForm } from "@/components/forms";
 import { Spinner } from "@/components/spinner";
 import { apiHostname, RequestError } from "@/constants/generalTypes";
 import { useFetchSubjects } from "@/utils/fetchSubjects";
+import { useFetchUsers } from "@/utils/fetchUserData";
 import { useForm } from "@tanstack/react-form";
 import { useRouter } from "next/navigation";
 
 const NewClassPage: React.FC = () => {
   const router = useRouter();
   const { data: subjects } = useFetchSubjects();
+  const { data: users } = useFetchUsers();
 
   const form = useForm({
     defaultValues: {
       classCode: "",
       classSubject: "",
-      classInstructor: "",
-      schedule: "",
+      classInstructor: "Select Class Instructor",
+      schedule: [],
       timeStart: "",
       timeEnd: "",
       room: "",
     },
     onSubmit: async ({ value }) => {
       try {
+        console.log(value);
+        const classInstructor = users?.find(
+          (user) =>
+            `${user.firstName} ${user.lastName}` === value.classInstructor
+        )?.id;
+        const classSubject = subjects?.find(
+          (subject) => subject.subject_name === value.classSubject
+        )?.id;
+
         const res = await fetch(apiHostname + "/classes", {
           method: "POST",
           headers: {
@@ -32,9 +44,9 @@ const NewClassPage: React.FC = () => {
           credentials: "include",
           body: JSON.stringify({
             class_code: value.classCode,
-            class_subject: value.classSubject,
-            class_instructor: value.classInstructor,
-            schedule: value.schedule,
+            class_subject: classSubject,
+            class_instructor: classInstructor,
+            schedule: value.schedule.join(""),
             time_start: value.timeStart,
             time_end: value.timeEnd,
             room: value.room,
@@ -56,7 +68,7 @@ const NewClassPage: React.FC = () => {
   });
 
   return (
-    <div className="flex flex-col gap-5">
+    <Card className="flex flex-col gap-5 bg-white p-5 max-w-[50%]">
       <h2 className="text-2xl">Create New Course</h2>
       <div className="flex items-center gap-3">
         <form
@@ -65,7 +77,7 @@ const NewClassPage: React.FC = () => {
             e.stopPropagation();
             form.handleSubmit();
           }}
-          className="flex flex-col gap-5 w-[30%]"
+          className="flex flex-col gap-5 w-full"
         >
           <TestForm
             form={form}
@@ -93,18 +105,74 @@ const NewClassPage: React.FC = () => {
               },
             }}
           />
-          <TestForm
+          <DropDown
             form={form}
-            name="courseDescription"
-            label="Course Description"
-            placeHolder="Enter Course Description"
-            textarea
+            values={
+              users
+                ? users.map((user) => `${user.firstName} ${user.lastName}`)
+                : []
+            }
+            name="classInstructor"
+            label="Class Instructor"
+            placeHolder="Select Class Instructor"
             validators={{
               onChange: ({ value }) => {
-                return !value ? "Course name is required" : undefined;
+                return !value ? "Class Instructor is required" : undefined;
               },
             }}
           />
+          <CheckBoxForm
+            form={form}
+            row
+            name="schedule"
+            label="Schedule"
+            options={[
+              { label: "Monday", value: "M" },
+              { label: "Tuesday", value: "T" },
+              { label: "Wednesday", value: "W" },
+              { label: "Thursday", value: "R" },
+              { label: "Friday", value: "F" },
+              { label: "Saturday", value: "S" },
+              { label: "Sunday", value: "U" },
+            ]}
+          />
+          <TestForm
+            form={form}
+            row
+            name="timeStart"
+            label="Time Start"
+            placeHolder="Enter Time Start"
+            validators={{
+              onChange: ({ value }) => {
+                return !value ? "Time start is required" : undefined;
+              },
+            }}
+          />
+          <TestForm
+            form={form}
+            row
+            name="timeEnd"
+            label="Time End"
+            placeHolder="Enter Time End"
+            validators={{
+              onChange: ({ value }) => {
+                return !value ? "Time end is required" : undefined;
+              },
+            }}
+          />
+          <TestForm
+            form={form}
+            row
+            name="room"
+            label="Room"
+            placeHolder="Enter Room"
+            validators={{
+              onChange: ({ value }) => {
+                return !value ? "Room is required" : undefined;
+              },
+            }}
+          />
+
           <form.Subscribe
             selector={(state) => [state.canSubmit, state.isSubmitting]}
             // eslint-disable-next-line react/no-children-prop
@@ -116,8 +184,7 @@ const NewClassPage: React.FC = () => {
           />
         </form>
       </div>
-      ;
-    </div>
+    </Card>
   );
 };
 

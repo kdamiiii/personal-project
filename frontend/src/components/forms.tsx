@@ -205,3 +205,68 @@ export const DropDown = ({
     />
   );
 };
+
+type CheckBoxFormType = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  form: any;
+  name: string;
+  options: { label: string; value: string }[]; // Array of options with label and value
+  row?: boolean;
+  label?: string;
+  className?: string;
+};
+
+export const CheckBoxForm: React.FC<CheckBoxFormType> = ({
+  form,
+  name,
+  options,
+  row = false,
+  label,
+  className = "",
+}) => {
+  return (
+    <form.Field
+      name={name}
+      children={(field: AnyFieldApi) => {
+        return (
+          <div
+            className={`flex flex-${
+              row ? "row" : "col"
+            } gap-[3%] items-start ${className}`}
+          >
+            {label && <label className="font-bold w-[27%] mb-1">{label}</label>}
+            <div
+              className={`flex flex-wrap gap-4 ${label ? "w-[70%]" : "w-full"}`}
+            >
+              {options.map((option) => (
+                <div key={option.value} className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    id={`${name}-${option.value}`}
+                    value={option.value}
+                    checked={field.state.value.includes(option.value)}
+                    onChange={(e) => {
+                      const newValue = e.target.checked
+                        ? [...field.state.value, option.value]
+                        : field.state.value.filter(
+                            (v: string) => v !== option.value
+                          );
+                      field.handleChange(newValue);
+                    }}
+                    className="w-5 h-5 appearance-none border-2 border-gray-500 rounded-md checked:bg-blue-500 checked:border-blue-700"
+                  />
+                  <label
+                    htmlFor={`${name}-${option.value}`}
+                    className="font-normal"
+                  >
+                    {option.label}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      }}
+    />
+  );
+};
