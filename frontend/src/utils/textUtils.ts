@@ -28,3 +28,7 @@ export const getSelectedTab = (url: string, link: string) => {
   }
   return url === link;
 };
+
+export const removeMiliseconds = (date: string) => {
+  return date.split(":")[0] + ":" + date.split(":")[1];
+};

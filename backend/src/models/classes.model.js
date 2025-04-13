@@ -47,5 +47,9 @@ export default (sequelize) => {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
     },
+    room: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   });
 };

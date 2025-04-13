@@ -33,7 +33,7 @@ app.use("/classes", classesRouter);
 
 (async () => {
   try {
-    await sequelize.sync({ force: false }); // Set force: true to reset tables on restart
+    await sequelize.sync({ force: false, alter: true }); // Set force: true to reset tables on restart
     console.log("✅ Database synced.");
     app.listen(PORT, () =>
       console.log(`🚀 Server running on http://localhost:${PORT}`)

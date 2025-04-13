@@ -49,9 +49,13 @@ export const Table: React.FC<TableType> = ({ headers, children }) => {
 
 export const TableRow: React.FC<{
   tableData: string[];
-}> = ({ tableData }) => {
+  handleClick?: () => void;
+}> = ({ tableData, handleClick = () => {} }) => {
   return (
-    <tr className="text-gray-700 text-sm font-normal hover:bg-gray-100">
+    <tr
+      onClick={() => handleClick()}
+      className="text-gray-700 text-sm font-normal hover:bg-gray-100 hover:cursor-pointer"
+    >
       {tableData.map((data, index) => (
         <td key={index} className="px-4 py-2 whitespace-nowrap">
           {data}
