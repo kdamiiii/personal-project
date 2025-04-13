@@ -1,6 +1,6 @@
 import { Card } from "@/components/cards";
 import { SideBar } from "@/components/sidebar";
-import { fetchCurrentUserData } from "@/utils/fetchUserData";
+import { fetchCurrentUserData } from "@/utils/fetchCurrentUser";
 export default async function EnrollmentLayout({
   children,
 }: {
@@ -18,7 +18,7 @@ export default async function EnrollmentLayout({
     >
       <SideBar userData={userData} />
       <div className="w-[85%]">
-        <Card className="bg-[url('http://192.168.254.180:3000/photos/Wave.svg')] w-full h-screen bg-cover p-5">
+        <Card className="bg-[url('http://192.168.254.180:3000/photos/Kaway.svg')] w-full h-screen bg-cover p-5">
           {children}
         </Card>
       </div>

@@ -13,7 +13,7 @@ classesRouter.get("/", async (req, res) => {
         },
         {
           model: Subject,
-          attributes: ["id", "subject_name", "subject_code"],
+          attributes: ["id", "subject_name", "subject_code", "units"],
         },
       ],
     });
@@ -36,7 +36,7 @@ classesRouter.get("/:classId", async (req, res) => {
         },
         {
           model: Subject,
-          attributes: ["id", "subject_name", "subject_code"],
+          attributes: ["id", "subject_name", "subject_code", "units"],
         },
       ],
       where: {
@@ -59,6 +59,7 @@ classesRouter.post("/", async (req, res) => {
       schedule,
       time_start,
       time_end,
+      room,
     } = req.body;
     const subjectClass = await Classes.create({
       class_code,
@@ -67,6 +68,7 @@ classesRouter.post("/", async (req, res) => {
       schedule,
       time_start,
       time_end,
+      room,
     });
 
     res.status(200).json(subjectClass);
