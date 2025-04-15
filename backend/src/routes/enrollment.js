@@ -1,11 +1,17 @@
 import express from "express";
-import { EnrollmentDetails } from "../models/index.js";
+import {
+  EnrollmentDetails,
+  ParentsDetails,
+  SchoolsDetails,
+  EnrollmentRequirements,
+} from "../models/index.js";
 
 const enrollmentRouter = express.Router();
 
 enrollmentRouter.post("/", async (req, res) => {
   try {
-    const { enrollment_details, parents_details, schools_details } = req.body;
+    const { enrollment_details, parents_details, educational_background } =
+      req.body;
 
     const enrollmentDetails = await EnrollmentDetails.create({
       ...enrollment_details,
@@ -17,7 +23,7 @@ enrollmentRouter.post("/", async (req, res) => {
     });
 
     await SchoolsDetails.create({
-      ...schools_details,
+      ...educational_background,
       enrollment_id: enrollmentDetails.id,
     });
 

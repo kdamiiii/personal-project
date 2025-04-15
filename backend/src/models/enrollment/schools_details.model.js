@@ -18,35 +18,35 @@ export default (sequelize) => {
     },
     elementary_school: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     elementary_year_graduated: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     junior_high_school: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     junior_high_school_year_graduated: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     senior_high_school: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     senior_high_school_year_graduated: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     last_school_attended: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     last_school_attended_year_graduated: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
   });
 };

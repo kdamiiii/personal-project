@@ -26,7 +26,7 @@ export default (sequelize) => {
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     city_address: {
       type: DataTypes.STRING,
@@ -54,7 +54,7 @@ export default (sequelize) => {
     },
     religious_affiliation: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     civil_status: {
       type: DataTypes.ENUM("SINGLE", "MARRIED", "WIDOWED", "DIVORCED"),

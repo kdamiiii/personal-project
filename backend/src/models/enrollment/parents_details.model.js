@@ -75,6 +75,7 @@ export default (sequelize) => {
         model: "Enrollment_Details",
         key: "id",
       },
+      onDelete: "CASCADE",
     },
   });
 };

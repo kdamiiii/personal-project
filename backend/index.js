@@ -10,6 +10,7 @@ import courseRouter from "./src/routes/courses.js";
 import { loggerMiddleware } from "./src/middlewares/logger.js";
 import subjectsRouter from "./src/routes/subjects.js";
 import classesRouter from "./src/routes/classes.js";
+import enrollmentRouter from "./src/routes/enrollment.js";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -30,6 +31,7 @@ app.use("/users", userRouter);
 app.use("/courses", courseRouter);
 app.use("/subjects", subjectsRouter);
 app.use("/classes", classesRouter);
+app.use("/enrollment_details", enrollmentRouter);
 
 (async () => {
   try {
