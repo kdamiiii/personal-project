@@ -26,6 +26,7 @@ import ParentsDetailsModel from "./enrollment/parents_details.model.js";
 import SchoolsDetailsModel from "./enrollment/schools_details.model.js";
 import EnrollmentRequirementsModel from "./enrollment/enrollment_requirements.model.js";
 import EnrollmentCourseModel from "./enrollment/enrollment_course.model.js";
+import NotificationsModel from "./notifications.model.js";
 
 const User = UserModel(sequelize);
 const Credential = CredentialModel(sequelize);
@@ -40,11 +41,14 @@ const ParentsDetails = ParentsDetailsModel(sequelize);
 const SchoolsDetails = SchoolsDetailsModel(sequelize);
 const EnrollmentRequirements = EnrollmentRequirementsModel(sequelize);
 const EnrollmentCourse = EnrollmentCourseModel(sequelize);
+const Notifications = NotificationsModel(sequelize);
 
 User.hasOne(Credential, { foreignKey: "userId", onDelete: "CASCADE" });
 User.hasOne(UserRole, { foreignKey: "userId" });
 User.hasMany(Course, { foreignKey: "id" });
 User.hasMany(Classes, { foreignKey: "class_instructor" });
+User.hasMany(Notifications, { foreignKey: "for_user" });
+Notifications.belongsTo(User, { foreignKey: "for_user" });
 Credential.belongsTo(User, { foreignKey: "userId" });
 UserRole.belongsTo(User, { foreignKey: "userId" });
 UserRole.belongsTo(Role, { foreignKey: "role" });

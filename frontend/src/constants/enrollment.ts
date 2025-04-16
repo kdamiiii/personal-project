@@ -5,6 +5,7 @@ export const enrollmentForms = [
     formType: "text",
     label: "First Name",
     containerLength: "flex-1/4",
+    required: true,
   },
   {
     fieldName: "lastName",
@@ -12,6 +13,7 @@ export const enrollmentForms = [
     formType: "text",
     label: "Last Name",
     containerLength: "flex-1/4",
+    required: true,
   },
   {
     fieldName: "middleName",
@@ -19,6 +21,7 @@ export const enrollmentForms = [
     formType: "text",
     label: "Middle Name",
     containerLength: "flex-1/4",
+    required: false,
   },
   {
     fieldName: "suffix",
@@ -26,6 +29,7 @@ export const enrollmentForms = [
     formType: "text",
     label: "Suffix",
     containerLength: "flex-1/8",
+    required: false,
   },
   //   { fieldName: "email", defaultValue: "", formType: "text", label: "Email" },
   {
@@ -34,6 +38,7 @@ export const enrollmentForms = [
     formType: "text",
     label: "City Address",
     containerLength: "flex-3/4",
+    required: true,
   },
   {
     fieldName: "contactNumber",
@@ -41,6 +46,7 @@ export const enrollmentForms = [
     formType: "text",
     label: "Contact Number",
     containerLength: "flex-1/5",
+    required: true,
   },
   {
     fieldName: "provincialAddress",
@@ -48,6 +54,7 @@ export const enrollmentForms = [
     formType: "text",
     label: "Provincial Address",
     containerLength: "flex-3/4",
+    required: false,
   },
   {
     fieldName: "sex",
@@ -55,6 +62,7 @@ export const enrollmentForms = [
     formType: "text",
     label: "Sex",
     containerLength: "flex-1/5",
+    required: true,
   },
   {
     fieldName: "birthPlace",
@@ -62,13 +70,15 @@ export const enrollmentForms = [
     formType: "text",
     label: "Birth Place",
     containerLength: "flex-1/5",
+    required: true,
   },
   {
     fieldName: "birthDate",
     defaultValue: "",
-    formType: "text",
+    formType: "date",
     label: "Birth Date",
     containerLength: "flex-1/5",
+    required: true,
   },
   {
     fieldName: "religiousAffiliation",
@@ -76,6 +86,7 @@ export const enrollmentForms = [
     formType: "text",
     label: "Religious Affiliation",
     containerLength: "flex-1/5",
+    required: false,
   },
   {
     fieldName: "civilStatus",
@@ -83,6 +94,7 @@ export const enrollmentForms = [
     formType: "text",
     label: "Civil Status",
     containerLength: "flex-1/5",
+    required: true,
   },
 ];
 
@@ -93,6 +105,7 @@ export const parentForms = [
     formType: "text",
     label: "Father Name",
     containerLength: "flex-1/5",
+    required: true,
   },
   {
     fieldName: "fatherOccupation",
@@ -100,6 +113,7 @@ export const parentForms = [
     formType: "text",
     label: "Father Occupation",
     containerLength: "flex-1/5",
+    required: false,
   },
   {
     fieldName: "fatherContactNumber",
@@ -107,6 +121,7 @@ export const parentForms = [
     formType: "text",
     label: "Father Contact Number",
     containerLength: "flex-1/5",
+    required: false,
   },
   {
     fieldName: "fatherAddress",
@@ -114,6 +129,7 @@ export const parentForms = [
     formType: "text",
     label: "Father Address",
     containerLength: "flex-4/4",
+    required: false,
   },
   {
     fieldName: "motherName",
@@ -121,6 +137,7 @@ export const parentForms = [
     formType: "text",
     label: "Mother Name",
     containerLength: "flex-1/5",
+    required: true,
   },
   {
     fieldName: "motherOccupation",
@@ -128,6 +145,7 @@ export const parentForms = [
     formType: "text",
     label: "Mother Occupation",
     containerLength: "flex-1/5",
+    required: false,
   },
   {
     fieldName: "motherContactNumber",
@@ -135,6 +153,7 @@ export const parentForms = [
     formType: "text",
     label: "Mother Contact Number",
     containerLength: "flex-1/5",
+    required: false,
   },
   {
     fieldName: "motherAddress",
@@ -142,6 +161,7 @@ export const parentForms = [
     formType: "text",
     label: "Mother Address",
     containerLength: "flex-4/4",
+    required: false,
   },
   {
     fieldName: "guardianName",
@@ -149,6 +169,7 @@ export const parentForms = [
     formType: "text",
     label: "Guardian Name",
     containerLength: "flex-1/4",
+    required: false,
   },
   {
     fieldName: "guardianRelationship",
@@ -156,6 +177,7 @@ export const parentForms = [
     formType: "text",
     label: "Guardian Relationship",
     containerLength: "flex-1/4",
+    required: false,
   },
   {
     fieldName: "guardianContactNumber",
@@ -163,6 +185,7 @@ export const parentForms = [
     formType: "text",
     label: "Guardian Contact Number",
     containerLength: "flex-1/4",
+    required: false,
   },
   //   {
   //     fieldName: "employerName",
@@ -197,13 +220,15 @@ export const educationalBackgroundForms = [
     formType: "text",
     label: "Elementary School",
     containerLength: "flex-3/4",
+    required: false,
   },
   {
     fieldName: "elementaryYearGraduated",
     defaultValue: "",
-    formType: "text",
+    formType: "date",
     label: "Elementary Year Graduated",
     containerLength: "flex-1/5",
+    required: false,
   },
   {
     fieldName: "juniorHighSchool",
@@ -211,13 +236,15 @@ export const educationalBackgroundForms = [
     formType: "text",
     label: "Junior High School",
     containerLength: "flex-3/4",
+    required: false,
   },
   {
     fieldName: "juniorHighSchoolYearGraduated",
     defaultValue: "",
-    formType: "text",
+    formType: "date",
     label: "Junior High School Year Graduated",
     containerLength: "flex-1/5",
+    required: false,
   },
   {
     fieldName: "seniorHighSchool",
@@ -225,13 +252,15 @@ export const educationalBackgroundForms = [
     formType: "text",
     label: "Senior High School",
     containerLength: "flex-3/4",
+    required: false,
   },
   {
     fieldName: "seniorHighSchoolYearGraduated",
     defaultValue: "",
-    formType: "text",
+    formType: "date",
     label: "Senior High School Year Graduated",
     containerLength: "flex-1/5",
+    required: false,
   },
   {
     fieldName: "lastSchoolAttended",
@@ -239,12 +268,14 @@ export const educationalBackgroundForms = [
     formType: "text",
     label: "Last School Attended",
     containerLength: "flex-3/4",
+    required: false,
   },
   {
     fieldName: "lastSchoolAttendedYearGraduated",
     defaultValue: "",
-    formType: "text",
+    formType: "date",
     label: "Last School Attended Year Graduated",
     containerLength: "flex-1/5",
+    required: false,
   },
 ];

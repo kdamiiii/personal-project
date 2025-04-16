@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/buttons";
 import { Card } from "@/components/cards";
-import { DropDown, TestForm } from "@/components/forms";
+import { TestForm } from "@/components/forms";
 import { Spinner } from "@/components/spinner";
 import {
   educationalBackgroundForms,
@@ -10,8 +10,6 @@ import {
   parentForms,
 } from "@/constants/enrollment";
 import { apiHostname, RequestError } from "@/constants/generalTypes";
-import { CourseTypeEnum } from "@/utils/fetchCourseData";
-import { getEnumKeyFromValue, getEnumValues } from "@/utils/textUtils";
 import { useForm } from "@tanstack/react-form";
 import { useRouter } from "next/navigation";
 
@@ -38,35 +36,70 @@ export default function Enrollment() {
 
   console.log(defaultValues);
 
-  // fieldName,
-  //     value.defaultValue,
-  //   ]);
-
   const form = useForm({
     defaultValues,
     onSubmit: async ({ value }) => {
       try {
-        // const res = await fetch(apiHostname + "/courses", {
-        //   method: "POST",
-        //   headers: {
-        //     "content-type": "application/json",
-        //   },
-        //   credentials: "include",
-        //   body: JSON.stringify({
-        //     course_name: value.courseName,
-        //     course_type: getEnumKeyFromValue(CourseTypeEnum, value.courseType),
-        //     course_code: value.courseCode,
-        //     course_description: value.courseDescription,
-        //   }),
-        // });
-        // if (!res.ok) {
-        //   const errorData = await res.json();
-        //   throw new RequestError(
-        //     errorData.status,
-        //     errorData.message || "Something went wrong"
-        //   );
-        // }
-        // router.push("/portal/dashboard/courses");
+        const res = await fetch(apiHostname + "/enrollment_details", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            enrollment_details: {
+              first_name: value.firstName,
+              last_name: value.lastName,
+              middle_name: value.middleName,
+              suffix: value.suffix,
+              email: value.email,
+              city_address: value.cityAddress,
+              contact_number: value.contactNumber,
+              provincial_address: value.provincialAddress,
+              sex: value.sex,
+              birth_place: value.birthPlace,
+              birth_date: value.birthDate,
+              religous_affiliation: value.religiousAffiliation,
+              civil_status: value.civilStatus,
+            },
+            educational_background: {
+              elementary_school: value.elementarySchool,
+              elementaryYearGraduated: value.elementaryYearGraduated,
+              junior_high_school: value.juniorHighSchool,
+              junior_high_school_year_graduated:
+                value.juniorHighSchoolYearGraduated,
+              senior_high_school: value.seniorHighSchool,
+              senior_high_school_year_graduated:
+                value.seniorHighSchoolYearGraduated,
+              last_school_attended: value.lastSchoolAttended,
+              last_school_attended_year_graduated:
+                value.lastSchoolAttendedYearGraduated,
+            },
+            parents_details: {
+              father_name: value.fatherName,
+              father_occupation: value.fatherOccupation,
+              father_contact_number: value.fatherContactNumber,
+              father_address: value.fatherAddress,
+              mother_name: value.motherName,
+              mother_occupation: value.motherOccupation,
+              mother_contact_number: value.motherContactNumber,
+              mother_address: value.motherAddress,
+              guardian_name: value.guardianName,
+              guardian_occupation: value.guardianOccupation,
+              guardian_contact_number: value.guardianContactNumber,
+              guardian_relationship: value.guardianRelationship,
+              guardian_address: value.guardianAddress,
+            },
+          }),
+        });
+        if (!res.ok) {
+          const errorData = await res.json();
+          throw new RequestError(
+            errorData.status,
+            errorData.message || "Something went wrong"
+          );
+        }
+        router.push("/portal/dashboard/courses");
       } catch (e) {
         console.log(e);
       }
@@ -94,13 +127,20 @@ export default function Enrollment() {
                 form={form}
                 name={obj.fieldName}
                 label={obj.label}
+                type={obj.formType}
                 areaLength="w-full"
                 placeHolder={`Enter ${obj.label}`}
-                validators={{
-                  onChange: ({ value }) => {
-                    return !value ? `${obj.label} is required` : undefined;
-                  },
-                }}
+                validators={
+                  obj.required
+                    ? {
+                        onChange: ({ value }) => {
+                          return !value
+                            ? `${obj.label} is required`
+                            : undefined;
+                        },
+                      }
+                    : undefined
+                }
               />
             </div>
           ))}
@@ -114,15 +154,22 @@ export default function Enrollment() {
             >
               <TestForm
                 form={form}
+                type={obj.formType}
                 name={obj.fieldName}
                 label={obj.label}
                 areaLength="w-full"
                 placeHolder={`Enter ${obj.label}`}
-                validators={{
-                  onChange: ({ value }) => {
-                    return !value ? `${obj.label} is required` : undefined;
-                  },
-                }}
+                validators={
+                  obj.required
+                    ? {
+                        onChange: ({ value }) => {
+                          return !value
+                            ? `${obj.label} is required`
+                            : undefined;
+                        },
+                      }
+                    : undefined
+                }
               />
             </div>
           ))}
@@ -137,13 +184,20 @@ export default function Enrollment() {
                 form={form}
                 name={obj.fieldName}
                 label={obj.label}
+                type={obj.formType}
                 areaLength="w-full"
                 placeHolder={`Enter ${obj.label}`}
-                validators={{
-                  onChange: ({ value }) => {
-                    return !value ? `${obj.label} is required` : undefined;
-                  },
-                }}
+                validators={
+                  obj.required
+                    ? {
+                        onChange: ({ value }) => {
+                          return !value
+                            ? `${obj.label} is required`
+                            : undefined;
+                        },
+                      }
+                    : undefined
+                }
               />
             </div>
           ))}

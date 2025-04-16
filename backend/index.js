@@ -1,16 +1,17 @@
 import express from "express";
 import cookieParser from "cookie-parser";
-import { sequelize } from "./src/models/index.js";
-import { default as authRouter } from "./src/routes/authentication.js";
-import "dotenv/config";
-import { credentialRouter } from "./src/routes/credentials.js";
 import cors from "cors";
-import { userRouter } from "./src/routes/user.js";
-import courseRouter from "./src/routes/courses.js";
+import { sequelize } from "./src/models/index.js";
 import { loggerMiddleware } from "./src/middlewares/logger.js";
+import authRouter from "./src/routes/authentication.js";
+import credentialRouter from "./src/routes/credentials.js";
+import courseRouter from "./src/routes/courses.js";
+import userRouter from "./src/routes/user.js";
 import subjectsRouter from "./src/routes/subjects.js";
 import classesRouter from "./src/routes/classes.js";
 import enrollmentRouter from "./src/routes/enrollment.js";
+import notificationsRouter from "./src/routes/notifications.js";
+import "dotenv/config";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -32,6 +33,7 @@ app.use("/courses", courseRouter);
 app.use("/subjects", subjectsRouter);
 app.use("/classes", classesRouter);
 app.use("/enrollment_details", enrollmentRouter);
+app.use("/notifications", notificationsRouter);
 
 (async () => {
   try {

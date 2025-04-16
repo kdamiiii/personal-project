@@ -42,5 +42,9 @@ export default (sequelize) => {
         key: "id",
       },
     },
+    price_per_unit: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+    },
   });
 };
