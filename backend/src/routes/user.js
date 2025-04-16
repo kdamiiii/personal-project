@@ -2,7 +2,7 @@ import express from "express";
 import { Credential, User, Role, UserRole } from "../models/index.js";
 import { assignRole } from "../utils/roles_manager.js";
 
-export const userRouter = express.Router();
+const userRouter = express.Router();
 const DEFAULT_PASSWORD = "password12345";
 /* THIS ROUTE SHOULD BE REMOVED ONCE ALL ROLES HAVE BEEN FILLED */
 userRouter.post("/", async (req, res) => {
@@ -103,3 +103,5 @@ userRouter.get("/", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+export default userRouter;

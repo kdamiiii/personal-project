@@ -21,6 +21,12 @@ import CourseModel from "./courses.model.js";
 import SubjectModel from "./subjects.model.js";
 import CourseSubjectModel from "./course_subject.model.js";
 import ClassesModel from "./classes.model.js";
+import EnrollmentDetailsModel from "./enrollment/enrollment_details.model.js";
+import ParentsDetailsModel from "./enrollment/parents_details.model.js";
+import SchoolsDetailsModel from "./enrollment/schools_details.model.js";
+import EnrollmentRequirementsModel from "./enrollment/enrollment_requirements.model.js";
+import EnrollmentCourseModel from "./enrollment/enrollment_course.model.js";
+import NotificationsModel from "./notifications.model.js";
 
 const User = UserModel(sequelize);
 const Credential = CredentialModel(sequelize);
@@ -30,19 +36,59 @@ const Course = CourseModel(sequelize);
 const Subject = SubjectModel(sequelize);
 const CourseSubject = CourseSubjectModel(sequelize);
 const Classes = ClassesModel(sequelize);
+const EnrollmentDetails = EnrollmentDetailsModel(sequelize);
+const ParentsDetails = ParentsDetailsModel(sequelize);
+const SchoolsDetails = SchoolsDetailsModel(sequelize);
+const EnrollmentRequirements = EnrollmentRequirementsModel(sequelize);
+const EnrollmentCourse = EnrollmentCourseModel(sequelize);
+const Notifications = NotificationsModel(sequelize);
 
 User.hasOne(Credential, { foreignKey: "userId", onDelete: "CASCADE" });
 User.hasOne(UserRole, { foreignKey: "userId" });
 User.hasMany(Course, { foreignKey: "id" });
 User.hasMany(Classes, { foreignKey: "class_instructor" });
+User.hasMany(Notifications, { foreignKey: "for_user" });
+Notifications.belongsTo(User, { foreignKey: "for_user" });
 Credential.belongsTo(User, { foreignKey: "userId" });
 UserRole.belongsTo(User, { foreignKey: "userId" });
 UserRole.belongsTo(Role, { foreignKey: "role" });
 Role.hasMany(UserRole, { foreignKey: "role" });
 Course.belongsTo(User, { foreignKey: "userId" });
+Course.belongsToMany(EnrollmentDetails, {
+  through: EnrollmentCourse,
+  foreignKey: "selected_course",
+  as: "EnrollmentDetails",
+});
+EnrollmentDetails.belongsToMany(Course, {
+  through: EnrollmentCourse,
+  foreignKey: "selected_course",
+});
+
+Course.hasMany(Subject, { foreignKey: "default_course" });
 Subject.hasMany(Classes, { foreignKey: "class_subject" });
+Subject.belongsTo(Course, { foreignKey: "default_course" });
 Classes.belongsTo(User, { foreignKey: "class_instructor" });
 Classes.belongsTo(Subject, { foreignKey: "class_subject" });
+
+//Enrollment
+ParentsDetails.belongsTo(EnrollmentDetails, {
+  foreignKey: "enrollment_id",
+});
+SchoolsDetails.belongsTo(EnrollmentDetails, {
+  foreignKey: "enrollment_id",
+});
+EnrollmentRequirements.belongsTo(EnrollmentDetails, {
+  foreignKey: "enrollment_id",
+});
+EnrollmentDetails.hasMany(ParentsDetails, {
+  foreignKey: "enrollment_id",
+});
+EnrollmentDetails.hasMany(SchoolsDetails, {
+  foreignKey: "enrollment_id",
+});
+EnrollmentDetails.hasMany(EnrollmentRequirements, {
+  foreignKey: "enrollment_id",
+});
 
 Course.belongsToMany(Subject, {
   through: CourseSubject,
@@ -74,4 +120,9 @@ export {
   Subject,
   CourseSubject,
   Classes,
+  EnrollmentDetails,
+  ParentsDetails,
+  SchoolsDetails,
+  EnrollmentRequirements,
+  EnrollmentCourse,
 };

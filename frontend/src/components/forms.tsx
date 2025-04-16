@@ -67,6 +67,8 @@ type TestFormType = {
     onChange: (value: OnChangeProps) => string | undefined;
     onChangeAsync?: (value: OnChangeProps) => string | undefined;
   };
+  containerLength?: string;
+  areaLength?: string;
 };
 
 export const TestForm: React.FC<TestFormType> = ({
@@ -78,33 +80,49 @@ export const TestForm: React.FC<TestFormType> = ({
   label = name,
   textarea = false,
   type = "text",
+  containerLength = "w-full",
+  areaLength = "w-[70%]",
 }) => {
   return (
-    <div>
-      <form.Field
-        name={name}
-        validators={{ ...validators, onChangeAsyncDebounce: 500 }}
-        children={(field: AnyFieldApi) => {
-          const err =
-            field.state.meta.isTouched && field.state.meta.errors.length;
+    <form.Field
+      name={name}
+      validators={{ ...validators, onChangeAsyncDebounce: 500 }}
+      children={(field: AnyFieldApi) => {
+        const err =
+          field.state.meta.isTouched && field.state.meta.errors.length;
 
-          return (
-            <div
-              className={`flex flex-${
-                row && !textarea ? "row items-center" : "col "
-              }  gap-2 flex-wrap`}
-            >
-              {name && (
-                <label
-                  htmlFor={field.name}
-                  className={`${textarea ? "w-full" : "w-[27%]"}`}
-                >
-                  {label}
-                </label>
-              )}
+        return (
+          <div
+            className={`flex flex-${
+              row && !textarea ? "row items-center" : "col "
+            }  gap-2 flex-wrap ${containerLength}`}
+          >
+            {name && (
+              <label
+                htmlFor={field.name}
+                className={`${textarea ? "w-full" : areaLength}`}
+              >
+                {label}
+              </label>
+            )}
 
-              {textarea ? (
-                <textarea
+            {textarea ? (
+              <textarea
+                id={field.name}
+                name={field.name}
+                value={field.state.value}
+                onBlur={field.handleBlur}
+                onChange={(e) => field.handleChange(e.target.value)}
+                className={`border-1 font-normal ${
+                  err
+                    ? "border-red-500 focus:border-red-500 focus:outline focus:outline-red-500"
+                    : "border-gray-400 focus:border-[#003665] focus:outline-none"
+                } p-1 px-3 h-[10em] rounded-2xl w-[100%] text-left align-top`}
+                placeholder={placeHolder ?? ""}
+              />
+            ) : (
+              <>
+                <input
                   id={field.name}
                   name={field.name}
                   value={field.state.value}
@@ -114,41 +132,25 @@ export const TestForm: React.FC<TestFormType> = ({
                     err
                       ? "border-red-500 focus:border-red-500 focus:outline focus:outline-red-500"
                       : "border-gray-400 focus:border-[#003665] focus:outline-none"
-                  } p-1 px-3 h-[10em] rounded-2xl w-[100%] text-left align-top`}
+                  } p-1 px-3 rounded-full ${areaLength}`}
+                  type={type}
                   placeholder={placeHolder ?? ""}
                 />
-              ) : (
-                <>
-                  <input
-                    id={field.name}
-                    name={field.name}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    className={`border-1 font-normal ${
-                      err
-                        ? "border-red-500 focus:border-red-500 focus:outline focus:outline-red-500"
-                        : "border-gray-400 focus:border-[#003665] focus:outline-none"
-                    } p-1 px-3 rounded-full w-[70%]`}
-                    type={type}
-                    placeholder={placeHolder ?? ""}
-                  />
-                  <div className="w-[27%]"></div>
-                </>
-              )}
+                {!areaLength && <div className="w-[27%]"></div>}
+              </>
+            )}
 
-              <p
-                className={`${
-                  textarea ? "w-full" : "w-[70%]"
-                } h-3 text-sm text-center font-normal text-red-500`}
-              >
-                <i>{err ? label + " is required" : ""}</i>
-              </p>
-            </div>
-          );
-        }}
-      />
-    </div>
+            <p
+              className={`${
+                textarea || areaLength ? "w-full" : "w-[70%]"
+              } h-3 text-sm text-center font-normal text-red-500`}
+            >
+              <i>{err ? label + " is required" : ""}</i>
+            </p>
+          </div>
+        );
+      }}
+    />
   );
 };
 

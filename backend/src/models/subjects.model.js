@@ -30,5 +30,21 @@ export default (sequelize) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
+    price: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+    },
+    default_course: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      reference: {
+        model: "Courses",
+        key: "id",
+      },
+    },
+    price_per_unit: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+    },
   });
 };

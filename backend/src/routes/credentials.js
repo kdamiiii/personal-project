@@ -1,7 +1,7 @@
 import express from "express";
 import { Credential, User } from "../models/index.js";
 
-export const credentialRouter = express.Router();
+const credentialRouter = express.Router();
 
 credentialRouter.post("/generate", async (req, res) => {
   try {
@@ -33,3 +33,5 @@ credentialRouter.get("/users/:userId", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+export default credentialRouter;
