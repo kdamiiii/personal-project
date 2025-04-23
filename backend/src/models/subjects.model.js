@@ -27,12 +27,12 @@ export default (sequelize) => {
       allowNull: true,
     },
     subject_description: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(1000),
       allowNull: true,
     },
     price: {
       type: DataTypes.FLOAT,
-      allowNull: true,
+      allowNull: false,
     },
     default_course: {
       type: DataTypes.UUID,
@@ -41,10 +41,6 @@ export default (sequelize) => {
         model: "Courses",
         key: "id",
       },
-    },
-    price_per_unit: {
-      type: DataTypes.FLOAT,
-      allowNull: true,
     },
   });
 };

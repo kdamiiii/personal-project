@@ -109,7 +109,7 @@ export const useFetchClasses = () => {
 
 export const useFetchClass = (id: string) => {
   return useQuery({
-    queryKey: ["classes"],
+    queryKey: ["classes", id],
     queryFn: () => fetchClassData(id),
   });
 };

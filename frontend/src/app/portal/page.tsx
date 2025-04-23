@@ -80,6 +80,8 @@ export default function Home() {
             form={form}
             row
             name="username"
+            label="Username"
+            areaLength="w-full"
             validators={{
               onChange: ({ value }) => {
                 return !value ? "User name is required" : undefined;
@@ -91,6 +93,8 @@ export default function Home() {
             row
             type="password"
             name="password"
+            label="Password"
+            areaLength="w-full"
             validators={{
               onChange: ({ value }) => {
                 return !value ? "User name is required" : undefined;
@@ -102,7 +106,7 @@ export default function Home() {
               selector={(state) => [state.canSubmit, state.isSubmitting]}
               children={([canSubmit, isSubmitting]) => (
                 <Button disabled={!canSubmit} type="submit" className="w-full">
-                  {isSubmitting ? <Spinner /> : "Login"}
+                  {isSubmitting ? <Spinner size={22} /> : "Login"}
                 </Button>
               )}
             />

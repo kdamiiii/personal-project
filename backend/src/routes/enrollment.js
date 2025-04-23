@@ -4,14 +4,19 @@ import {
   ParentsDetails,
   SchoolsDetails,
   EnrollmentRequirements,
+  EnrollmentCourse,
 } from "../models/index.js";
 
 const enrollmentRouter = express.Router();
 
 enrollmentRouter.post("/", async (req, res) => {
   try {
-    const { enrollment_details, parents_details, educational_background } =
-      req.body;
+    const {
+      enrollment_details,
+      parents_details,
+      educational_background,
+      course_id,
+    } = req.body;
 
     const enrollmentDetails = await EnrollmentDetails.create({
       ...enrollment_details,
@@ -31,6 +36,11 @@ enrollmentRouter.post("/", async (req, res) => {
       enrollment_id: enrollmentDetails.id,
     });
 
+    await EnrollmentCourse.create({
+      enrollment_details_id: enrollmentDetails.id,
+      selected_course: course_id,
+    });
+
     res.status(200).json({ message: "success" });
   } catch (error) {
     console.log(error.message);
@@ -40,7 +50,22 @@ enrollmentRouter.post("/", async (req, res) => {
 
 enrollmentRouter.get("/", async (req, res) => {
   try {
-    const enrollmentDetails = await EnrollmentDetails.findAll();
+    const enrollmentDetails = await EnrollmentDetails.findAll({
+      include: [
+        {
+          model: ParentsDetails,
+          as: "Parent_Details",
+        },
+        {
+          model: SchoolsDetails,
+          as: "Schools_Details",
+        },
+        {
+          model: EnrollmentRequirements,
+          as: "Enrollment_Requirements",
+        },
+      ],
+    });
     res.status(200).json(enrollmentDetails);
   } catch (error) {
     console.log(error.message);

@@ -37,10 +37,12 @@ courseRouter.get("/:courseId", async (req, res) => {
             "subject_name",
             "subject_code",
             "units",
+            "price",
             "prerequisite",
             "subject_description",
-          ], // Include only the fields you need
-          as: "CourseSubjects", // Use the alias defined in the model
+          ],
+          through: { attributes: ["student_year", "semester"] },
+          as: "CourseSubjects",
         },
       ],
       where: {
@@ -87,7 +89,7 @@ courseRouter.get("/:courseId/subjects", async (req, res) => {
       where: { id: courseId },
       include: {
         model: Subject,
-        attributes: ["id", "subject_name", "subject_description"], // Include only the fields you need
+        attributes: ["id", "subject_name", "subject_description", "price"], // Include only the fields you need
         through: { attributes: [] }, // Exclude CourseSubject fields
         as: "CourseSubjects", // Use the alias defined in the model
       },
@@ -105,13 +107,13 @@ courseRouter.get("/:courseId/subjects", async (req, res) => {
 courseRouter.post("/:courseId/subjects", async (req, res) => {
   try {
     const { courseId } = req.params;
-    const { subjectId } = req.body;
-
-    console.log(courseId, subjectId);
+    const { subjectId, student_year, semester } = req.body;
 
     const courseSubject = await CourseSubject.create({
       courseId,
       subjectId,
+      student_year,
+      semester,
     });
 
     console.log(courseSubject);

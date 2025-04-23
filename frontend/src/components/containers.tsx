@@ -50,11 +50,14 @@ export const Table: React.FC<TableType> = ({ headers, children }) => {
 export const TableRow: React.FC<{
   tableData: string[];
   handleClick?: () => void;
-}> = ({ tableData, handleClick = () => {} }) => {
+  border?: boolean;
+}> = ({ tableData, handleClick = () => {}, border = false }) => {
   return (
     <tr
       onClick={() => handleClick()}
-      className="text-gray-700 text-sm font-normal hover:bg-gray-100 hover:cursor-pointer"
+      className={`text-gray-700 text-sm font-normal hover:bg-gray-100 hover:cursor-pointer ${
+        border ? "border-b border-b-[#61616146] border-op" : ""
+      }`}
     >
       {tableData.map((data, index) => (
         <td key={index} className="px-4 py-2 whitespace-nowrap">

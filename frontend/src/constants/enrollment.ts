@@ -58,8 +58,9 @@ export const enrollmentForms = [
   },
   {
     fieldName: "sex",
-    defaultValue: "",
-    formType: "text",
+    defaultValue: "Male",
+    options: ["Male", "Female"],
+    formType: "select",
     label: "Sex",
     containerLength: "flex-1/5",
     required: true,
@@ -90,8 +91,9 @@ export const enrollmentForms = [
   },
   {
     fieldName: "civilStatus",
-    defaultValue: "",
-    formType: "text",
+    defaultValue: "Single",
+    options: ["Single", "Married", "Widowed", "Divorced", "Separated"],
+    formType: "select",
     label: "Civil Status",
     containerLength: "flex-1/5",
     required: true,

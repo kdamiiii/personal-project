@@ -11,6 +11,7 @@ subjectsRouter.post("/", async (req, res) => {
       units,
       prerequisite,
       subject_description,
+      price,
     } = req.body;
 
     const subject = await Subject.create({
@@ -18,6 +19,7 @@ subjectsRouter.post("/", async (req, res) => {
       subject_name,
       subject_description,
       units,
+      price,
       prerequisite: prerequisite || null,
     });
 
@@ -53,6 +55,22 @@ subjectsRouter.get("/:subjectId", async (req, res) => {
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: error.message });
+  }
+});
+
+subjectsRouter.delete("/:subjectId", async (req, res) => {
+  try {
+    const { subjectId } = req.params;
+    await Subject.destroy({
+      where: {
+        subjectId,
+      },
+    });
+
+    res.status(200).json({ message: "Course subject deleted successfully" });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: error.message });
   }
 });
 

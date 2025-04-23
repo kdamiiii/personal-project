@@ -64,7 +64,7 @@ type TestFormType = {
   placeHolder?: string;
   textarea?: boolean;
   validators?: {
-    onChange: (value: OnChangeProps) => string | undefined;
+    onChange: (value: OnChangeProps) => string | number | undefined;
     onChangeAsync?: (value: OnChangeProps) => string | undefined;
   };
   containerLength?: string;
@@ -136,13 +136,13 @@ export const TestForm: React.FC<TestFormType> = ({
                   type={type}
                   placeholder={placeHolder ?? ""}
                 />
-                {!areaLength && <div className="w-[27%]"></div>}
+                {(!areaLength || row) && <div className="w-[27%]"></div>}
               </>
             )}
 
             <p
               className={`${
-                textarea || areaLength ? "w-full" : "w-[70%]"
+                textarea || !row ? "w-full" : "w-[70%]"
               } h-3 text-sm text-center font-normal text-red-500`}
             >
               <i>{err ? label + " is required" : ""}</i>
@@ -168,6 +168,8 @@ type DropDownFormType = {
   className?: string;
   width?: string;
   placeHolder?: string;
+  arealength?: string;
+  containerLength?: string;
 };
 export const DropDown = ({
   form,
@@ -176,23 +178,38 @@ export const DropDown = ({
   label,
   className = "",
   placeHolder = "",
+  arealength = "w-[70%]",
+  containerLength = "w-full",
+  validators,
+  row = false,
 }: DropDownFormType) => {
   return (
     <form.Field
       name={name}
+      validators={validators}
       children={(field: AnyFieldApi) => {
-        console.log(field.state.value);
+        const err =
+          field.state.meta.isTouched && field.state.meta.errors.length > 0;
         return (
-          <div className={`flex gap-2 items-center ${className}`}>
+          <div
+            className={`flex gap-2 flex-${
+              row ? "row items-center" : "col"
+            } ${className} ${containerLength}`}
+          >
             {label && (
-              <label className="font-bold block mb-1 w-[27%]">{label}</label>
+              <label
+                htmlFor={field.name}
+                className={`${arealength ? arealength : "w-[27%]"}`}
+              >
+                {label}
+              </label>
             )}
             <select
               value={field.state.value}
               onChange={(e) => field.handleChange(e.target.value)}
-              className={`${
-                label ? "w-[70%]" : "w-full"
-              } font-normal p-1 px-3 rounded-full border-1 border-gray-400`}
+              className={`${arealength} font-normal p-1 px-3 rounded-full border-1 ${
+                err ? "border-red-400" : "border-gray-400"
+              }`}
             >
               <option disabled>{placeHolder}</option>
               {values.map((category) => (

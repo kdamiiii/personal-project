@@ -34,7 +34,7 @@ export default function CoursePage({ params }: Props) {
             <hr />
             <p className="text-md">{data?.courseDescription}</p>
           </Card>
-          <Card className="bg-white max-w-8xl p-5 gap-2">
+          <Card className="bg-white p-5 gap-2">
             <div className="flex items-center gap-3">
               <h2 className="text-3xl text-gray-900">Subjects</h2>
               <CourseSubjectAdder courseId={unwrappedParams.id} size="2em" />
