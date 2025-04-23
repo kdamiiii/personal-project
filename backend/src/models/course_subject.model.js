@@ -15,6 +15,7 @@ export default (sequelize) => {
         model: Course,
         key: "id",
       },
+      onDelete: "CASCADE",
       primaryKey: true,
     },
     subjectId: {
@@ -24,7 +25,16 @@ export default (sequelize) => {
         model: Subject,
         key: "id",
       },
+      onDelete: "CASCADE",
       primaryKey: true,
+    },
+    student_year: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    semester: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
   });
 };

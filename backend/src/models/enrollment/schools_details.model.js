@@ -15,6 +15,7 @@ export default (sequelize) => {
         model: "Enrollment_Details",
         key: "id",
       },
+      onDelete: "CASCADE",
     },
     elementary_school: {
       type: DataTypes.STRING,

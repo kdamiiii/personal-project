@@ -1,12 +1,16 @@
 "use client";
 
 import { Button } from "@/components/buttons";
+import { Card } from "@/components/cards";
 import { TestForm } from "@/components/forms";
 import { Spinner } from "@/components/spinner";
 import { apiHostname, RequestError } from "@/constants/generalTypes";
 import { useForm } from "@tanstack/react-form";
+import { useRouter } from "next/navigation";
 
 export default function Subjects() {
+  const router = useRouter();
+
   const form = useForm({
     defaultValues: {
       subjectName: "",
@@ -14,6 +18,7 @@ export default function Subjects() {
       subjectDescription: "",
       units: 0,
       prerequisite: "",
+      price: 0,
     },
     onSubmit: async ({ value }) => {
       try {
@@ -27,6 +32,7 @@ export default function Subjects() {
             subject_name: value.subjectName,
             subject_code: value.subjectCode,
             subject_description: value.subjectDescription,
+            price: value.price,
             units: value.units,
             prerequisite: value.prerequisite,
           }),
@@ -39,6 +45,8 @@ export default function Subjects() {
             errorData.message || "Something went wrong"
           );
         }
+
+        router.push("/portal/dashboard/subjects");
       } catch (e) {
         console.log(e);
       }
@@ -46,7 +54,7 @@ export default function Subjects() {
   });
 
   return (
-    <div className="flex flex-col gap-5">
+    <Card className="flex flex-col p-5 h-full overflow-y-scroll bg-white gap-5">
       <h2 className="text-2xl">Create New Subject</h2>
       <div className="flex items-center gap-3">
         <form
@@ -97,6 +105,17 @@ export default function Subjects() {
             }}
           />
           <TestForm
+            form={form}
+            row
+            label="Price"
+            name="price"
+            validators={{
+              onChange: ({ value }) => {
+                return !value ? "Subject description is required" : undefined;
+              },
+            }}
+          />
+          <TestForm
             placeHolder="Select Pre-requisite"
             row
             label="Pre-requisite"
@@ -109,6 +128,7 @@ export default function Subjects() {
             label="Subject Description"
             placeHolder="Enter subject description"
             name="subjectDescription"
+            textarea
             validators={{
               onChange: ({ value }) => {
                 return !value ? "Subject description is required" : undefined;
@@ -126,6 +146,6 @@ export default function Subjects() {
           />
         </form>
       </div>
-    </div>
+    </Card>
   );
 }

@@ -36,6 +36,7 @@ export const fetchCoursesData = async (): Promise<Array<CourseType>> => {
     return [];
   }
   const data = await res.json();
+  console.log("courses", data);
   return data;
 };
 
@@ -73,13 +74,18 @@ export const useFetchCourse = (courseId: string) => {
   });
 };
 
+export type CourseSubjectType = ModifiedSubjectType & {
+  studentYear: string;
+  semester: string;
+};
+
 type ModifiedCourseType = {
   courseName: string;
   courseDescription: string;
   courseCode: string;
   courseType: CourseTypeEnum;
   user: Omit<UserData, "role" | "username" | "email">;
-  subjects: ModifiedSubjectType[];
+  subjects: CourseSubjectType[];
 };
 
 const modifyCourseData = ({
@@ -90,6 +96,7 @@ const modifyCourseData = ({
   Portal_User,
   CourseSubjects,
 }: CourseType) => {
+  console.log("HAHAHAHAHA", CourseSubjects);
   return {
     courseName: course_name,
     courseType: course_type,
@@ -100,6 +107,13 @@ const modifyCourseData = ({
       lastName: Portal_User.last_name,
       id: Portal_User.id,
     },
-    subjects: CourseSubjects.map((s) => modifySubjectData(s)),
+    subjects: CourseSubjects.map((s) => {
+      console.log(s);
+      return {
+        ...modifySubjectData(s),
+        studentYear: s?.Course_Subjects?.student_year ?? "",
+        semester: s?.Course_Subjects?.semester ?? "",
+      };
+    }),
   } as ModifiedCourseType;
 };

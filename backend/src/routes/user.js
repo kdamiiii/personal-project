@@ -4,7 +4,7 @@ import { assignRole } from "../utils/roles_manager.js";
 
 const userRouter = express.Router();
 const DEFAULT_PASSWORD = "password12345";
-/* THIS ROUTE SHOULD BE REMOVED ONCE ALL ROLES HAVE BEEN FILLED */
+
 userRouter.post("/", async (req, res) => {
   try {
     const { first_name, last_name, email } = req.body;
@@ -27,6 +27,7 @@ userRouter.post("/", async (req, res) => {
   }
 });
 
+/* THIS ROUTE SHOULD BE REMOVED ONCE ALL ROLES HAVE BEEN FILLED */
 userRouter.post("/roles", async (req, res) => {
   try {
     const { role } = req.body;
@@ -37,6 +38,7 @@ userRouter.post("/roles", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+/* ---------------------------------*/
 
 userRouter.post("/:userId/role", async (req, res) => {
   try {

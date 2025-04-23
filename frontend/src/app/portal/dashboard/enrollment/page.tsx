@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/buttons";
 import { Card } from "@/components/cards";
-import { TestForm } from "@/components/forms";
+import { DropDown, TestForm } from "@/components/forms";
 import { Spinner } from "@/components/spinner";
 import {
   educationalBackgroundForms,
@@ -10,11 +10,15 @@ import {
   parentForms,
 } from "@/constants/enrollment";
 import { apiHostname, RequestError } from "@/constants/generalTypes";
+import { useFetchCourses } from "@/utils/fetchCourseData";
 import { useForm } from "@tanstack/react-form";
 import { useRouter } from "next/navigation";
 
 export default function Enrollment() {
   const router = useRouter();
+  const { data, error, isLoading } = useFetchCourses();
+
+  const def: Record<string, string> = { courseId: "Select Course" };
 
   const defaultValues = {
     ...enrollmentForms.reduce((acc: Record<string, string>, curr) => {
@@ -32,13 +36,16 @@ export default function Enrollment() {
       },
       {}
     ),
+    ...def,
   };
-
-  console.log(defaultValues);
 
   const form = useForm({
     defaultValues,
     onSubmit: async ({ value }) => {
+      const courseId = data?.find(
+        (course) => course.course_name === value.courseId
+      )?.id;
+
       try {
         const res = await fetch(apiHostname + "/enrollment_details", {
           method: "POST",
@@ -56,11 +63,11 @@ export default function Enrollment() {
               city_address: value.cityAddress,
               contact_number: value.contactNumber,
               provincial_address: value.provincialAddress,
-              sex: value.sex,
+              sex: value.sex[0].toUpperCase(),
               birth_place: value.birthPlace,
               birth_date: value.birthDate,
               religous_affiliation: value.religiousAffiliation,
-              civil_status: value.civilStatus,
+              civil_status: value.civilStatus.toUpperCase(),
             },
             educational_background: {
               elementary_school: value.elementarySchool,
@@ -90,6 +97,7 @@ export default function Enrollment() {
               guardian_relationship: value.guardianRelationship,
               guardian_address: value.guardianAddress,
             },
+            course_id: courseId,
           }),
         });
         if (!res.ok) {
@@ -107,7 +115,7 @@ export default function Enrollment() {
   });
 
   return (
-    <Card className="flex overflow-y-scroll p-5 bg-white flex-col gap-5">
+    <Card className="flex overflow-y-scroll p-20 bg-white flex-col gap-5">
       <div className="flex items-center gap-3">
         <form
           onSubmit={(e) => {
@@ -123,25 +131,67 @@ export default function Enrollment() {
               key={obj.fieldName}
               className={`flex ${obj.containerLength ?? "flex-1"}`}
             >
-              <TestForm
-                form={form}
-                name={obj.fieldName}
-                label={obj.label}
-                type={obj.formType}
-                areaLength="w-full"
-                placeHolder={`Enter ${obj.label}`}
-                validators={
-                  obj.required
-                    ? {
-                        onChange: ({ value }) => {
-                          return !value
-                            ? `${obj.label} is required`
-                            : undefined;
-                        },
-                      }
-                    : undefined
-                }
-              />
+              {obj.formType === "select" && obj.label && obj.options ? (
+                <DropDown
+                  form={form}
+                  name={obj.fieldName}
+                  label={obj.label}
+                  placeHolder={`Enter ${obj.label}`}
+                  values={obj.options}
+                  arealength="w-full"
+                  validators={
+                    obj.required
+                      ? {
+                          onChange: ({ value }) => {
+                            return !value
+                              ? `${obj.label} is required`
+                              : undefined;
+                          },
+                        }
+                      : undefined
+                  }
+                />
+              ) : obj.formType === "textarea" ? (
+                <TestForm
+                  form={form}
+                  name={obj.fieldName}
+                  label={obj.label}
+                  type={obj.formType}
+                  areaLength="w-full"
+                  placeHolder={`Enter ${obj.label}`}
+                  validators={
+                    obj.required
+                      ? {
+                          onChange: ({ value }) => {
+                            return !value
+                              ? `${obj.label} is required`
+                              : undefined;
+                          },
+                        }
+                      : undefined
+                  }
+                />
+              ) : (
+                <TestForm
+                  form={form}
+                  name={obj.fieldName}
+                  label={obj.label}
+                  type={obj.formType}
+                  areaLength="w-full"
+                  placeHolder={`Enter ${obj.label}`}
+                  validators={
+                    obj.required
+                      ? {
+                          onChange: ({ value }) => {
+                            return !value
+                              ? `${obj.label} is required`
+                              : undefined;
+                          },
+                        }
+                      : undefined
+                  }
+                />
+              )}
             </div>
           ))}
           <div className="w-full border-b-2" />
@@ -201,6 +251,29 @@ export default function Enrollment() {
               />
             </div>
           ))}
+          <div className="w-full border-b-2" />
+          <h2 className="text-2xl w-full">Course Selection</h2>
+          {isLoading ? (
+            <Spinner />
+          ) : (
+            <DropDown
+              form={form}
+              name="courseId"
+              label="Select Course"
+              placeHolder="Select Course"
+              values={data?.map((course) => course.course_name) ?? []}
+              arealength="w-full"
+              validators={{
+                onChange: ({ value }) => {
+                  return value == "Select Course"
+                    ? "Course is required"
+                    : undefined;
+                },
+              }}
+            />
+          )}
+          {error && <p className="text-red-500">{error.message}</p>}
+
           <form.Subscribe
             selector={(state) => [state.canSubmit, state.isSubmitting]}
             // eslint-disable-next-line react/no-children-prop

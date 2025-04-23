@@ -8,6 +8,7 @@ import Link from "next/link";
 import { FaPlus } from "react-icons/fa6";
 import { Table, TableRow } from "@/components/containers";
 import { useRouter } from "next/navigation";
+import { Card } from "@/components/cards";
 
 export default function Courses() {
   const { isLoading, data, isFetching } = useFetchClasses();
@@ -24,7 +25,7 @@ export default function Courses() {
   ];
 
   return (
-    <div>
+    <Card className="bg-white p-5 h-full overflow-y-scroll">
       <div className="flex items-center gap-3">
         <p className="">Search</p>
         <FormInput />
@@ -70,6 +71,6 @@ export default function Courses() {
           </div>
         )}
       </div>
-    </div>
+    </Card>
   );
 }

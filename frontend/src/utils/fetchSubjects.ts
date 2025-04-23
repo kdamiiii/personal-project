@@ -8,6 +8,11 @@ export type SubjectsPayload = {
   subject_description: string;
   units: number;
   prereqisite: string;
+  price: number;
+  Course_Subjects?: {
+    student_year: string;
+    semester: string;
+  };
 };
 
 export type ModifiedSubjectType = {
@@ -16,6 +21,7 @@ export type ModifiedSubjectType = {
   subjectName: string;
   subjectDescription: string;
   units: number;
+  price: number;
   prerequisite: string;
 };
 
@@ -63,7 +69,7 @@ export const useFetchSubjects = () => {
 
 export const useFetchSubject = (subjectId: string) => {
   return useQuery({
-    queryKey: ["courses", subjectId],
+    queryKey: ["subjects", subjectId],
     queryFn: () => fetchSubjectData(subjectId),
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 5,
@@ -80,5 +86,6 @@ export const modifySubjectData = (
     subjectDescription: data.subject_description,
     units: data.units,
     prerequisite: data.prereqisite || "None",
+    price: data.price,
   };
 };

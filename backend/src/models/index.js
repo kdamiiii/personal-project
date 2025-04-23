@@ -67,12 +67,18 @@ EnrollmentDetails.belongsToMany(Course, {
 Course.hasMany(Subject, { foreignKey: "default_course" });
 Subject.hasMany(Classes, { foreignKey: "class_subject" });
 Subject.belongsTo(Course, { foreignKey: "default_course" });
+Subject.hasMany(CourseSubject, {
+  foreignKey: "subjectId",
+  as: "SubjectRequirement",
+});
+CourseSubject.belongsTo(Subject, { foreignKey: "subjectId" });
 Classes.belongsTo(User, { foreignKey: "class_instructor" });
 Classes.belongsTo(Subject, { foreignKey: "class_subject" });
 
 //Enrollment
 ParentsDetails.belongsTo(EnrollmentDetails, {
   foreignKey: "enrollment_id",
+  as: "Parent_Details",
 });
 SchoolsDetails.belongsTo(EnrollmentDetails, {
   foreignKey: "enrollment_id",
@@ -80,8 +86,9 @@ SchoolsDetails.belongsTo(EnrollmentDetails, {
 EnrollmentRequirements.belongsTo(EnrollmentDetails, {
   foreignKey: "enrollment_id",
 });
-EnrollmentDetails.hasMany(ParentsDetails, {
+EnrollmentDetails.hasOne(ParentsDetails, {
   foreignKey: "enrollment_id",
+  as: "Parent_Details",
 });
 EnrollmentDetails.hasMany(SchoolsDetails, {
   foreignKey: "enrollment_id",

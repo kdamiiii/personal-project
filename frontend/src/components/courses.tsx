@@ -5,11 +5,11 @@ import { Button } from "./buttons";
 import { Card, CardTitle } from "./cards";
 import { CheckBox, DropDown } from "./forms";
 import { useEffect, useState } from "react";
-import { CourseTypeEnum } from "@/utils/fetchCourseData";
+import { CourseSubjectType, CourseTypeEnum } from "@/utils/fetchCourseData";
 import Image from "next/image";
 import Link from "next/link";
 import { Table, TableRow } from "./containers";
-import { ModifiedSubjectType, useFetchSubjects } from "@/utils/fetchSubjects";
+import { useFetchSubjects } from "@/utils/fetchSubjects";
 import { Spinner } from "./spinner";
 import { FaPlus } from "react-icons/fa6";
 import { useForm } from "@tanstack/react-form";
@@ -143,7 +143,7 @@ export const CourseCard: React.FC<CourseCardProps> = ({
 };
 
 type CourseSubjectstype = {
-  subjects: ModifiedSubjectType[] | undefined;
+  subjects: CourseSubjectType[] | undefined;
 };
 
 export const CourseSubjects: React.FC<CourseSubjectstype> = ({ subjects }) => {
@@ -157,16 +157,28 @@ export const CourseSubjects: React.FC<CourseSubjectstype> = ({ subjects }) => {
 
   return (
     <div>
-      <Table headers={Object.keys(subjects[0]).filter((s) => s != "id")}>
+      <Table
+        headers={[
+          "Subject Code",
+          "Subject Name",
+          "Units",
+          "Pre-requisite",
+          "Price",
+          "Student Year",
+          "Semester",
+        ]}
+      >
         {subjects.map((subject) => (
           <TableRow
             key={subject.id}
             tableData={[
               subject.subjectCode,
               subject.subjectName,
-              subject.subjectDescription,
               subject.units.toString(),
               subject.prerequisite,
+              subject.price.toString(),
+              subject.studentYear,
+              subject.semester,
             ]}
           />
         ))}
@@ -193,7 +205,11 @@ export const CourseSubjectAdder: React.FC<{
     );
   }
 
-  return <SubjectSelector courseId={courseId} />;
+  return (
+    <div className="flex w-full">
+      <SubjectSelector courseId={courseId} />
+    </div>
+  );
 };
 
 const SubjectSelector: React.FC<{ courseId: string }> = ({ courseId }) => {
@@ -201,8 +217,14 @@ const SubjectSelector: React.FC<{ courseId: string }> = ({ courseId }) => {
   const form = useForm({
     defaultValues: {
       subjectName: "Select a subject",
+      studentYear: "Select a year",
+      semester: "Select a semester",
     },
-    onSubmit: async ({ value }: { value: { subjectName: string } }) => {
+    onSubmit: async ({
+      value,
+    }: {
+      value: { subjectName: string; studentYear: string; semester: string };
+    }) => {
       const subjectId = data?.find(
         (s) => s.subject_name == value.subjectName
       )?.id;
@@ -215,6 +237,8 @@ const SubjectSelector: React.FC<{ courseId: string }> = ({ courseId }) => {
           credentials: "include",
           body: JSON.stringify({
             subjectId,
+            student_year: value.studentYear,
+            semester: value.semester,
           }),
         });
 
@@ -233,10 +257,6 @@ const SubjectSelector: React.FC<{ courseId: string }> = ({ courseId }) => {
     },
   });
 
-  useEffect(() => {
-    console.log(form.state.values);
-  }, [form]);
-
   return (
     <form
       onSubmit={(e) => {
@@ -244,20 +264,65 @@ const SubjectSelector: React.FC<{ courseId: string }> = ({ courseId }) => {
         e.stopPropagation();
         form.handleSubmit();
       }}
-      className="flex flex-col w-[30%]"
+      className="flex flex-col w-fit"
     >
       {!!data && (
-        <div className="flex gap-2">
+        <div className="ml-10 flex gap-2 items-center">
           <DropDown
             form={form}
             values={data?.map((s) => s.subject_name)}
+            label="Subject"
             name="subjectName"
             className="max-w-1/2"
             placeHolder="Select a subject"
+            arealength="w-full"
+            validators={{
+              onChange: (value) => {
+                if (value.value == "Select a subject") {
+                  return "Please select a subject";
+                }
+                return undefined;
+              },
+            }}
+          />
+          <DropDown
+            form={form}
+            values={["1st", "2nd", "3rd", "4th", "5th"]}
+            label="Year"
+            name="studentYear"
+            className="max-w-1/2"
+            placeHolder="Select a year"
+            arealength="w-full"
+            validators={{
+              onChange: (value) => {
+                if (value.value == "Select a year") {
+                  return "Please select a year";
+                }
+                return undefined;
+              },
+            }}
+          />
+          <DropDown
+            form={form}
+            values={["1st", "2nd", "3rd"]}
+            name="semester"
+            label="Semester"
+            className="max-w-1/2"
+            placeHolder="Select a semester"
+            arealength="w-full"
+            validators={{
+              onChange: (value) => {
+                if (value.value == "Select a semester") {
+                  return "Please select a semester";
+                }
+                return undefined;
+              },
+            }}
           />
           <Button
             type="submit"
             color="bg-[#3cb54c]"
+            className="h-10"
             disabled={form.state.isSubmitting}
           >
             <FaPlus />
