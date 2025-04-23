@@ -19,6 +19,7 @@ export type EnrollmentDataPayload = {
   Parents_Details: EnrollmentDataPayload;
   Schools_Details: EnrollmentStudentHistoryPayload;
   Enrollment_Requirements: EnrollmentRequirementsPayload;
+  status: string;
 };
 
 export type EnrollmentParentDataPayload = {
@@ -60,8 +61,22 @@ export type EnrollmentRequirementsPayload = {
   permit_to_cross_enroll?: boolean;
 };
 
+export type EnrollmentRequestListPayload = Pick<
+  EnrollmentDataPayload,
+  "first_name" | "last_name" | "status" | "id"
+> & {
+  courses: [
+    {
+      course_name: string;
+      Enrollment_Course: {
+        selected_course: string;
+      };
+    }
+  ];
+};
+
 export const fetchEnrollmentData = async (id: string) => {
-  const res = await fetch(`${apiHostname}/enrollment/${id}`, {
+  const res = await fetch(`${apiHostname}/enrollment_details/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -75,6 +90,33 @@ export const fetchEnrollmentData = async (id: string) => {
 
   const data = await res.json();
   return data;
+};
+
+export const fetchEnrollmentRequests = async (): Promise<
+  Array<EnrollmentRequestListPayload>
+> => {
+  const res = await fetch(`${apiHostname}/enrollment_details/`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch enrollment data");
+  }
+
+  const data: EnrollmentRequestListPayload[] = await res.json();
+  return data;
+};
+
+export const useFetchEnrollmentRequests = () => {
+  return useQuery({
+    queryKey: ["enrollment"],
+    queryFn: () => fetchEnrollmentRequests(),
+    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 5,
+  });
 };
 
 export const useFetchEnrollmentDetails = (enrollmentId: string) => {

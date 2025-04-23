@@ -60,5 +60,14 @@ export default (sequelize) => {
       type: DataTypes.ENUM("SINGLE", "MARRIED", "WIDOWED", "DIVORCED"),
       allowNull: false,
     },
+    status: {
+      type: DataTypes.ENUM("APPROVED", "DENIED", "PENDING"),
+      allowNull: false,
+      defaultValue: "PENDING",
+    },
+    notes: {
+      type: DataTypes.STRING(1000),
+      allowNull: true,
+    },
   });
 };

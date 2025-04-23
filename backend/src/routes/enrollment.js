@@ -5,6 +5,7 @@ import {
   SchoolsDetails,
   EnrollmentRequirements,
   EnrollmentCourse,
+  Course,
 } from "../models/index.js";
 
 const enrollmentRouter = express.Router();
@@ -51,6 +52,30 @@ enrollmentRouter.post("/", async (req, res) => {
 enrollmentRouter.get("/", async (req, res) => {
   try {
     const enrollmentDetails = await EnrollmentDetails.findAll({
+      attributes: ["id", "first_name", "last_name", "status"],
+      include: [
+        {
+          model: Course,
+          as: "courses", // Must match the `as` used in the association
+          attributes: ["course_name"],
+          through: {
+            attributes: ["selected_course"], // if you want to include junction data
+          },
+        },
+      ],
+    });
+    res.status(200).json(enrollmentDetails);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+});
+
+enrollmentRouter.get("/:enrollmentId", async (req, res) => {
+  try {
+    const { enrollmentId } = req.params;
+    const enrollmentDetails = await EnrollmentDetails.findOne({
+      where: { id: enrollmentId },
       include: [
         {
           model: ParentsDetails,
@@ -66,6 +91,11 @@ enrollmentRouter.get("/", async (req, res) => {
         },
       ],
     });
+
+    if (!enrollmentDetails) {
+      return res.status(404).json({ message: "Subject not found" });
+    }
+
     res.status(200).json(enrollmentDetails);
   } catch (error) {
     console.log(error.message);
@@ -73,14 +103,19 @@ enrollmentRouter.get("/", async (req, res) => {
   }
 });
 
-enrollmentRouter.get("/:enrollmentId", async (req, res) => {
+enrollmentRouter.patch("/:enrollmentId", async (req, res) => {
   try {
     const { enrollmentId } = req.params;
+    const { status } = req.body;
     const enrollmentDetails = await EnrollmentDetails.findByPk(enrollmentId);
 
     if (!enrollmentDetails) {
-      return res.status(404).json({ message: "Subject not found" });
+      return res.status(404).json({ message: "Enrollment request not found" });
     }
+
+    enrollmentDetails.set({
+      status,
+    });
 
     res.status(200).json(enrollmentDetails);
   } catch (error) {
