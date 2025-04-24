@@ -22,14 +22,25 @@ const EnrollmentRequest: React.FC = () => {
         data.length == 0 ? (
           "No data Available"
         ) : (
-          <Table headers={["Student", "Course", "Status"]}>
+          <Table
+            headers={[
+              "Student",
+              "Course",
+              "ACADEMIC HEAD",
+              "FINANCE",
+              "Status",
+            ]}
+          >
             {data.map((req) => {
+              console.log(req);
               return (
                 <TableRow
                   key={req.id}
                   tableData={[
                     `${req.first_name} ${req.last_name}`,
                     req.courses[0].course_name,
+                    req.ah_status,
+                    req.finance_status,
                     req.status,
                   ]}
                   handleClick={() => {

@@ -3,6 +3,7 @@ import {
   FaBell,
   FaBook,
   FaBookOpenReader,
+  FaCheckToSlot,
   FaCodeBranch,
 } from "react-icons/fa6";
 
@@ -11,6 +12,8 @@ type Permissions = {
   icon: React.ReactNode;
   link: string;
   roles: ["ADMIN" | "FACULTY" | "STUDENT" | "ALL"];
+  hasNotif?: boolean;
+  notifKey?: string;
 };
 
 export const SIDEBAR_PERMISSIONS: Permissions[] = [
@@ -43,6 +46,14 @@ export const SIDEBAR_PERMISSIONS: Permissions[] = [
     roles: ["ALL"],
     link: "/portal/dashboard/calendar",
     icon: <FaCalendarDay />,
+  },
+  {
+    name: "Enrollment Requests",
+    roles: ["ALL"],
+    link: "/portal/dashboard/enrollment/requests",
+    icon: <FaCheckToSlot />,
+    hasNotif: true,
+    notifKey: "ah_pending",
   },
   {
     name: "Notifications",

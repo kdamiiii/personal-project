@@ -24,7 +24,7 @@ export const Button: React.FC<ButtonProps> = ({
       onClick={() => {
         handleOnClickAction();
       }}
-      className={`flex justify-center items-center disabled:bg-[#003665d5] rounded-full text-white p-3 border-none hover:bg-blue-800 ${color} transition-colors duration-200 ${className}`}
+      className={`flex justify-center items-center disabled:bg-[#6d6d6dd5] rounded-full text-white p-3 border-none hover:bg-blue-800 ${color} transition-colors duration-200 ${className}`}
     >
       {children}
     </button>

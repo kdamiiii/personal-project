@@ -65,6 +65,16 @@ export default (sequelize) => {
       allowNull: false,
       defaultValue: "PENDING",
     },
+    ah_status: {
+      type: DataTypes.ENUM("APPROVED", "DENIED", "PENDING"),
+      allowNull: false,
+      defaultValue: "PENDING",
+    },
+    finance_status: {
+      type: DataTypes.ENUM("APPROVED", "DENIED", "PENDING"),
+      allowNull: false,
+      defaultValue: "PENDING",
+    },
     notes: {
       type: DataTypes.STRING(1000),
       allowNull: true,

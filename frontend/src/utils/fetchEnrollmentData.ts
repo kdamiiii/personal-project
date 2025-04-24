@@ -1,5 +1,6 @@
 import { apiHostname } from "@/constants/generalTypes";
 import { useQuery } from "@tanstack/react-query";
+import { CourseType } from "./fetchCourseData";
 
 export type EnrollmentDataPayload = {
   id: string;
@@ -12,14 +13,17 @@ export type EnrollmentDataPayload = {
   contact_number: string;
   provincial_address?: string;
   sex: string;
-  place_of_birth: string;
+  birth_place: string;
   birth_date: string;
   religious_affiliation?: string;
   civil_status?: string;
-  Parents_Details: EnrollmentDataPayload;
-  Schools_Details: EnrollmentStudentHistoryPayload;
+  Parent_Details: EnrollmentParentDataPayload;
+  Schools_Details: EnrollmentStudentHistoryPayload[];
   Enrollment_Requirements: EnrollmentRequirementsPayload;
   status: string;
+  ah_status: string;
+  finance_status: string;
+  courses: CourseType[];
 };
 
 export type EnrollmentParentDataPayload = {
@@ -35,6 +39,7 @@ export type EnrollmentParentDataPayload = {
   guardian_name?: string;
   guardian_relationship?: string;
   guardian_occupation?: string;
+  guardian_contact_number?: string;
 };
 
 export type EnrollmentStudentHistoryPayload = {
@@ -63,7 +68,7 @@ export type EnrollmentRequirementsPayload = {
 
 export type EnrollmentRequestListPayload = Pick<
   EnrollmentDataPayload,
-  "first_name" | "last_name" | "status" | "id"
+  "first_name" | "last_name" | "status" | "id" | "ah_status" | "finance_status"
 > & {
   courses: [
     {
@@ -75,7 +80,9 @@ export type EnrollmentRequestListPayload = Pick<
   ];
 };
 
-export const fetchEnrollmentData = async (id: string) => {
+export const fetchEnrollmentData = async (
+  id: string
+): Promise<EnrollmentDataPayload> => {
   const res = await fetch(`${apiHostname}/enrollment_details/${id}`, {
     method: "GET",
     headers: {
@@ -110,6 +117,47 @@ export const fetchEnrollmentRequests = async (): Promise<
   return data;
 };
 
+export const fetchEnrollmentCourses = async (
+  courseId: string
+): Promise<CourseType> => {
+  const res = await fetch(
+    `${apiHostname}/courses/${courseId}/subjects/firstYear/`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch enrollment data");
+  }
+
+  const data: CourseType = await res.json();
+
+  return data;
+};
+
+export const fetchEnrollmentRequestCount = async (): Promise<{
+  ah_pending: number;
+}> => {
+  const res = await fetch(`${apiHostname}/enrollment_details/request_count/`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch enrollment data");
+  }
+
+  const data: { ah_pending: number } = await res.json();
+
+  return data;
+};
+
 export const useFetchEnrollmentRequests = () => {
   return useQuery({
     queryKey: ["enrollment"],
@@ -123,6 +171,24 @@ export const useFetchEnrollmentDetails = (enrollmentId: string) => {
   return useQuery({
     queryKey: ["enrollment", enrollmentId],
     queryFn: () => fetchEnrollmentData(enrollmentId),
+    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 5,
+  });
+};
+
+export const useFetchEnrollmentCourses = (courseId: string) => {
+  return useQuery({
+    queryKey: ["enrollmentCourses", courseId],
+    queryFn: () => fetchEnrollmentCourses(courseId),
+    refetchOnWindowFocus: false,
+    staleTime: 1000 * 60 * 5,
+  });
+};
+
+export const useFetchEnrollmentRequestCount = () => {
+  return useQuery({
+    queryKey: ["enrollmentRequestCount"],
+    queryFn: () => fetchEnrollmentRequestCount(),
     refetchOnWindowFocus: false,
     staleTime: 1000 * 60 * 5,
   });

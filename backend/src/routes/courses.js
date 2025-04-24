@@ -89,10 +89,51 @@ courseRouter.get("/:courseId/subjects", async (req, res) => {
       where: { id: courseId },
       include: {
         model: Subject,
-        attributes: ["id", "subject_name", "subject_description", "price"], // Include only the fields you need
+        attributes: [
+          "id",
+          "subject_name",
+          "subject_description",
+          "price",
+          "units",
+        ], // Include only the fields you need
         through: { attributes: [] }, // Exclude CourseSubject fields
         as: "CourseSubjects", // Use the alias defined in the model
       },
+    });
+
+    console.log(courseSubject);
+
+    res.status(200).json(courseSubject);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+courseRouter.get("/:courseId/subjects/firstYear", async (req, res) => {
+  try {
+    const { courseId } = req.params;
+    const courseSubject = await Course.findOne({
+      where: { id: courseId },
+      include: {
+        model: Subject,
+        attributes: [
+          "id",
+          "subject_name",
+          "subject_description",
+          "price",
+          "units",
+        ], // Include only the fields you need
+        through: {
+          attributes: [],
+          where: {
+            student_year: "1st", // Filter by student_year in the join table
+            semester: "1st", // Filter by semester in the join table
+          },
+        },
+        as: "CourseSubjects", // Use the alias defined in the model
+      },
+      logging: console.log,
     });
 
     console.log(courseSubject);

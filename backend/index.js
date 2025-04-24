@@ -19,11 +19,14 @@ const PORT = process.env.PORT || 8000;
 let corsOptions = {
   origin: "http://localhost:3000",
   credentials: true,
+  methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
 };
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors(corsOptions));
 app.use(loggerMiddleware);
 
 app.use("/authentication", authRouter);
