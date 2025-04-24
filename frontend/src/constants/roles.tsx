@@ -5,6 +5,7 @@ import {
   FaBookOpenReader,
   FaCheckToSlot,
   FaCodeBranch,
+  FaMoneyBillWave,
 } from "react-icons/fa6";
 
 type Permissions = {
@@ -60,5 +61,13 @@ export const SIDEBAR_PERMISSIONS: Permissions[] = [
     roles: ["ALL"],
     link: "/portal/dashboard/notifications",
     icon: <FaBell />,
+  },
+  {
+    name: "Finance",
+    roles: ["ALL"],
+    link: "/portal/dashboard/finance",
+    icon: <FaMoneyBillWave />,
+    hasNotif: true,
+    notifKey: "finance_pending",
   },
 ];

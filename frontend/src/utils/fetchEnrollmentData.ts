@@ -141,6 +141,7 @@ export const fetchEnrollmentCourses = async (
 
 export const fetchEnrollmentRequestCount = async (): Promise<{
   ah_pending: number;
+  finance_pending: number;
 }> => {
   const res = await fetch(`${apiHostname}/enrollment_details/request_count/`, {
     method: "GET",
@@ -153,7 +154,8 @@ export const fetchEnrollmentRequestCount = async (): Promise<{
     throw new Error("Failed to fetch enrollment data");
   }
 
-  const data: { ah_pending: number } = await res.json();
+  const data: { ah_pending: number; finance_pending: number } =
+    await res.json();
 
   return data;
 };

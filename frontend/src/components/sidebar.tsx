@@ -37,7 +37,11 @@ export const SideBar: React.FC<{ userData: UserData }> = ({ userData }) => {
             hasNotif={btn?.hasNotif ?? false}
             isLoading={btn?.hasNotif ? isLoading : false}
             isFetched={btn?.hasNotif ? isFetched : false}
-            notifCount={!!data ? data.ah_pending : 0}
+            notifCount={
+              !!data && btn?.hasNotif
+                ? data[btn?.notifKey as keyof typeof data]
+                : 0
+            }
           />
         );
       })}

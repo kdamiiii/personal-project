@@ -80,14 +80,30 @@ enrollmentRouter.get("/", async (req, res) => {
 
 enrollmentRouter.get("/request_count", async (req, res) => {
   try {
-    const amount = await EnrollmentDetails.count({
+    const ah_pending = await EnrollmentDetails.count({
       where: {
         ah_status: "PENDING",
       },
       logging: console.log,
     });
 
-    res.status(200).json({ ah_pending: amount });
+    const finance_pending = await EnrollmentDetails.count({
+      where: {
+        finance_status: "PENDING",
+      },
+      logging: console.log,
+    });
+
+    const registrar_pending = await EnrollmentDetails.count({
+      where: {
+        finance_status: "APPROVED",
+        ah_status: "APPROVED",
+        status: "PENDING",
+      },
+      logging: console.log,
+    });
+
+    res.status(200).json({ ah_pending, finance_pending, registrar_pending });
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: error.message });
@@ -146,6 +162,8 @@ enrollmentRouter.patch("/:enrollmentId", async (req, res) => {
     });
 
     await enrollmentDetails.save();
+
+    console.log(enrollmentDetails);
 
     res.status(200).json(enrollmentDetails);
   } catch (error) {
