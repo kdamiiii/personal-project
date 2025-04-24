@@ -10,9 +10,10 @@ type FormInputType = {
 };
 
 type CheckBoxType = {
-  onToggle: (s: boolean, v: string) => void;
-  value: string;
-  children: React.ReactNode;
+  onToggle?: (s: boolean, v: string) => void;
+  value?: string;
+  children?: React.ReactNode;
+  isChecked?: boolean;
 };
 
 export const FormInput: React.FC<FormInputType> = ({
@@ -34,15 +35,17 @@ export const FormInput: React.FC<FormInputType> = ({
 };
 
 export const CheckBox: React.FC<CheckBoxType> = ({
-  onToggle,
-  value,
+  onToggle = () => {},
+  value = "",
   children,
+  isChecked = false,
 }) => {
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1">
       <input
+        checked={isChecked}
         type="checkbox"
-        className="w-6 h-5 appearance-none border-2 border-gray-500 rounded-md checked:bg-blue-500 checked:border-blue-700"
+        className="w-5 h-5 appearance-none border-2 border-gray-500 rounded-md checked:bg-blue-500 checked:border-blue-700"
         onChange={(e) => onToggle(e.target.checked, value)}
       />
       {children}

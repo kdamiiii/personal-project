@@ -48,21 +48,31 @@ User.hasOne(UserRole, { foreignKey: "userId" });
 User.hasMany(Course, { foreignKey: "id" });
 User.hasMany(Classes, { foreignKey: "class_instructor" });
 User.hasMany(Notifications, { foreignKey: "for_user" });
+User.hasOne(EnrollmentDetails, { foreignKey: "enrollment_id" });
+EnrollmentDetails.belongsTo(User, { foreignKey: "enrollment_id" });
 Notifications.belongsTo(User, { foreignKey: "for_user" });
 Credential.belongsTo(User, { foreignKey: "userId" });
 UserRole.belongsTo(User, { foreignKey: "userId" });
 UserRole.belongsTo(Role, { foreignKey: "role" });
 Role.hasMany(UserRole, { foreignKey: "role" });
 Course.belongsTo(User, { foreignKey: "userId" });
+
+//Course to Enrollment via EnrollmentCourse
+
 Course.belongsToMany(EnrollmentDetails, {
   through: EnrollmentCourse,
   foreignKey: "selected_course",
-  as: "EnrollmentDetails",
+  otherKey: "enrollment_details_id",
+  as: "enrollments",
 });
 EnrollmentDetails.belongsToMany(Course, {
   through: EnrollmentCourse,
-  foreignKey: "selected_course",
+  foreignKey: "enrollment_details_id",
+  otherKey: "selected_course",
+  as: "courses",
 });
+
+/*---------------------------------------------------*/
 
 Course.hasMany(Subject, { foreignKey: "default_course" });
 Subject.hasMany(Classes, { foreignKey: "class_subject" });

@@ -18,8 +18,21 @@ export default (sequelize) => {
     },
     email: {
       type: DataTypes.STRING,
+      allowNull: true,
+      unique: true,
+    },
+    student_id: {
+      type: DataTypes.STRING(100),
       allowNull: false,
       unique: true,
+    },
+    enrollment_id: {
+      type: DataTypes.UUID,
+      allowNull: true,
+      reference: {
+        model: "Enrollment_Details",
+        key: "id",
+      },
     },
   });
 };

@@ -16,14 +16,16 @@ export default (sequelize) => {
         key: "id",
       },
       onDelete: "CASCADE",
+      unique: false,
     },
     selected_course: {
-      type: DataTypes.UUID,
+      type: DataTypes.STRING,
       allowNull: false,
       references: {
         model: "Courses",
         key: "id",
       },
+      unique: false,
     },
   });
 };

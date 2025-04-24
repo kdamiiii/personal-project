@@ -6,9 +6,11 @@ import { FaArrowRightFromBracket } from "react-icons/fa6";
 import { UserData } from "@/utils/fetchUserData";
 import { usePathname } from "next/navigation";
 import { getSelectedTab } from "@/utils/textUtils";
+import { useFetchEnrollmentRequestCount } from "@/utils/fetchEnrollmentData";
 
 export const SideBar: React.FC<{ userData: UserData }> = ({ userData }) => {
   const pathname = usePathname();
+  const { isLoading, data, isFetched } = useFetchEnrollmentRequestCount();
 
   //#eea42e - old gold
   //#003665 - dark blue
@@ -24,15 +26,25 @@ export const SideBar: React.FC<{ userData: UserData }> = ({ userData }) => {
         <p className="text-white">{userData.username}</p>
       </div>
       {/* <div className="border-b-1 border-white w-full"></div> */}
-      {SIDEBAR_PERMISSIONS.map((btn) => (
-        <SidebarButton
-          link={btn.link}
-          icon={btn.icon}
-          selected={getSelectedTab(pathname, btn.link)}
-          key={btn.name}
-          name={btn.name}
-        />
-      ))}
+      {SIDEBAR_PERMISSIONS.map((btn) => {
+        return (
+          <SidebarButton
+            link={btn.link}
+            icon={btn.icon}
+            selected={getSelectedTab(pathname, btn.link)}
+            key={btn.name}
+            name={btn.name}
+            hasNotif={btn?.hasNotif ?? false}
+            isLoading={btn?.hasNotif ? isLoading : false}
+            isFetched={btn?.hasNotif ? isFetched : false}
+            notifCount={
+              !!data && btn?.hasNotif
+                ? data[btn?.notifKey as keyof typeof data]
+                : 0
+            }
+          />
+        );
+      })}
       <SidebarButton
         className="mt-auto"
         selected={false}
@@ -50,6 +62,10 @@ type SidebarButtonProps = {
   link: string;
   selected: boolean;
   className?: string;
+  hasNotif?: boolean;
+  notifCount?: number;
+  isLoading?: boolean;
+  isFetched?: boolean;
 };
 
 const SidebarButton: React.FC<SidebarButtonProps> = ({
@@ -58,6 +74,10 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
   link,
   selected,
   className = "",
+  hasNotif = false,
+  notifCount = 0,
+  isLoading = false,
+  isFetched = true,
 }) => {
   return (
     <Link
@@ -68,6 +88,11 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
     >
       {icon}
       {name}
+      {hasNotif && !isLoading && isFetched && notifCount > 0 && (
+        <span className="bg-orange-700 p-1 w-6 h-6 text-center flex items-center justify-center rounded-full">
+          {notifCount}
+        </span>
+      )}
     </Link>
   );
 };
