@@ -147,21 +147,21 @@ const PaymentForm: React.FC<Props> = ({ params }) => {
           <div className="text-xl mb-5">ENROLLMENT REQUEST</div>
           <div className="flex w-full gap-3">
             <Button
-              disabled={data.ah_status === "APPROVED"}
+              disabled={data.finance_status === "APPROVED"}
               handleOnClickAction={() => handleSubmit("APPROVED", data.id)}
               className="w-full bg-green-700"
             >
               APPROVE
             </Button>
             <Button
-              disabled={data.ah_status === "APPROVED"}
+              disabled={data.finance_status === "APPROVED"}
               handleOnClickAction={() => handleSubmit("DENIED", data.id)}
               className="bg-red-700 w-full"
             >
               DENY
             </Button>
           </div>
-          {data.ah_status === "APPROVED" && (
+          {data.finance_status === "APPROVED" && (
             <div className="font-normal text-sm text-gray-500 w-full text-center">
               This was already approved by an academic head
             </div>

@@ -6,7 +6,14 @@ import {
   EnrollmentRequirements,
   EnrollmentCourse,
   Course,
+  Subject,
 } from "../models/index.js";
+import {
+  createUser,
+  createCredentials,
+  createUserRoles,
+} from "../controllers/create_user.js";
+import { createNewClass } from "../controllers/classes_controller.js";
 
 const enrollmentRouter = express.Router();
 
@@ -163,7 +170,74 @@ enrollmentRouter.patch("/:enrollmentId", async (req, res) => {
 
     await enrollmentDetails.save();
 
-    console.log(enrollmentDetails);
+    if (modifier === "status") {
+      const { student_id } = req.body;
+
+      console.log(
+        enrollmentId,
+        enrollmentDetails.first_name,
+        enrollmentDetails.last_name,
+        student_id
+      );
+
+      const user = await createUser(
+        enrollmentId,
+        enrollmentDetails.first_name,
+        enrollmentDetails.last_name,
+        student_id
+      );
+
+      await createUserRoles(user.id, "3c90769a-cc7b-4211-b128-c813ed03cbbc");
+      await createCredentials(student_id, student_id, user.id);
+
+      /* FIND A BETTER SOLUTION FOR THIS ABOMINATION */
+      const course = await EnrollmentDetails.findOne({
+        where: { id: enrollmentId },
+        include: [
+          {
+            model: Course,
+            as: "courses",
+          },
+        ],
+      });
+
+      const courseId = course.courses[0].id;
+
+      const courseSubject = await Course.findOne({
+        where: { id: courseId },
+        include: {
+          model: Subject,
+          attributes: [
+            "id",
+            "subject_name",
+            "subject_description",
+            "subject_code",
+            "price",
+            "units",
+          ], // Include only the fields you need
+          through: {
+            attributes: [],
+            where: {
+              student_year: "1st", // Filter by student_year in the join table
+              semester: "1st", // Filter by semester in the join table
+            },
+          },
+          as: "CourseSubjects", // Use the alias defined in the model
+        },
+      });
+
+      await courseSubject.CourseSubjects.forEach(async (subject) => {
+        console.log(
+          course.courses[0].course_code,
+          subject.dataValues.subject_name,
+          subject.dataValues.subject_code
+        );
+        await createNewClass(
+          `${course.courses[0].course_code}-${subject.dataValues.subject_code}`,
+          subject.dataValues.id
+        );
+      });
+    }
 
     res.status(200).json(enrollmentDetails);
   } catch (error) {

@@ -9,10 +9,15 @@ import { FaPlus } from "react-icons/fa6";
 import { Table, TableRow } from "@/components/containers";
 import { useRouter } from "next/navigation";
 import { Card } from "@/components/cards";
+import { useEffect } from "react";
 
 export default function Courses() {
-  const { isLoading, data, isFetching } = useFetchClasses();
+  const { isLoading, data, isFetching, error } = useFetchClasses();
   const router = useRouter();
+
+  useEffect(() => {
+    console.log("CLASS DATA", data, error);
+  }, [data, error]);
 
   const headers = [
     "Class Code",
@@ -55,7 +60,7 @@ export default function Courses() {
                       item.classCode,
                       item.subjectCode,
                       item.units.toString(),
-                      item.instructorName,
+                      item?.instructorName ?? "",
                       `${item.schedule} ${item.timeStart} - ${item.timeEnd}`,
                       item.room || "N/A",
                       item.active ? "Yes" : "No",

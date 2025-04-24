@@ -88,7 +88,7 @@ const SidebarButton: React.FC<SidebarButtonProps> = ({
     >
       {icon}
       {name}
-      {hasNotif && !isLoading && isFetched && (
+      {hasNotif && !isLoading && isFetched && notifCount > 0 && (
         <span className="bg-orange-700 p-1 w-6 h-6 text-center flex items-center justify-center rounded-full">
           {notifCount}
         </span>

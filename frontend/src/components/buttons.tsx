@@ -1,6 +1,7 @@
 "use client";
 
 export type ButtonProps = {
+  value?: string;
   children: React.ReactNode;
   handleOnClickAction?: () => void;
   className?: string;
@@ -16,9 +17,11 @@ export const Button: React.FC<ButtonProps> = ({
   color = "bg-[#003665]",
   type = "button",
   disabled = false,
+  value,
 }) => {
   return (
     <button
+      value={value}
       disabled={disabled}
       type={type}
       onClick={() => {

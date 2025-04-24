@@ -48,6 +48,8 @@ User.hasOne(UserRole, { foreignKey: "userId" });
 User.hasMany(Course, { foreignKey: "id" });
 User.hasMany(Classes, { foreignKey: "class_instructor" });
 User.hasMany(Notifications, { foreignKey: "for_user" });
+User.hasOne(EnrollmentDetails, { foreignKey: "enrollment_id" });
+EnrollmentDetails.belongsTo(User, { foreignKey: "enrollment_id" });
 Notifications.belongsTo(User, { foreignKey: "for_user" });
 Credential.belongsTo(User, { foreignKey: "userId" });
 UserRole.belongsTo(User, { foreignKey: "userId" });

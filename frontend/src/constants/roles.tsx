@@ -6,6 +6,7 @@ import {
   FaCheckToSlot,
   FaCodeBranch,
   FaMoneyBillWave,
+  FaNotesMedical,
 } from "react-icons/fa6";
 
 type Permissions = {
@@ -69,5 +70,13 @@ export const SIDEBAR_PERMISSIONS: Permissions[] = [
     icon: <FaMoneyBillWave />,
     hasNotif: true,
     notifKey: "finance_pending",
+  },
+  {
+    name: "Registration",
+    roles: ["ALL"],
+    link: "/portal/dashboard/registration",
+    icon: <FaNotesMedical />,
+    hasNotif: true,
+    notifKey: "registrar_pending",
   },
 ];

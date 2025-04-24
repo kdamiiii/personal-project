@@ -4,15 +4,15 @@ import { useQuery } from "@tanstack/react-query";
 export type ClassPayload = {
   id: string;
   class_code: string;
-  schedule: string;
-  time_start: string;
-  time_end: string;
-  active: boolean;
+  schedule?: string;
+  time_start?: string;
+  time_end?: string;
+  active?: boolean;
   Portal_User: {
-    id: string;
-    first_name: string;
-    last_name: string;
-  };
+    id?: string;
+    first_name?: string;
+    last_name?: string;
+  } | null;
   Subject: {
     id: string;
     subject_code: string;
@@ -25,12 +25,12 @@ export type ClassPayload = {
 export type ModifiedClassPayload = {
   id: string;
   classCode: string;
-  schedule: string;
-  timeStart: string;
-  timeEnd: string;
-  active: boolean;
-  instructorId: string;
-  instructorName: string;
+  schedule?: string;
+  timeStart?: string;
+  timeEnd?: string;
+  active?: boolean;
+  instructorId?: string;
+  instructorName?: string;
   subjectId: string;
   subjectCode: string;
   subjectName: string;
@@ -41,23 +41,35 @@ export type ModifiedClassPayload = {
 export const modifyClassPayload = ({
   id,
   class_code,
-  schedule,
-  time_start,
-  time_end,
-  active,
-  Portal_User: { id: instructorId, first_name, last_name },
+  schedule = "N/A",
+  time_start = "N/A",
+  time_end = "N/A",
+  active = false,
+  Portal_User,
   Subject: { id: subjectId, subject_code, subject_name, units },
   room,
 }: ClassPayload): ModifiedClassPayload => {
+  const user = Portal_User
+    ? Portal_User
+    : {
+        id: "N/A",
+        first_name: "No",
+        last_name: "Instructor",
+      };
+
+  const newSchedule = !!schedule ? schedule : "No Schedule";
+  const newStart = !!time_start ? time_start : "";
+  const newEnd = !!time_end ? time_start : "";
+
   return {
     id,
     classCode: class_code,
-    schedule,
-    timeStart: time_start,
-    timeEnd: time_end,
-    active,
-    instructorId,
-    instructorName: `${first_name} ${last_name}`,
+    schedule: newSchedule,
+    timeStart: newStart,
+    timeEnd: newEnd,
+    active: active,
+    instructorId: user?.id,
+    instructorName: `${user?.first_name} ${user?.last_name}`,
     subjectId,
     subjectCode: subject_code,
     subjectName: subject_name,
@@ -78,7 +90,6 @@ export const fetchClassesData = async (): Promise<ModifiedClassPayload[]> => {
     throw new Error("Not Found");
   }
   const data: ClassPayload[] = await res.json();
-
   return data.map((d) => modifyClassPayload(d));
 };
 

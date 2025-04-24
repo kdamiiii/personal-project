@@ -13,7 +13,6 @@ export default (sequelize) => {
     class_code: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
     },
     class_subject: {
       type: DataTypes.UUID,
@@ -25,7 +24,7 @@ export default (sequelize) => {
     },
     class_instructor: {
       type: DataTypes.UUID,
-      allowNull: false,
+      allowNull: true,
       references: {
         model: UserModel(sequelize),
         key: "id",
@@ -33,15 +32,15 @@ export default (sequelize) => {
     },
     schedule: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
     time_start: {
       type: DataTypes.TIME,
-      allowNull: false,
+      allowNull: true,
     },
     time_end: {
       type: DataTypes.TIME,
-      allowNull: false,
+      allowNull: true,
     },
     active: {
       type: DataTypes.BOOLEAN,
