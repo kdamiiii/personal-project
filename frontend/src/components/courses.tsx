@@ -86,7 +86,7 @@ const Course: React.FC<CourseType> = ({
   return (
     <div className="flex flex-col w-[20em] h-[38em]">
       <CourseBadge name={category} />
-      <Image src={picture} alt="picture" />
+      <img src={picture} alt="picture" />
       <CardTitle
         title={name}
         description={description}

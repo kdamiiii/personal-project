@@ -12,7 +12,7 @@ import {
   createUser,
   createCredentials,
   createUserRoles,
-} from "../controllers/create_user.js";
+} from "../controllers/users_controller.js";
 import { createNewClass } from "../controllers/classes_controller.js";
 
 const enrollmentRouter = express.Router();

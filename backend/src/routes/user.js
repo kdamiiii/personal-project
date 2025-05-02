@@ -1,31 +1,12 @@
 import express from "express";
 import { Credential, User, Role, UserRole } from "../models/index.js";
 import { assignRole } from "../utils/roles_manager.js";
+import { createUser, getUsers } from "../controllers/users_controller.js";
 
 const userRouter = express.Router();
-const DEFAULT_PASSWORD = "password12345";
 
-userRouter.post("/", async (req, res) => {
-  try {
-    const { first_name, last_name, email } = req.body;
-    const user = await User.create({
-      first_name,
-      last_name,
-      email,
-    });
-    const credential = await Credential.create({
-      username: `${first_name}.${last_name}`,
-      password: DEFAULT_PASSWORD,
-      userId: user.id,
-    });
-
-    console.log(credential);
-    res.status(201).json(user);
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ error: error.message });
-  }
-});
+userRouter.get("/", getUsers);
+userRouter.post("/", createUser);
 
 /* THIS ROUTE SHOULD BE REMOVED ONCE ALL ROLES HAVE BEEN FILLED */
 userRouter.post("/roles", async (req, res) => {
@@ -77,29 +58,6 @@ userRouter.get("/:userId", async (req, res) => {
     }
 
     res.status(200).json(user);
-  } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ error: error.message });
-  }
-});
-
-userRouter.get("/", async (req, res) => {
-  try {
-    const users = await User.findAll({
-      include: [
-        {
-          model: Credential,
-          attributes: ["username"],
-        },
-        {
-          model: UserRole,
-          attributes: ["role"],
-          include: [{ model: Role, attributes: ["role"] }],
-        },
-      ],
-    });
-
-    res.status(200).json(users);
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ error: error.message });
