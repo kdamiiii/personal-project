@@ -27,12 +27,22 @@ export const respondWithHttpError = (err, res) => {
   } else if (err.statusCode === 400) {
     statusCode = 400;
     message = err.message || "Bad Request";
-  } else if (
-    err.name === "SequelizeValidationError" ||
-    err.message.includes("ValidationError")
-  ) {
+  } else if (err.name === "SequelizeValidationError") {
     statusCode = 400;
     message = err.message || "Missing Fields";
+  } else if (err.name === "SequelizeUniqueConstraintError") {
+    statusCode = 400;
+    message = "Fields must be Unique";
+  } else if (err.name === "UserNotFound") {
+    statusCode = 404;
+    message = "User Not found";
   }
   res.status(statusCode).json({ message });
 };
+
+export class HTTPError extends Error {
+  constructor(name, message) {
+    super(message);
+    this.name = name;
+  }
+}

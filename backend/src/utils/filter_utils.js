@@ -4,7 +4,8 @@ export const buildQuery = (
   filters,
   orderBy = "id",
   order = "asc",
-  attributes = "*"
+  attributes = "*",
+  allowedAttributes = []
 ) => {
   const where = {};
   const orderDirection = order.toLowerCase() === "desc" ? "DESC" : "ASC";
