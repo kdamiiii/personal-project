@@ -9,6 +9,7 @@ import {
   deleteCourseSubject,
 } from "../services/courses_service.js";
 import { Subject, User } from "../models/index.js";
+import { subject_attributes } from "../constants/allowed_attributes.js";
 
 export const getCourses = async (req, res) => {
   try {
@@ -140,25 +141,12 @@ export const getCourseSubjects = async (req, res) => {
       },
     };
 
-    const allowedAttributes = [
-      "id",
-      "subject_name",
-      "subject_code",
-      "units",
-      "prerequisite",
-      "subject_description",
-      "price",
-      "createdAt",
-      "updatedAt",
-      "default_course",
-    ];
-
     const { where, orderQuery, selectedAttributes } = buildQuery(
       filters,
       orderBy,
       order,
       attributes,
-      allowedAttributes
+      subject_attributes
     );
 
     const courseSubjects = await getCourseSubjectsFromDB(
