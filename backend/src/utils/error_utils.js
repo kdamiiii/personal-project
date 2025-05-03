@@ -32,10 +32,16 @@ export const respondWithHttpError = (err, res) => {
     message = err.message || "Missing Fields";
   } else if (err.name === "SequelizeUniqueConstraintError") {
     statusCode = 400;
-    message = "Fields must be Unique";
-  } else if (err.name === "UserNotFound") {
+    message = "Fields must be Unique (Record already exists)";
+  } else if (err.name === "NotFound") {
     statusCode = 404;
-    message = "User Not found";
+    message = err.message || "Does not exist";
+  } else if (err.name === "SequelizeDatabaseError") {
+    statusCode = 400;
+    message = "Invalid input";
+  } else if (err.message.includes("ValidationError")) {
+    statusCode = 400;
+    message = "Invalid input";
   }
   res.status(statusCode).json({ message });
 };
