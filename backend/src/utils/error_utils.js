@@ -42,6 +42,9 @@ export const respondWithHttpError = (err, res) => {
   } else if (err.message.includes("ValidationError")) {
     statusCode = 400;
     message = "Invalid input";
+  } else if (err.name == "NothingToUpdate") {
+    statusCode = 400;
+    message = err.message || "Nothing To Update";
   }
   res.status(statusCode).json({ message });
 };

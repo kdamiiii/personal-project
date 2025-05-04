@@ -32,3 +32,18 @@ export const buildQuery = (
 
   return { where, orderQuery, selectedAttributes };
 };
+
+export const updateFieldIfValid = (
+  fieldName,
+  fieldValue,
+  updateObject,
+  currentValue
+) => {
+  if (
+    fieldValue !== undefined &&
+    fieldValue !== null &&
+    currentValue !== fieldValue
+  ) {
+    updateObject[fieldName] = fieldValue;
+  }
+};

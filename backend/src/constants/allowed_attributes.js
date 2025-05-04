@@ -10,3 +10,17 @@ export const subject_attributes = [
   "updatedAt",
   "default_course",
 ];
+
+export const classes_attributes = [
+  "id",
+  "class_code",
+  "class_subject",
+  "class_instructor",
+  "schedule",
+  "time_start",
+  "time_end",
+  "active",
+  "room",
+  "createdAt",
+  "updatedAt",
+];

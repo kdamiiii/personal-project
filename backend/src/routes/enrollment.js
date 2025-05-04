@@ -13,7 +13,7 @@ import {
   createCredentials,
   createUserRoles,
 } from "../controllers/users_controller.js";
-import { createNewClass } from "../controllers/classes_controller.js";
+import { insertClassToDB } from "../services/classes_service.js";
 
 const enrollmentRouter = express.Router();
 
@@ -232,10 +232,10 @@ enrollmentRouter.patch("/:enrollmentId", async (req, res) => {
           subject.dataValues.subject_name,
           subject.dataValues.subject_code
         );
-        await createNewClass(
-          `${course.courses[0].course_code}-${subject.dataValues.subject_code}`,
-          subject.dataValues.id
-        );
+        await insertClassToDB({
+          class_code: `${course.courses[0].course_code}-${subject.dataValues.subject_code}`,
+          class_subject: subject.dataValues.id,
+        });
       });
     }
 
