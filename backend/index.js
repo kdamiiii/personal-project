@@ -12,6 +12,7 @@ import classesRouter from "./src/routes/classes.js";
 import enrollmentRouter from "./src/routes/enrollment.js";
 import notificationsRouter from "./src/routes/notifications.js";
 import "dotenv/config";
+import { initiateIOServer } from "./src/utils/socket_io.utils.js";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -38,11 +39,14 @@ app.use("/classes", classesRouter);
 app.use("/enrollment_details", enrollmentRouter);
 app.use("/notifications", notificationsRouter);
 
+const server = initiateIOServer(app);
+
 (async () => {
   try {
     await sequelize.sync({ force: false, alter: true }); // Set force: true to reset tables on restart
     console.log("✅ Database synced.");
-    app.listen(PORT, () =>
+
+    server.listen(PORT, () =>
       console.log(`🚀 Server running on http://localhost:${PORT}`)
     );
   } catch (error) {

@@ -24,3 +24,15 @@ export const classes_attributes = [
   "createdAt",
   "updatedAt",
 ];
+
+export const notifications_attributes = [
+  "id",
+  "title",
+  "link",
+  "description",
+  "date",
+  "is_read",
+  "for_user",
+  "createdAt",
+  "updatedAt",
+];

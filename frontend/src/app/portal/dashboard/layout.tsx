@@ -1,5 +1,6 @@
 import { Card } from "@/components/cards";
 import { SideBar } from "@/components/sidebar";
+import SocketListener from "@/components/wrappers/notifications";
 import { fetchCurrentUserData } from "@/utils/fetchCurrentUser";
 export default async function EnrollmentLayout({
   children,
@@ -22,6 +23,7 @@ export default async function EnrollmentLayout({
           {children}
         </Card>
       </div>
+      <SocketListener />
     </main>
   );
 }
