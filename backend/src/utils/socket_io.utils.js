@@ -12,10 +12,14 @@ export const initiateIOServer = (app) => {
 
   io.on("connection", (socket) => {
     console.log("Client connected:", socket.id);
-    io.emit("notify", "HOTDOG TIME HOTDOG TIME");
+    broadcastNotifications(
+      io,
+      "notify",
+      "SAMPLE TITLE",
+      "THIS IS A SAMPLE NOTIFICATION"
+    );
     socket.on("message", (msg) => {
       console.log("Received:", msg);
-      io.emit("notify", msg); // Broadcast back
     });
 
     socket.on("disconnect", () => {
@@ -23,5 +27,19 @@ export const initiateIOServer = (app) => {
     });
   });
 
-  return server;
+  return { server, io };
+};
+
+export const broadcastNotifications = (
+  io,
+  emit_name,
+  notif_title,
+  notif_description,
+  notif_link = ""
+) => {
+  io.emit(emit_name, {
+    notif_title,
+    notif_description,
+    notif_link,
+  });
 };

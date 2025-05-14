@@ -1,7 +1,17 @@
+"use client";
+
 import { fetchCurrentUserData } from "@/utils/fetchCurrentUser";
 
-export default async function Dashboard() {
-  const userData = await fetchCurrentUserData();
-
-  return <p>Welcome back, {userData.firstName}!</p>;
+export default function Dashboard() {
+  return (
+    <button
+      onClick={() => {
+        const res = fetch("http://localhost:8001/testNotification", {
+          method: "GET",
+        });
+      }}
+    >
+      NOTIF TESTER
+    </button>
+  );
 }
