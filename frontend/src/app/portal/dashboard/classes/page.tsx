@@ -52,6 +52,7 @@ export default function Courses() {
               {data.map((item) => {
                 return (
                   <TableRow
+                    ref={null}
                     key={item.id}
                     handleClick={() => {
                       router.push(`/portal/dashboard/classes/${item.id}`);

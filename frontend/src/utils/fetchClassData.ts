@@ -57,9 +57,9 @@ export const modifyClassPayload = ({
         last_name: "Instructor",
       };
 
-  const newSchedule = !!schedule ? schedule : "No Schedule";
+  const newSchedule = !!schedule ? schedule : "";
   const newStart = !!time_start ? time_start : "";
-  const newEnd = !!time_end ? time_start : "";
+  const newEnd = !!time_end ? time_end : "";
 
   return {
     id,
