@@ -61,12 +61,14 @@ const checkStatus = (status: string) => {
 };
 
 export const TableRow: React.FC<{
+  ref: React.RefObject<HTMLTableRowElement | null> | null;
   tableData: string[];
   handleClick?: () => void;
   border?: boolean;
-}> = ({ tableData, handleClick = () => {}, border = false }) => {
+}> = ({ tableData, handleClick = () => {}, border = false, ref = null }) => {
   return (
     <tr
+      ref={ref}
       onClick={() => handleClick()}
       className={`text-gray-700 text-sm font-normal hover:bg-gray-100 hover:cursor-pointer ${
         border ? "border-b border-b-[#61616146] border-op" : ""

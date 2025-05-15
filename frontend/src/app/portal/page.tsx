@@ -8,7 +8,7 @@ import { Spinner } from "@/components/spinner";
 import { RequestError } from "@/constants/generalTypes";
 import { useForm } from "@tanstack/react-form";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 const api: string = process.env.NEXT_PUBLIC_HOST || "http://localhost:8001";
@@ -16,6 +16,7 @@ const api: string = process.env.NEXT_PUBLIC_HOST || "http://localhost:8001";
 export default function Home() {
   const router = useRouter();
   const [requestError, setRequestError] = useState<string | null>(null);
+  const redirectParams = useSearchParams().get("redirect");
 
   const form = useForm({
     defaultValues: {
@@ -46,7 +47,7 @@ export default function Home() {
         }
 
         // const data = await res.json();
-        router.push("/portal/dashboard");
+        router.push(redirectParams || "/portal/dashboard");
       } catch (e) {
         if (e instanceof RequestError) {
           if (e.message) {

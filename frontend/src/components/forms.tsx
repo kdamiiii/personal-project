@@ -7,6 +7,7 @@ type FormInputType = {
   type?: string;
   row?: boolean;
   textarea?: boolean;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 type CheckBoxType = {
@@ -21,11 +22,13 @@ export const FormInput: React.FC<FormInputType> = ({
   placeHolder,
   type = "text",
   row = true,
+  onChange = () => {},
 }) => {
   return (
     <div className={`flex flex-${row ? "row items-center" : "col "}  gap-2`}>
       {name && <p className="w-[30%]">{name}</p>}
       <input
+        onChange={onChange}
         className="border-1 border-gray-400 rounded-full p-1 px-3 w-[70%]"
         type={type}
         placeholder={placeHolder ?? ""}
