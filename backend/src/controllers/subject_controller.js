@@ -4,6 +4,7 @@ import {
   findSubjectById,
   getSubjectsFromDB,
   insertSubjectToDB,
+  updateSubjectInDB,
 } from "../services/subjects_service.js";
 import { HTTPError, respondWithHttpError } from "../utils/error_utils.js";
 import { buildQuery } from "../utils/filter_utils.js";
@@ -40,8 +41,8 @@ export const getSubjects = async (req, res) => {
       attributes: selectedAttributes,
     });
 
-    console.log(subjects);
-
+    console.log("HELLO HELLO HELLO");
+    console.log(subjects.length);
     res.status(200).json(subjects);
   } catch (error) {
     console.error(error.message);
@@ -99,6 +100,36 @@ export const deleteSubject = async (req, res) => {
     await deleteSubjectFromDB({ subjectId });
 
     res.status(204).json({ message: "successfully deleted" });
+  } catch (error) {
+    console.error(error.message);
+    return respondWithHttpError(error, res);
+  }
+};
+
+export const updateSubject = async (req, res) => {
+  try {
+    const { subjectId } = req.params;
+    const {
+      subject_code = null,
+      subject_name = null,
+      subject_description = null,
+      units = null,
+      price = null,
+      prerequisite = null,
+      default_course = null,
+    } = req.body;
+
+    const subject = await updateSubjectInDB(subjectId, {
+      subject_code,
+      subject_name,
+      subject_description,
+      units,
+      price,
+      prerequisite,
+      default_course,
+    });
+
+    res.status(201).json(subject);
   } catch (error) {
     console.error(error.message);
     return respondWithHttpError(error, res);

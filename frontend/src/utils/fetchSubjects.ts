@@ -1,5 +1,5 @@
 import { apiHostname } from "@/constants/generalTypes";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useInfiniteQuery } from "@tanstack/react-query";
 
 export type SubjectsPayload = {
   id: string;
@@ -25,10 +25,16 @@ export type ModifiedSubjectType = {
   prerequisite: string;
 };
 
-export const fetchSubjectsData = async (): Promise<Array<SubjectsPayload>> => {
+export const fetchSubjectsData = async (
+  offset: number,
+  search: string | null = null
+): Promise<Array<SubjectsPayload>> => {
+  console.log("mimimimimimi", offset);
   const res = await fetch(
     `
-    ${apiHostname}/subjects`,
+    ${apiHostname}/subjects?limit=20&orderBy=subject_code&offset=${offset}${
+      search ? `&name=${search}` : ""
+    }`,
     {
       method: "GET",
     }
@@ -41,11 +47,11 @@ export const fetchSubjectsData = async (): Promise<Array<SubjectsPayload>> => {
 };
 
 export const fetchSubjectData = async (
-  courseId: string
+  subjectId: string
 ): Promise<ModifiedSubjectType> => {
   const res = await fetch(
     `
-    ${apiHostname}/subjects/${courseId}`,
+    ${apiHostname}/subjects/${subjectId}`,
     {
       method: "GET",
     }
@@ -58,12 +64,17 @@ export const fetchSubjectData = async (
   return modifySubjectData(data);
 };
 
-export const useFetchSubjects = () => {
-  return useQuery({
-    queryKey: ["subjects"],
-    queryFn: fetchSubjectsData,
-    refetchOnWindowFocus: false,
-    staleTime: 1000 * 60 * 5,
+export const useFetchSubjects = (searchQuery: string = "") => {
+  return useInfiniteQuery({
+    queryKey: ["subjects", searchQuery],
+    queryFn: ({ pageParam = 0 }) => fetchSubjectsData(pageParam, searchQuery),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, pages) => {
+      if (lastPage.length === 0) {
+        return undefined;
+      }
+      return pages.length * 20;
+    },
   });
 };
 
@@ -85,7 +96,7 @@ export const modifySubjectData = (
     subjectName: data.subject_name,
     subjectDescription: data.subject_description,
     units: data.units,
-    prerequisite: data.prereqisite || "None",
+    prerequisite: data.prereqisite || "",
     price: data.price,
   };
 };

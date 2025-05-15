@@ -11,7 +11,7 @@ type Props = {
   }>;
 };
 
-export default function CoursePage({ params }: Props) {
+export default function ClassPage({ params }: Props) {
   const unwrappedParams = use(params);
   const { isLoading, data, isFetched } = useFetchClass(unwrappedParams.id);
 
@@ -37,9 +37,7 @@ export default function CoursePage({ params }: Props) {
             <h2 className="text-gray-600 text-lg ">
               Room: {data?.room || "N/A"}
             </h2>
-            <h2 className="text-gray-600 text-lg ">
-              Units: {data?.units} · {data?.subjectCode}
-            </h2>
+            <h2 className="text-gray-600 text-lg ">Units: {data?.units}</h2>
             <h2 className="text-gray-600 text-lg ">
               Active: {data?.active ? "Yes" : "No"}
             </h2>

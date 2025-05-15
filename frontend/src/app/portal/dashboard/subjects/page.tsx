@@ -5,21 +5,71 @@ import { Card } from "@/components/cards";
 import { Table, TableRow } from "@/components/containers";
 import { FormInput } from "@/components/forms";
 import { Spinner } from "@/components/spinner";
+import { useDebounce } from "@/utils/componentUtils";
 import { useFetchSubjects } from "@/utils/fetchSubjects";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect, useRef, Fragment, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 
 export default function Courses() {
-  const { isLoading, data, isFetched } = useFetchSubjects();
   const router = useRouter();
+  const [inputValue, setInputValue] = useState("");
+  const debouncedValue = useDebounce(inputValue, 500);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(event.target.value);
+  };
+
+  useEffect(() => {
+    if (debouncedValue) {
+      // Perform the search or API call with debouncedValue
+      console.log("Searching for:", debouncedValue);
+    }
+  }, [debouncedValue]);
+
+  const {
+    isLoading,
+    data,
+    isFetched,
+    fetchNextPage,
+    isFetchingNextPage,
+    hasNextPage,
+  } = useFetchSubjects(debouncedValue);
+  const lastRowRef = useRef<HTMLTableRowElement | null>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      const entry = entries[0];
+      if (entry.isIntersecting) {
+        console.log("Last row is visible");
+        fetchNextPage();
+      } else {
+        console.log("Last row is not visible");
+      }
+    });
+
+    const currentRef = lastRowRef.current;
+    if (currentRef) {
+      console.log("Observing", currentRef);
+      observer.observe(currentRef);
+    } else {
+      console.log("No currentRef to observe");
+    }
+
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, [fetchNextPage, isLoading]);
 
   return (
     <Card className="bg-white p-5 h-full overflow-y-scroll">
       <div>
         <div className="flex items-center gap-3">
           <p className="">Search</p>
-          <FormInput />
+          <FormInput onChange={handleChange} />
           <Link
             className="ml-auto h-full"
             href="/portal/dashboard/subjects/newsubject"
@@ -31,7 +81,7 @@ export default function Courses() {
         </div>
       </div>
       {!isLoading && !!data && isFetched ? (
-        data.length > 0 ? (
+        data.pages.length > 0 ? (
           <div className="flex flex-wrap gap-[1%] space-y-[1%] justify-start pt-5">
             <Table
               headers={[
@@ -43,26 +93,40 @@ export default function Courses() {
                 "Dedicated Course",
               ]}
             >
-              {data.map((item) => {
-                return (
-                  <TableRow
-                    border
-                    key={item.id}
-                    handleClick={() => {
-                      router.push(`/portal/dashboard/subjects/${item.id}`);
-                    }}
-                    tableData={[
-                      item.subject_code,
-                      item.subject_name,
-                      item.units.toString(),
-                      item.prereqisite || "None",
-                      item.price.toString(),
-                      "None",
-                    ]}
-                  />
-                );
-              })}
+              {data.pages.map((page, index) => (
+                <Fragment key={index}>
+                  {page.map((item) => {
+                    return (
+                      <TableRow
+                        ref={null}
+                        border
+                        key={item.id}
+                        handleClick={() => {
+                          router.push(`/portal/dashboard/subjects/${item.id}`);
+                        }}
+                        tableData={[
+                          item.subject_code,
+                          item.subject_name,
+                          item.units.toString(),
+                          item.prereqisite || "None",
+                          item.price.toString(),
+                          "None",
+                        ]}
+                      />
+                    );
+                  })}
+                </Fragment>
+              ))}
             </Table>
+            <div ref={lastRowRef} className={`w-full flex justify-center`}>
+              {isFetchingNextPage ? (
+                <Spinner size={15} />
+              ) : hasNextPage ? (
+                "Load more"
+              ) : (
+                ""
+              )}
+            </div>
           </div>
         ) : (
           <p>No Data Available</p>

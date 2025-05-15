@@ -8,8 +8,11 @@ export type TokenData = {
 
 export async function middleware(req: NextRequest) {
   const token = req.cookies.get("token")?.value;
+
   if (!token) {
-    return NextResponse.redirect(new URL("/portal/", req.url));
+    return NextResponse.redirect(
+      new URL(`/portal?redirect=${req.nextUrl.pathname}`, req.url)
+    );
   }
 
   try {
@@ -19,7 +22,9 @@ export async function middleware(req: NextRequest) {
 
     return NextResponse.next();
   } catch {
-    return NextResponse.redirect(new URL("/portal/", req.url));
+    return NextResponse.redirect(
+      new URL(`/portal?redirect=${req.nextUrl.pathname}`, req.url)
+    );
   }
 }
 

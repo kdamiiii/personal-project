@@ -142,4 +142,5 @@ export {
   SchoolsDetails,
   EnrollmentRequirements,
   EnrollmentCourse,
+  Notifications,
 };
