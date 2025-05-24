@@ -200,7 +200,7 @@ const EditClassPage: React.FC<ClassesProps> = ({ params }) => {
                     type="submit"
                     className="w-full"
                   >
-                    {isSubmitting ? <Spinner /> : "Create New Course"}
+                    {isSubmitting ? <Spinner /> : "Update Class Information"}
                   </Button>
                 )}
               />

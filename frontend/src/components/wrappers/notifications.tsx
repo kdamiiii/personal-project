@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import type {
   NotificationType,
@@ -13,6 +13,14 @@ let socket: Socket<ServerToClientEvents> | null = null;
 const SocketListener = () => {
   const [messages, setMessages] = useState<NotificationType[]>([]);
 
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  const play = () => {
+    if (audioRef.current) {
+      audioRef.current.play();
+    }
+  };
+
   useEffect(() => {
     if (!socket) {
       socket = io(SOCKET_HOST); // Replace with your backend
@@ -20,7 +28,8 @@ const SocketListener = () => {
 
     const handleNotify = (message: NotificationType) => {
       setMessages((prev) => [...prev, message]);
-
+      play();
+      console.log(audioRef.current);
       setTimeout(() => {
         setMessages((prev) => prev.slice(1));
       }, 7000);
@@ -46,6 +55,7 @@ const SocketListener = () => {
           </div>
         );
       })}
+      <audio ref={audioRef} src="/static/notif.mp3" />
     </div>
   );
 };

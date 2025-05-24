@@ -32,3 +32,14 @@ export const getSelectedTab = (url: string, link: string) => {
 export const removeMiliseconds = (date: string) => {
   return date.split(":")[0] + ":" + date.split(":")[1];
 };
+
+export const checkScheduleText = (text: string) => {
+  return text
+    .split("")
+    .map((letter) => {
+      if (letter === "R") return "TH";
+      else if (letter === "U") return "SU";
+      return letter;
+    })
+    .join("");
+};
