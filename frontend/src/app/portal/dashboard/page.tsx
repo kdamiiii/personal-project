@@ -1,5 +1,6 @@
 "use client";
 
+import Calendar from "@/components/calendar";
 import { useRef } from "react";
 
 export default function Dashboard() {
@@ -26,6 +27,7 @@ export default function Dashboard() {
         <button onClick={play}>Play</button>
         <audio ref={audioRef} src="/static/notif.mp3" />
       </div>
+      <Calendar />
     </>
   );
 }
