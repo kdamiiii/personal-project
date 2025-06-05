@@ -5,10 +5,10 @@ import { Card } from "@/components/cards";
 import { TestForm } from "@/components/forms";
 import { Spinner } from "@/components/spinner";
 import { apiHostname, RequestError } from "@/constants/generalTypes";
+import { SubjectProps } from "@/types/pagestypes";
 import { useFetchSubject } from "@/utils/fetchSubjects";
 import { useForm } from "@tanstack/react-form";
 import { useRouter } from "next/navigation";
-import { SubjectProps } from "../page";
 import { use } from "react";
 
 const EditSubjects: React.FC<SubjectProps> = ({ params }) => {

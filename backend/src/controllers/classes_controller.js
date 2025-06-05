@@ -123,6 +123,8 @@ export const updateClassById = async (req, res) => {
       room = null,
     } = req.body;
 
+    console.log(time_start, time_end);
+
     const classSubect = await updateClassInDB(classId, {
       class_instructor,
       schedule,

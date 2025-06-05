@@ -3,15 +3,10 @@
 import { Button } from "@/components/buttons";
 import { Card } from "@/components/cards";
 import { Spinner } from "@/components/spinner";
+import { SubjectProps } from "@/types/pagestypes";
 import { useFetchSubject } from "@/utils/fetchSubjects";
 import { useRouter } from "next/navigation";
 import { use } from "react";
-
-export type SubjectProps = {
-  params: Promise<{
-    id: string;
-  }>;
-};
 
 const SubjectPage: React.FC<SubjectProps> = ({ params }) => {
   const router = useRouter();

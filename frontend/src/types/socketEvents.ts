@@ -1,4 +1,5 @@
 export interface ServerToClientEvents {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   updateData: (data: any) => void;
   notify: (message: NotificationType) => void;
 }

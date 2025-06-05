@@ -29,7 +29,6 @@ export const fetchSubjectsData = async (
   offset: number,
   search: string | null = null
 ): Promise<Array<SubjectsPayload>> => {
-  console.log("mimimimimimi", offset);
   const res = await fetch(
     `
     ${apiHostname}/subjects?limit=20&orderBy=subject_code&offset=${offset}${

@@ -1,5 +1,5 @@
 import { apiHostname } from "@/constants/generalTypes";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 
 export type ClassPayload = {
   id: string;
@@ -57,9 +57,9 @@ export const modifyClassPayload = ({
         last_name: "Instructor",
       };
 
-  const newSchedule = !!schedule ? schedule : "No Schedule";
+  const newSchedule = !!schedule ? schedule : "";
   const newStart = !!time_start ? time_start : "";
-  const newEnd = !!time_end ? time_start : "";
+  const newEnd = !!time_end ? time_end : "";
 
   return {
     id,
@@ -111,10 +111,50 @@ export const fetchClassData = async (
   return modifyClassPayload(data);
 };
 
+export const fetchInfiniteClassesData = async (
+  offset: number,
+  search: string | null = null
+): Promise<Array<ModifiedClassPayload>> => {
+  try {
+    const res = await fetch(
+      `
+      ${apiHostname}/classes?limit=20&orderBy=class_code&offset=${offset}${
+        search ? `&name=${search}` : ""
+      }`,
+      {
+        method: "GET",
+      }
+    );
+
+    if (res.status >= 400) {
+      return [];
+    }
+    const data: ClassPayload[] = await res.json();
+    return data.map((d) => modifyClassPayload(d));
+  } catch (e) {
+    console.log("error fetching classes", e);
+    return [];
+  }
+};
+
 export const useFetchClasses = () => {
   return useQuery({
     queryKey: ["classes"],
     queryFn: fetchClassesData,
+  });
+};
+
+export const useInfiniteFetchClasses = (searchQuery: string = "") => {
+  return useInfiniteQuery({
+    queryKey: ["classes", searchQuery],
+    queryFn: ({ pageParam = 0 }: { pageParam?: number }) =>
+      fetchInfiniteClassesData(pageParam, searchQuery),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, pages) => {
+      if ((lastPage as Array<ModifiedClassPayload>).length === 0)
+        return undefined;
+      return pages.length * 20;
+    },
   });
 };
 
