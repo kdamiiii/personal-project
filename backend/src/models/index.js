@@ -27,6 +27,7 @@ import SchoolsDetailsModel from "./enrollment/schools_details.model.js";
 import EnrollmentRequirementsModel from "./enrollment/enrollment_requirements.model.js";
 import EnrollmentCourseModel from "./enrollment/enrollment_course.model.js";
 import NotificationsModel from "./notifications.model.js";
+import CalendarEventsModel from "./calendar_events_model.js";
 
 const User = UserModel(sequelize);
 const Credential = CredentialModel(sequelize);
@@ -42,6 +43,7 @@ const SchoolsDetails = SchoolsDetailsModel(sequelize);
 const EnrollmentRequirements = EnrollmentRequirementsModel(sequelize);
 const EnrollmentCourse = EnrollmentCourseModel(sequelize);
 const Notifications = NotificationsModel(sequelize);
+const CalendarEvents = CalendarEventsModel(sequelize);
 
 User.hasOne(Credential, { foreignKey: "userId", onDelete: "CASCADE" });
 User.hasOne(UserRole, { foreignKey: "userId" });
@@ -56,8 +58,10 @@ UserRole.belongsTo(User, { foreignKey: "userId" });
 UserRole.belongsTo(Role, { foreignKey: "role" });
 Role.hasMany(UserRole, { foreignKey: "role" });
 Course.belongsTo(User, { foreignKey: "userId" });
-
-//Course to Enrollment via EnrollmentCourse
+// CalendarEvents.hasMany(UserRole, {
+//   foreignKey: "for_role",
+//   as: "CalendarEvents",
+// });
 
 Course.belongsToMany(EnrollmentDetails, {
   through: EnrollmentCourse,
@@ -143,4 +147,5 @@ export {
   EnrollmentRequirements,
   EnrollmentCourse,
   Notifications,
+  CalendarEvents,
 };

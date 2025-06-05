@@ -1,18 +1,18 @@
 type ContainerType = {
   children: React.ReactNode;
-  customClasses?: string;
+  className?: string;
   height?: string;
 };
 
 export const CenterContainter = ({
   children,
-  customClasses,
+  className,
   height,
 }: ContainerType) => {
   return (
     <div
       className={`flex justify-center items-center h-[${height}] ${
-        customClasses ?? ""
+        className ?? ""
       }`}
     >
       {children}
@@ -20,8 +20,8 @@ export const CenterContainter = ({
   );
 };
 
-export const FlexContainer = ({ children, customClasses }: ContainerType) => {
-  return <div className={`w-[100%] ${customClasses ?? ""}`}>{children}</div>;
+export const FlexContainer = ({ children, className }: ContainerType) => {
+  return <div className={`flex w-[100%] ${className ?? ""}`}>{children}</div>;
 };
 
 type TableType = {

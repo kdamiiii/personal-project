@@ -16,6 +16,7 @@ import {
   broadcastNotifications,
   initiateIOServer,
 } from "./src/utils/socket_io.utils.js";
+import calendarEventsRouter from "./src/routes/calendar_events.js";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -41,6 +42,7 @@ app.use("/subjects", subjectsRouter);
 app.use("/classes", classesRouter);
 app.use("/enrollment_details", enrollmentRouter);
 app.use("/notifications", notificationsRouter);
+app.use("/calendar_events", calendarEventsRouter);
 app.get("/testNotification", async (req, res) => {
   broadcastNotifications(
     io,
